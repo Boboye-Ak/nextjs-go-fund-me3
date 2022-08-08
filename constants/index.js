@@ -4,4 +4,5 @@ let crowdFunderAddresses = require("./crowdfunderAddresses.json");
 
 crowdFunderABI = crowdFunderABI.abi;
 causeABI = causeABI.abi;
-module.exports = { crowdFunderABI, causeABI, crowdFunderAddresses };
+const nullAddress="0x0000000000000000000000000000000000000000"
+module.exports = { crowdFunderABI, causeABI, crowdFunderAddresses, nullAddress };
