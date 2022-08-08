@@ -16,61 +16,78 @@ export default function Home() {
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
     const [searchText, setSearchText] = useState("")
     const [causeId, setCauseId] = useState("0")
+    const [causeAddress, setCauseAddress] = useState("")
     const [error, setError] = useState("")
-
     const dispatch = useNotification()
+    const handleTextChange = (e) => {
+        setSearchText(e.target.value)
+        console.log(searchText)
+    }
 
     //Web3 Functions
+    const {
+        runContractFunction: getCauseIdByCauseAddress,
+        isFetching,
+        isLoading,
+    } = useWeb3Contract({
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "getCauseIdByCauseAddress",
+        params: { causeAddress: searchText },
+    })
+
+    const { runContractFunction: getCauseIdByOwnerWallet } = useWeb3Contract({
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "getCauseIdByOwnerWallet",
+        params: { owner: searchText },
+    })
+
+    const { runContractFunction: getCauseById } = useWeb3Contract({
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "getCauseById",
+        params: { causeId: searchText },
+    })
+
+    const searchByCauseId = async () => {
+        console.log("searching by cause ID")
+        const causeIdFromCall = await getCauseById({
+            onError: (error) => {
+                console.log(error)
+                setError("Invalid Cause ID")
+            },
+        })
+        setCauseId(causeIdFromCall)
+    }
+
+    const searchByAddress = async () => {
+        console.log("Searching by address")
+        let causeIdFromCall
+        console.log("trying to get Cause ID by Cause Address")
+        causeIdFromCall = await getCauseIdByCauseAddress()
+        if (!causeIdFromCall || causeIdFromCall.toString() == "0") {
+            console.log("trying to get cause Id from Owner wallet")
+            causeIdFromCall = await getCauseIdByOwnerWallet()
+            console.log(causeIdFromCall.toString())
+            if (!causeIdFromCall || causeIdFromCall.toString() == "0") {
+                setError("This Address is not a cause and has no cause")
+            }
+            setError("")
+            setCauseId(causeIdFromCall.toString())
+        }
+        setError("")
+        setCauseId(causeIdFromCall.toString())
+    }
 
     const search = async () => {
-        let causeIdFromCall
-        if (ethers.utils.isAddress(searchText) || !isNaN(searchText)) {
-            if (ethers.utils.isAddress(searchText)) {
-                //check if it is a cause Address
-                const {
-                    runContractFunction: getCauseIdByCauseAddress,
-                    isFetching,
-                    isLoading,
-                } = useWeb3Contract({
-                    abi: crowdFunderABI,
-                    contractAddress: crowdFunderAddress,
-                    functionName: "getCauseIdByCauseAddress",
-                    params: { arguments: [searchText] },
-                })
-                causeIdFromCall = (await getCauseIdByCauseAddress()).toString()
-                if (!causeIdFromCall) {
-                    //check if it is an owner wallet
-                    const {
-                        runContractFunction: getCauseIdByOwnerWallet,
-                        isFetching: isFetching2,
-                        isLoading: isLoading2,
-                    } = useWeb3Contract({
-                        abi: crowdFunderABI,
-                        contractAddress: crowdFunderAddress,
-                        functionName: "getCauseIdByOwnerWallet",
-                        params: { arguments: [searchText] },
-                    })
-                    causeIdFromCall = (await getCauseIdByOwnerWallet()).toString()
-                }
-            }
-            if (!isNaN(searchText)) {
-                const { runContractFunction: getCauseById } = useWeb3Contract({
-                    abi: crowdFunderABI,
-                    contractAddress: crowdFunderAddress,
-                    functionName: "getCauseById",
-                    params: { arguments: [searchText] },
-                })
-                let addressFromCall=(await getCauseById()).toString()
-                if(addressFromCall==nullAddress){
-                  setError("Invalid Cause ID entered")
-                }else{
-                  causeIdFromCall=searchText
-                }
-
-            }
-            setCauseId(causeIdFromCall)
+        if (ethers.utils.isAddress(searchText)) {
+            await searchByAddress()
+        } else if (!isNaN(searchText)) {
+            console.log(`${searchText} is a number: ${!isNaN(searchText)}`)
+            await searchByCauseId()
         } else {
-            setError("Please enter an address or Cause ID")
+            setError("Please enter a valid address or Cause ID")
         }
     }
     return (
@@ -83,13 +100,20 @@ export default function Home() {
             <Header />
             <input
                 type="text"
-                value={searchText}
                 onChange={(e) => {
-                    setSearchText(e.target.value)
+                    handleTextChange(e)
                 }}
+                value={searchText}
                 placeholder="CAUSE ID, CAUSE OWNER ADDRESS, CAUSE ADDRESS"
             ></input>
-            <button>SEARCH</button>
+            <p>{error ? error : causeId}</p>
+            <button
+                onClick={async () => {
+                    await search()
+                }}
+            >
+                SEARCH
+            </button>
         </div>
     )
 }
