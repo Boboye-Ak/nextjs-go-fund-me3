@@ -2,14 +2,16 @@ import Head from "next/head"
 import Image from "next/image"
 import styles from "../styles/Home.module.css"
 import Header from "../components/Header"
+import Link from "next/link"
 import { useNotification } from "web3uikit"
 import { useEffect, useState } from "react"
-import { useMoralis } from "react-moralis"
+import { useMoralis, useWeb3Contract } from "react-moralis"
+import { useRouter } from "next/router"
 import { crowdFunderAddresses, crowdFunderABI, nullAddress } from "../constants"
-import { useWeb3Contract } from "react-moralis"
 import { ethers } from "ethers"
 
 export default function Home() {
+    const router = useRouter()
     const { chainId: chainIdHex, isWeb3Enabled, account } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
@@ -66,7 +68,7 @@ export default function Home() {
             },
         })
         setError("")
-        setCauseId(causeIdFromCall)
+        setCauseId(searchText)
     }
 
     const searchByAddress = async () => {
@@ -118,6 +120,12 @@ export default function Home() {
             updateUI()
         }
     }, [isWeb3Enabled, account, myCauseId])
+
+    useEffect(() => {
+        if (isWeb3Enabled) {
+            router.push(`./cause/${causeId}`)
+        }
+    }, [causeId])
     return (
         <div className={styles.container}>
             <Head>
@@ -136,12 +144,13 @@ export default function Home() {
             ></input>
             <p>{error ? error : causeId}</p>
             <button
-                onClick={async () => {
+                onClick={async (e) => {
                     await search()
                 }}
             >
                 SEARCH
             </button>
+            <Link href="/cause/1">Link to Cause with ID 1</Link>
         </div>
     )
 }
