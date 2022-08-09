@@ -21,7 +21,6 @@ export default function Home() {
     const dispatch = useNotification()
     const handleTextChange = (e) => {
         setSearchText(e.target.value)
-        console.log(searchText)
     }
 
     //Web3 Functions
@@ -36,11 +35,11 @@ export default function Home() {
         params: { causeAddress: searchText },
     })
 
-    const { runContractFunction: getCauseIdByOwnerWallet } = useWeb3Contract({
+    const { runContractFunction: getCauseIdByOwnerAddress } = useWeb3Contract({
         abi: crowdFunderABI,
         contractAddress: crowdFunderAddress,
-        functionName: "getCauseIdByOwnerWallet",
-        params: { owner: searchText },
+        functionName: "getCauseIdByOwnerAddress",
+        params: { owner: searchText }
     })
 
     const { runContractFunction: getCauseById } = useWeb3Contract({
@@ -58,17 +57,20 @@ export default function Home() {
                 setError("Invalid Cause ID")
             },
         })
+        setError("")
         setCauseId(causeIdFromCall)
     }
 
     const searchByAddress = async () => {
-        console.log("Searching by address")
         let causeIdFromCall
         console.log("trying to get Cause ID by Cause Address")
         causeIdFromCall = await getCauseIdByCauseAddress()
         if (!causeIdFromCall || causeIdFromCall.toString() == "0") {
             console.log("trying to get cause Id from Owner wallet")
-            causeIdFromCall = await getCauseIdByOwnerWallet()
+            causeIdFromCall = await getCauseIdByOwnerAddress({onSuccess:()=>{
+              console.log("gotten causeID from owner wallet")
+            }})
+            console.log(causeIdFromCall.toString())
             console.log(causeIdFromCall.toString())
             if (!causeIdFromCall || causeIdFromCall.toString() == "0") {
                 setError("This Address is not a cause and has no cause")
@@ -84,7 +86,6 @@ export default function Home() {
         if (ethers.utils.isAddress(searchText)) {
             await searchByAddress()
         } else if (!isNaN(searchText)) {
-            console.log(`${searchText} is a number: ${!isNaN(searchText)}`)
             await searchByCauseId()
         } else {
             setError("Please enter a valid address or Cause ID")
