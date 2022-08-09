@@ -65,10 +65,19 @@ export default function Home() {
             onError: (error) => {
                 console.log(error)
                 setError("Invalid Cause ID")
+                dispatch({
+                    type: "info",
+                    title: "Cannot Find Cause",
+                    position: "topR",
+                    icon: "bell",
+                    message: "Please Enter a valid Cause ID",
+                })
+            },
+            onSuccess: () => {
+                setCauseId(searchText)
+                setError("")
             },
         })
-        setError("")
-        setCauseId(searchText)
     }
 
     const searchByAddress = async () => {
