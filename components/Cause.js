@@ -5,13 +5,13 @@ import { useNotification } from "web3uikit"
 import { ethers } from "ethers"
 import Header from "./Header"
 const Cause = ({ id }) => {
-    const { isWeb3Enabled, account, chainId:chainIdHex } = useMoralis()
+    const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
     const [causeAddress, setCauseAddress] = useState("")
     const [amICauseOwner, setAmICauseOwner] = useState(false)
-    const [donationAmount, setDonationAmount] = useState("0")
+    const [donationAmount, setDonationAmount] = useState("")
     const [donationAmountG, setDonationAmountG] = useState("0")
     const [causeBalance, setCauseBalance] = useState("0")
     const [goal, setGoal] = useState("0")
@@ -43,7 +43,7 @@ const Cause = ({ id }) => {
     const { runContractFunction: getCauseOwner } = useWeb3Contract({
         abi: causeABI,
         contractAddress: causeAddress,
-        functionName: "getCauseByOwner",
+        functionName: "getCauseOwner",
         params: {},
     })
     const { runContractFunction: getIsOpenToDonations } = useWeb3Contract({
@@ -80,9 +80,13 @@ const Cause = ({ id }) => {
     })
 
     const insertCauseAddress = async () => {
-        const causeAddressFromCall = await getCauseById()
-        await setCauseAddress(causeAddressFromCall.toString())
-        console.log(causeAddress)
+        getCauseById()
+            .then((res) => {
+                setCauseAddress(res?.toString())
+            })
+            .then(() => {
+                updateUI()
+            })
     }
 
     const updateUI = async () => {
@@ -93,10 +97,10 @@ const Cause = ({ id }) => {
         const isLockedFromCall = await getIsLocked()
         const isWithdrawnFromCall = await getIsWithdrawn()
         const isGoalReachedFromCall = await getIsGoalReached()
-        setCauseOwner(causeOwnerFromCall.toString())
-        setCauseBalance(causeBalanceFromCall.toString())
-        setGoal(goalFromCall.toString())
-        setIsOpenToDonations(isOpenToDonationsFromCall.toString())
+        setCauseOwner(causeOwnerFromCall?.toString())
+        setCauseBalance(causeBalanceFromCall?.toString())
+        setGoal(goalFromCall?.toString())
+        setIsOpenToDonations(isOpenToDonationsFromCall?.toString())
         setIsWithdrawn(isWithdrawnFromCall)
         setIsGoalReached(isGoalReachedFromCall)
         setIsLocked(isLockedFromCall)
@@ -110,16 +114,8 @@ const Cause = ({ id }) => {
     const handleDonate = async () => {}
 
     useEffect(() => {
-        if (isWeb3Enabled) {
-            insertCauseAddress()
-        }
+        insertCauseAddress()
     }, [isWeb3Enabled])
-
-    useEffect(()=>{
-        if(isWeb3Enabled){
-            updateUI()
-        }
-    }, [isWeb3Enabled, causeAddress])
 
     return (
         <div>
