@@ -3,21 +3,23 @@ import Image from "next/image"
 import styles from "../styles/Home.module.css"
 import Header from "../components/Header"
 import { useNotification } from "web3uikit"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useMoralis } from "react-moralis"
 import { crowdFunderAddresses, crowdFunderABI, nullAddress } from "../constants"
 import { useWeb3Contract } from "react-moralis"
 import { ethers } from "ethers"
 
 export default function Home() {
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
+    const { chainId: chainIdHex, isWeb3Enabled, account } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
     const [searchText, setSearchText] = useState("")
     const [causeId, setCauseId] = useState("0")
+    const [myCauseId, setMyCauseId] = useState("0")
     const [causeAddress, setCauseAddress] = useState("")
     const [error, setError] = useState("")
+    const [doIHaveACause, setDoIHaveACause] = useState(false)
     const dispatch = useNotification()
     const handleTextChange = (e) => {
         setSearchText(e.target.value)
@@ -39,7 +41,7 @@ export default function Home() {
         abi: crowdFunderABI,
         contractAddress: crowdFunderAddress,
         functionName: "getCauseIdByOwnerAddress",
-        params: { owner: searchText }
+        params: { owner: searchText },
     })
 
     const { runContractFunction: getCauseById } = useWeb3Contract({
@@ -47,6 +49,12 @@ export default function Home() {
         contractAddress: crowdFunderAddress,
         functionName: "getCauseById",
         params: { causeId: searchText },
+    })
+    const { runContractFunction: getMyCauseId } = useWeb3Contract({
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "getMyCauseId",
+        params: {},
     })
 
     const searchByCauseId = async () => {
@@ -67,9 +75,11 @@ export default function Home() {
         causeIdFromCall = await getCauseIdByCauseAddress()
         if (!causeIdFromCall || causeIdFromCall.toString() == "0") {
             console.log("trying to get cause Id from Owner wallet")
-            causeIdFromCall = await getCauseIdByOwnerAddress({onSuccess:()=>{
-              console.log("gotten causeID from owner wallet")
-            }})
+            causeIdFromCall = await getCauseIdByOwnerAddress({
+                onSuccess: () => {
+                    console.log("gotten causeID from owner wallet")
+                },
+            })
             console.log(causeIdFromCall.toString())
             console.log(causeIdFromCall.toString())
             if (!causeIdFromCall || causeIdFromCall.toString() == "0") {
@@ -91,6 +101,23 @@ export default function Home() {
             setError("Please enter a valid address or Cause ID")
         }
     }
+
+    const updateUI = async () => {
+        const myCauseFromCall = (await getMyCauseId()).toString()
+        if (myCauseFromCall != "0") {
+            setDoIHaveACause(true)
+            setMyCauseId(myCauseFromCall)
+        } else {
+            setDoIHaveACause(false)
+            setMyCauseId(myCauseFromCall)
+        }
+    }
+
+    useEffect(() => {
+        if (isWeb3Enabled) {
+            updateUI()
+        }
+    }, [isWeb3Enabled, account, myCauseId])
     return (
         <div className={styles.container}>
             <Head>
@@ -98,7 +125,7 @@ export default function Home() {
                 <meta name="description" content="A Web3 CrowdFunding Website" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Header />
+            <Header doIHaveACause={doIHaveACause} myCauseId={myCauseId} />
             <input
                 type="text"
                 onChange={(e) => {
