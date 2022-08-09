@@ -30,12 +30,37 @@ const Cause = ({ id }) => {
         functionName: "getCauseByOwner",
         params: {},
     })
+    const { runContractFunction: getIsOpenToDonations } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getIsOpenToDonations",
+        params: {},
+    })
+    const { runContractFunction: getIsWithdrawn } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getIsWithdrawn",
+        params: {},
+    })
+    const { runContractFunction: getIsLocked } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getIsLocked",
+        params: {},
+    })
+
     const { runContractFunction: donate } = useWeb3Contract({
         abi: causeABI,
         contractAddress: causeAddress,
         functionName: "donate",
         params: {},
         msgValue: donationAmount,
+    })
+    const { runContractFunction: getIsGoalReached } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getIsGoalReached",
+        params: {},
     })
 
     return (
