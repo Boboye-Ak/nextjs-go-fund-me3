@@ -3,6 +3,7 @@ import { useMoralis, useWeb3Contract } from "react-moralis"
 import { causeABI, crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { useNotification } from "web3uikit"
 import { ethers } from "ethers"
+import { convertGweiToEth } from "../utils/converter"
 import Header from "./Header"
 const Cause = ({ id }) => {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
@@ -112,13 +113,6 @@ const Cause = ({ id }) => {
     }
 
     const handleDonate = async () => {}
-    const convertToEth=(gwei)=>{
-        let result=(Number(gwei)/(1000000000000000000))
-        console.log(result)
-        result=result.toString()
-        return result
-        
-    }
 
     useEffect(() => {
         insertCauseAddress()
@@ -132,7 +126,7 @@ const Cause = ({ id }) => {
                 <h2>CAUSE ADDRESS: {causeAddress}</h2>
                 <h2>OWNED BY: {causeOwner}</h2>
                 <h3>
-                    DONATIONS: {convertToEth(causeBalance)}/{convertToEth(goal)}ETH
+                    DONATIONS: {convertGweiToEth(causeBalance)}/{convertGweiToEth(goal)}ETH
                 </h3>
             </div>
             <input
