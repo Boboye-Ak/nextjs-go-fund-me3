@@ -112,10 +112,17 @@ const Cause = ({ id }) => {
     }
 
     const handleDonate = async () => {}
+    const convertToEth=(gwei)=>{
+        let result=(Number(gwei)/(1000000000000000000))
+        console.log(result)
+        result=result.toString()
+        return result
+        
+    }
 
     useEffect(() => {
         insertCauseAddress()
-    }, [isWeb3Enabled])
+    }, [isWeb3Enabled, causeAddress])
 
     return (
         <div>
@@ -125,7 +132,7 @@ const Cause = ({ id }) => {
                 <h2>CAUSE ADDRESS: {causeAddress}</h2>
                 <h2>OWNED BY: {causeOwner}</h2>
                 <h3>
-                    DONATIONS: {causeBalance}/{goal}
+                    DONATIONS: {convertToEth(causeBalance)}/{convertToEth(goal)}ETH
                 </h3>
             </div>
             <input
