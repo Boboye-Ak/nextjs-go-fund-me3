@@ -84,23 +84,23 @@ export default function Home() {
         let causeIdFromCall
         console.log("trying to get Cause ID by Cause Address")
         causeIdFromCall = await getCauseIdByCauseAddress()
-        if (!causeIdFromCall || causeIdFromCall.toString() == "0") {
+        if (!causeIdFromCall || causeIdFromCall?.toString() == "0") {
             console.log("trying to get cause Id from Owner wallet")
             causeIdFromCall = await getCauseIdByOwnerAddress({
                 onSuccess: () => {
                     console.log("gotten causeID from owner wallet")
                 },
             })
-            console.log(causeIdFromCall.toString())
-            console.log(causeIdFromCall.toString())
-            if (!causeIdFromCall || causeIdFromCall.toString() == "0") {
+            console.log(causeIdFromCall?.toString())
+            console.log(causeIdFromCall?.toString())
+            if (!causeIdFromCall || causeIdFromCall?.toString() == "0") {
                 setError("This Address is not a cause and has no cause")
             }
             setError("")
-            setCauseId(causeIdFromCall.toString())
+            setCauseId(causeIdFromCall?.toString())
         }
         setError("")
-        setCauseId(causeIdFromCall.toString())
+        setCauseId(causeIdFromCall?.toString())
     }
 
     const search = async () => {
@@ -114,7 +114,7 @@ export default function Home() {
     }
 
     const updateUI = async () => {
-        const myCauseFromCall = (await getMyCauseId()).toString()
+        const myCauseFromCall = (await getMyCauseId())?.toString()
         if (myCauseFromCall != "0") {
             setDoIHaveACause(true)
             setMyCauseId(myCauseFromCall)

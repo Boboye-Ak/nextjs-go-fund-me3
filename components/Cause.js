@@ -119,7 +119,7 @@ const Cause = ({ id }) => {
 
     return (
         <div>
-            <Header></Header>
+            <Header />
             <div>
                 <h1>CAUSE ID: {id}</h1>
                 <h2>CAUSE ADDRESS: {causeAddress}</h2>
