@@ -142,7 +142,7 @@ export default function Home() {
                 <meta name="description" content="A Web3 CrowdFunding Website" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Header doIHaveACause={doIHaveACause} myCauseId={myCauseId} />
+            <Header/>
             <input
                 type="text"
                 onChange={(e) => {
