@@ -115,6 +115,7 @@ const Cause = ({ id }) => {
     }
 
     const handleDonate = async () => {}
+    const handleWithdraw = async () => {}
 
     useEffect(() => {
         if (isWeb3Enabled) {
@@ -187,6 +188,20 @@ const Cause = ({ id }) => {
             {!amICauseOwner && (
                 <div>You have donated {convertGweiToEth(myDonations)} to this cause</div>
             )}
+            {isWithdrawn &&
+                (amICauseOwner ? (
+                    <div>
+                        You have withdrawn the donations to this cause to your wallet with address
+                        {causeOwner}
+                    </div>
+                ) : (
+                    <div>
+                        The owner of this cause has withdrawn the donations to his wallet{" "}
+                        {causeOwner}
+                    </div>
+                ))}
+
+            {amICauseOwner && <button onClick={handleWithdraw}>WITHDRAW</button>}
         </div>
     )
 }
