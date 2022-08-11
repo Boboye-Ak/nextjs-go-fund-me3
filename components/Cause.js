@@ -18,6 +18,7 @@ const Cause = ({ id }) => {
     const [goal, setGoal] = useState("0")
     const [causeOwner, setCauseOwner] = useState("")
     const [isOpenToDonations, setIsOpenToDonations] = useState(false)
+    const [myDonations, setMyDonations] = useState("0")
     const [isGoalReached, setIsGoalReached] = useState(false)
     const [isLocked, setIsLocked] = useState(false)
     const [isWithdrawn, setIsWithdrawn] = useState(false)
@@ -33,6 +34,12 @@ const Cause = ({ id }) => {
         abi: causeABI,
         contractAddress: causeAddress,
         functionName: "getCauseBalance",
+        params: {},
+    })
+    const { runContractFunction: getMyDonation } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getMyDonation",
         params: {},
     })
     const { runContractFunction: getGoal } = useWeb3Contract({
@@ -91,41 +98,20 @@ const Cause = ({ id }) => {
     }
 
     const updateUI = async () => {
-        const causeOwnerFromCall = await getCauseOwner()
         const causeBalanceFromCall = await getCauseBalance()
         const goalFromCall = await getGoal()
         const isOpenToDonationsFromCall = await getIsOpenToDonations()
         const isLockedFromCall = await getIsLocked()
         const isWithdrawnFromCall = await getIsWithdrawn()
         const isGoalReachedFromCall = await getIsGoalReached()
-        setCauseOwner(causeOwnerFromCall?.toString())
+        const myDonationFromCall = await getMyDonation()
         setCauseBalance(causeBalanceFromCall?.toString())
         setGoal(goalFromCall?.toString())
         setIsOpenToDonations(isOpenToDonationsFromCall?.toString())
         setIsWithdrawn(isWithdrawnFromCall)
         setIsGoalReached(isGoalReachedFromCall)
         setIsLocked(isLockedFromCall)
-        if (account == causeOwner) {
-            setAmICauseOwner(true)
-        } else {
-            setAmICauseOwner(false)
-        }
-    }
-
-    const realUpdateUI = async () => {
-        const causeBalanceFromCall = await getCauseBalance()
-        const goalFromCall = await getGoal()
-        const isOpenToDonationsFromCall = await getIsOpenToDonations()
-        const isLockedFromCall = await getIsLocked()
-        const isWithdrawnFromCall = await getIsWithdrawn()
-        const isGoalReachedFromCall = await getIsGoalReached()
-        //setCauseOwner(causeOwnerFromCall?.toString())
-        setCauseBalance(causeBalanceFromCall?.toString())
-        setGoal(goalFromCall?.toString())
-        setIsOpenToDonations(isOpenToDonationsFromCall?.toString())
-        setIsWithdrawn(isWithdrawnFromCall)
-        setIsGoalReached(isGoalReachedFromCall)
-        setIsLocked(isLockedFromCall)
+        setMyDonations(myDonationFromCall?.toString())
     }
 
     const handleDonate = async () => {}
@@ -145,22 +131,8 @@ const Cause = ({ id }) => {
                     setCauseOwner(res?.toString())
                 })
                 .then((res) => {
-                    realUpdateUI()
+                    updateUI()
                 })
-
-            //const causeBalanceFromCall = await getCauseBalance()
-            //const goalFromCall = await getGoal()
-            //const isOpenToDonationsFromCall = await getIsOpenToDonations()
-            //const isLockedFromCall = await getIsLocked()
-            //const isWithdrawnFromCall = await getIsWithdrawn()
-            //const isGoalReachedFromCall = await getIsGoalReached()
-            //setCauseOwner(causeOwnerFromCall?.toString())
-            //setCauseBalance(causeBalanceFromCall?.toString())
-            //setGoal(goalFromCall?.toString())
-            //setIsOpenToDonations(isOpenToDonationsFromCall?.toString())
-            //setIsWithdrawn(isWithdrawnFromCall)
-            //setIsGoalReached(isGoalReachedFromCall)
-            //setIsLocked(isLockedFromCall)
         }
     }, [isWeb3Enabled, causeAddress])
 
@@ -172,7 +144,7 @@ const Cause = ({ id }) => {
                 setAmICauseOwner(false)
             }
         }
-    }, [isWeb3Enabled, causeOwner])
+    }, [isWeb3Enabled, causeOwner, account])
 
     return (
         <div>
@@ -185,22 +157,36 @@ const Cause = ({ id }) => {
                     DONATIONS: {convertGweiToEth(causeBalance)}/{convertGweiToEth(goal)}ETH
                 </h3>
             </div>
-            <input
-                type="number"
-                placeholder="Donation amount in ETH"
-                value={donationAmount}
-                onChange={(e) => {
-                    setDonationAmount(e.target.value)
-                }}
-            ></input>
-            ETH
-            <p>{donationAmount}</p>
-            <button onClick={handleDonate} disabled={isWithdrawn || isLocked || isGoalReached}>
-                DONATE
-            </button>
+
+            <div>
+                {!amICauseOwner && (
+                    <div>
+                        {" "}
+                        <input
+                            type="number"
+                            placeholder="Donation amount in ETH"
+                            value={donationAmount}
+                            onChange={(e) => {
+                                setDonationAmount(e.target.value)
+                            }}
+                        ></input>
+                        ETH
+                        <p>{donationAmount}</p>{" "}
+                        <button
+                            onClick={handleDonate}
+                            disabled={isWithdrawn || isLocked || isGoalReached}
+                        >
+                            DONATE
+                        </button>
+                    </div>
+                )}
+            </div>
             <div>
                 {amICauseOwner ? <div>I am Cause owner</div> : <div>I am not cause owner</div>}
             </div>
+            {!amICauseOwner && (
+                <div>You have donated {convertGweiToEth(myDonations)} to this cause</div>
+            )}
         </div>
     )
 }
