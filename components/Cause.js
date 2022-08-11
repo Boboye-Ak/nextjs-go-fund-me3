@@ -112,11 +112,67 @@ const Cause = ({ id }) => {
         }
     }
 
+    const realUpdateUI = async () => {
+        const causeBalanceFromCall = await getCauseBalance()
+        const goalFromCall = await getGoal()
+        const isOpenToDonationsFromCall = await getIsOpenToDonations()
+        const isLockedFromCall = await getIsLocked()
+        const isWithdrawnFromCall = await getIsWithdrawn()
+        const isGoalReachedFromCall = await getIsGoalReached()
+        //setCauseOwner(causeOwnerFromCall?.toString())
+        setCauseBalance(causeBalanceFromCall?.toString())
+        setGoal(goalFromCall?.toString())
+        setIsOpenToDonations(isOpenToDonationsFromCall?.toString())
+        setIsWithdrawn(isWithdrawnFromCall)
+        setIsGoalReached(isGoalReachedFromCall)
+        setIsLocked(isLockedFromCall)
+    }
+
     const handleDonate = async () => {}
 
     useEffect(() => {
-        insertCauseAddress()
+        if (isWeb3Enabled) {
+            getCauseById().then((res) => {
+                setCauseAddress(res?.toString())
+            })
+        }
+    }, [isWeb3Enabled])
+
+    useEffect(() => {
+        if (isWeb3Enabled && causeAddress) {
+            getCauseOwner()
+                .then((res) => {
+                    setCauseOwner(res?.toString())
+                })
+                .then((res) => {
+                    realUpdateUI()
+                })
+
+            //const causeBalanceFromCall = await getCauseBalance()
+            //const goalFromCall = await getGoal()
+            //const isOpenToDonationsFromCall = await getIsOpenToDonations()
+            //const isLockedFromCall = await getIsLocked()
+            //const isWithdrawnFromCall = await getIsWithdrawn()
+            //const isGoalReachedFromCall = await getIsGoalReached()
+            //setCauseOwner(causeOwnerFromCall?.toString())
+            //setCauseBalance(causeBalanceFromCall?.toString())
+            //setGoal(goalFromCall?.toString())
+            //setIsOpenToDonations(isOpenToDonationsFromCall?.toString())
+            //setIsWithdrawn(isWithdrawnFromCall)
+            //setIsGoalReached(isGoalReachedFromCall)
+            //setIsLocked(isLockedFromCall)
+        }
     }, [isWeb3Enabled, causeAddress])
+
+    useEffect(() => {
+        if (isWeb3Enabled && causeOwner) {
+            if (account?.toLowerCase() == causeOwner?.toLowerCase()) {
+                setAmICauseOwner(true)
+            } else {
+                setAmICauseOwner(false)
+            }
+        }
+    }, [isWeb3Enabled, causeOwner])
 
     return (
         <div>
@@ -142,7 +198,9 @@ const Cause = ({ id }) => {
             <button onClick={handleDonate} disabled={isWithdrawn || isLocked || isGoalReached}>
                 DONATE
             </button>
-            <div>{isWeb3Enabled ? <div>Web3 is enabled</div> : <div>Web3 is not enabled</div>}</div>
+            <div>
+                {amICauseOwner ? <div>I am Cause owner</div> : <div>I am not cause owner</div>}
+            </div>
         </div>
     )
 }
