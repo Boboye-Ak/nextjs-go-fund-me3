@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { causeABI, crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { useNotification } from "web3uikit"
 import { ethers } from "ethers"
+import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
 import { convertweiToEth, convertEthToWei } from "../utils/converter"
 import Header from "./Header"
 import Four0FourComponent from "./404 Component"
@@ -29,6 +30,10 @@ const Cause = ({ id }) => {
     const [isWithdrawn, setIsWithdrawn] = useState(false)
     const [crowdFunderOwner, setCrowdFunderOwner] = useState("")
     const [amICrowdFunderOwner, setAmICrowdFunderOwner] = useState(false)
+    const [uriString, setUriString] = useState("")
+    const [showEditModal, toggleEditModal] = useState(false)
+    const [description, setDescription] = useState("")
+    const [fileImg, setFileImg] = useState(null)
     const [error, setError] = useState("")
 
     const { runContractFunction: getCauseById } = useWeb3Contract({
@@ -122,6 +127,17 @@ const Cause = ({ id }) => {
         msgValue: donationAmountG,
     })
 
+    const {
+        runContractFunction: setCauseURI,
+        isFetching: causeURIIsFetching,
+        isLoading: causeURIIsLoading,
+    } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "setCauseURI",
+        params: { causeURI: uriString },
+    })
+
     //EVENT HANDLER FUNCTIONS
     const updateUI = async () => {
         const causeBalanceFromCall = await getCauseBalance()
@@ -186,6 +202,31 @@ const Cause = ({ id }) => {
                 })
             },
         })
+    }
+
+    const handleSubmit = async () => {
+        try {
+            const imgLink = await sendFileToIPFS(fileImg)
+            console.log(imgLink)
+            const causeMetadata = { description: description, img: imgLink }
+            uploadJSONToIPFS(causeMetadata)
+                .then((res) => {
+                    console.log(res)
+                    setCauseURI()
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        } catch (error) {
+            console.log(error)
+            dispatch({
+                title: "Error updating cause info",
+                message: "We encountered an error while updating information about your cause",
+                position: "topR",
+                type: "error",
+                icon: "bell",
+            })
+        }
     }
     //UseEffects
     useEffect(() => {
@@ -322,6 +363,49 @@ const Cause = ({ id }) => {
             )}
             {amICrowdFunderOwner && <div>You are currently connected as the site admin.</div>}
             {amICauseOwner && <div>You are currently connected as the owner of this cause.</div>}
+            <button
+                onClick={() => {
+                    if (showEditModal) {
+                        toggleEditModal(false)
+                    } else {
+                        toggleEditModal(true)
+                    }
+                }}
+            >
+                EDIT
+            </button>
+
+            {amICauseOwner && showEditModal && (
+                <div>
+                    <form>
+                        <textarea
+                            value={description}
+                            onChange={(e) => {
+                                setDescription(e.target.value)
+                            }}
+                            placeholder="Cause Description"
+                            required
+                        ></textarea>
+                        <label>Upload Image</label>
+                        <input
+                            type="file"
+                            accept="image/png, image/gif, image/jpeg"
+                            onChange={(e) => {
+                                setFileImg(e.target.files[0])
+                            }}
+                            required
+                        ></input>
+                        <button
+                            onClick={async (e) => {
+                                e.preventDefault()
+                                await handleSubmit()
+                            }}
+                        >
+                            SUBMIT
+                        </button>
+                    </form>
+                </div>
+            )}
         </div>
     )
 }
