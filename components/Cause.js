@@ -11,6 +11,7 @@ const Cause = ({ id }) => {
     const crowdFunderAddress =
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
     const [causeAddress, setCauseAddress] = useState("")
+    const [causeName, setCauseName] = useState("")
     const [amICauseOwner, setAmICauseOwner] = useState(false)
     const [donationAmount, setDonationAmount] = useState("")
     const [donationAmountG, setDonationAmountG] = useState("0")
@@ -29,6 +30,12 @@ const Cause = ({ id }) => {
         contractAddress: crowdFunderAddress,
         functionName: "getCauseById",
         params: { causeId: parseInt(id) },
+    })
+    const { runContractFunction: getCauseName } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getCauseName",
+        params: {},
     })
     const { runContractFunction: getCauseBalance } = useWeb3Contract({
         abi: causeABI,
@@ -99,6 +106,7 @@ const Cause = ({ id }) => {
 
     const updateUI = async () => {
         const causeBalanceFromCall = await getCauseBalance()
+        const causeNameFromCall=await getCauseName()
         const goalFromCall = await getGoal()
         const isOpenToDonationsFromCall = await getIsOpenToDonations()
         const isLockedFromCall = await getIsLocked()
@@ -106,6 +114,7 @@ const Cause = ({ id }) => {
         const isGoalReachedFromCall = await getIsGoalReached()
         const myDonationFromCall = await getMyDonation()
         setCauseBalance(causeBalanceFromCall?.toString())
+        setCauseName(causeNameFromCall?.toString())
         setGoal(goalFromCall?.toString())
         setIsOpenToDonations(isOpenToDonationsFromCall?.toString())
         setIsWithdrawn(isWithdrawnFromCall)
@@ -151,7 +160,8 @@ const Cause = ({ id }) => {
         <div>
             <Header />
             <div>
-                <h1>CAUSE ID: {id}</h1>
+                <h1>CAUSE NAME: {causeName}</h1>
+                <h2>CAUSE ID: {id}</h2>
                 <h2>CAUSE ADDRESS: {causeAddress}</h2>
                 <h2>OWNED BY: {causeOwner}</h2>
                 <h3>
