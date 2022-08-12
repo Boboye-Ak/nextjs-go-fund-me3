@@ -3,7 +3,7 @@ import { useMoralis, useWeb3Contract } from "react-moralis"
 import { causeABI, crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { useNotification } from "web3uikit"
 import { ethers } from "ethers"
-import { convertGweiToEth } from "../utils/converter"
+import { convertweiToEth, convertEthToWei } from "../utils/converter"
 import Header from "./Header"
 const Cause = ({ id }) => {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
@@ -23,6 +23,8 @@ const Cause = ({ id }) => {
     const [isGoalReached, setIsGoalReached] = useState(false)
     const [isLocked, setIsLocked] = useState(false)
     const [isWithdrawn, setIsWithdrawn] = useState(false)
+    const [crowdFunderOwner, setCrowdFunderOwner] = useState("")
+    const [amICrowdFunderOwner, setAmICrowdFunderOwner] = useState(false)
     const [error, setError] = useState("")
 
     const { runContractFunction: getCauseById } = useWeb3Contract({
@@ -30,6 +32,12 @@ const Cause = ({ id }) => {
         contractAddress: crowdFunderAddress,
         functionName: "getCauseById",
         params: { causeId: parseInt(id) },
+    })
+    const { runContractFunction: getCrowdFunderOwner } = useWeb3Contract({
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "getContractOwner",
+        params: {},
     })
     const { runContractFunction: getCauseName } = useWeb3Contract({
         abi: causeABI,
@@ -94,19 +102,9 @@ const Cause = ({ id }) => {
         msgValue: donationAmount,
     })
 
-    const insertCauseAddress = async () => {
-        getCauseById()
-            .then((res) => {
-                setCauseAddress(res?.toString())
-            })
-            .then(() => {
-                updateUI()
-            })
-    }
-
     const updateUI = async () => {
         const causeBalanceFromCall = await getCauseBalance()
-        const causeNameFromCall=await getCauseName()
+        const causeNameFromCall = await getCauseName()
         const goalFromCall = await getGoal()
         const isOpenToDonationsFromCall = await getIsOpenToDonations()
         const isLockedFromCall = await getIsLocked()
@@ -128,9 +126,15 @@ const Cause = ({ id }) => {
 
     useEffect(() => {
         if (isWeb3Enabled) {
-            getCauseById().then((res) => {
-                setCauseAddress(res?.toString())
-            })
+            getCrowdFunderOwner()
+                .then((res) => {
+                    setCrowdFunderOwner(res?.toString())
+                })
+                .then(() => {
+                    getCauseById().then((res) => {
+                        setCauseAddress(res?.toString())
+                    })
+                })
         }
     }, [isWeb3Enabled])
 
@@ -155,6 +159,20 @@ const Cause = ({ id }) => {
             }
         }
     }, [isWeb3Enabled, causeOwner, account])
+    useEffect(() => {
+        if (isWeb3Enabled && crowdFunderOwner) {
+            if (account?.toLowerCase() == crowdFunderOwner?.toLowerCase()) {
+                setAmICrowdFunderOwner(true)
+            } else {
+                setAmICrowdFunderOwner(false)
+            }
+        }
+    }, [isWeb3Enabled, crowdFunderOwner, account])
+    useEffect(() => {
+        if (isWeb3Enabled) {
+            setDonationAmountG(convertEthToWei(donationAmount))
+        }
+    }, [isWeb3Enabled, donationAmount])
 
     return (
         <div>
@@ -165,7 +183,7 @@ const Cause = ({ id }) => {
                 <h2>CAUSE ADDRESS: {causeAddress}</h2>
                 <h2>OWNED BY: {causeOwner}</h2>
                 <h3>
-                    DONATIONS: {convertGweiToEth(causeBalance)}/{convertGweiToEth(goal)}ETH
+                    DONATIONS: {convertweiToEth(causeBalance)}/{convertweiToEth(goal)}ETH
                 </h3>
             </div>
 
@@ -196,7 +214,7 @@ const Cause = ({ id }) => {
                 {amICauseOwner ? <div>I am Cause owner</div> : <div>I am not cause owner</div>}
             </div>
             {!amICauseOwner && (
-                <div>You have donated {convertGweiToEth(myDonations)} to this cause</div>
+                <div>You have donated {convertweiToEth(myDonations)} to this cause</div>
             )}
             {isWithdrawn &&
                 (amICauseOwner ? (
@@ -212,6 +230,7 @@ const Cause = ({ id }) => {
                 ))}
 
             {amICauseOwner && <button onClick={handleWithdraw}>WITHDRAW</button>}
+            {amICrowdFunderOwner && <div>I am CrowdFunder Owner</div>}
         </div>
     )
 }
