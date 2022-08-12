@@ -10,6 +10,7 @@ const Cause = ({ id }) => {
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
+    const dispatch = useNotification()
     const [causeAddress, setCauseAddress] = useState("")
     const [causeName, setCauseName] = useState("")
     const [amICauseOwner, setAmICauseOwner] = useState(false)
@@ -94,12 +95,16 @@ const Cause = ({ id }) => {
         params: {},
     })
 
-    const { runContractFunction: donate } = useWeb3Contract({
+    const {
+        runContractFunction: donate,
+        isFetching,
+        isLoading,
+    } = useWeb3Contract({
         abi: causeABI,
         contractAddress: causeAddress,
         functionName: "donate",
         params: {},
-        msgValue: donationAmount,
+        msgValue: donationAmountG,
     })
 
     const updateUI = async () => {
@@ -121,7 +126,27 @@ const Cause = ({ id }) => {
         setMyDonations(myDonationFromCall?.toString())
     }
 
-    const handleDonate = async () => {}
+    const handleDonate = async () => {
+        donate({
+            onSuccess: async () => {
+                dispatch({
+                    title: "Donation Successful",
+                    position: "topR",
+                    icon: "bell",
+                    message: `You successfully donated ${donationAmount} eth`,
+                })
+                
+            },
+            onError: () => {
+                dispatch({
+                    title: "Donation Failed",
+                    position: "topR",
+                    icon: "bell",
+                    message: `There was an error processing your donation`,
+                })
+            },
+        })
+    }
     const handleWithdraw = async () => {}
 
     useEffect(() => {
@@ -174,6 +199,7 @@ const Cause = ({ id }) => {
         }
     }, [isWeb3Enabled, donationAmount])
 
+
     return (
         <div>
             <Header />
@@ -203,7 +229,9 @@ const Cause = ({ id }) => {
                         <p>{donationAmount}</p>{" "}
                         <button
                             onClick={handleDonate}
-                            disabled={isWithdrawn || isLocked || isGoalReached}
+                            disabled={
+                                isWithdrawn || isLocked || isGoalReached || isFetching || isLoading
+                            }
                         >
                             DONATE
                         </button>
