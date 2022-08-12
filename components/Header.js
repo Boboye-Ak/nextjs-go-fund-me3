@@ -21,10 +21,10 @@ export default function Header() {
         const myCauseFromCall = (await getMyCauseId()).toString()
         if (myCauseFromCall != "0") {
             setDoIHaveACause(true)
-            setMyCauseId(myCauseFromCall)
+            setMyCauseId(myCauseFromCall?.toString())
         } else {
             setDoIHaveACause(false)
-            setMyCauseId(myCauseFromCall)
+            setMyCauseId(myCauseFromCall?.toString())
         }
     }
     useEffect(() => {
@@ -36,10 +36,12 @@ export default function Header() {
         <div className="header">
             {doIHaveACause ? (
                 <button>
-                    <Link href="">My Cause</Link>
+                    <Link href={`/cause/${myCauseId}`}>My Cause</Link>
                 </button>
             ) : (
-                <button>Create Cause</button>
+                <button>
+                    <Link href="/createcause">Create Cause</Link>
+                </button>
             )}
 
             <ConnectButton moralisAuth={false} />

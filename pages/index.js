@@ -60,10 +60,8 @@ export default function Home() {
     })
 
     const searchByCauseId = async () => {
-        console.log("searching by cause ID")
         const causeIdFromCall = await getCauseById({
             onError: (error) => {
-                console.log(error)
                 setError("Invalid Cause ID")
                 dispatch({
                     type: "info",
@@ -82,17 +80,21 @@ export default function Home() {
 
     const searchByAddress = async () => {
         let causeIdFromCall
-        console.log("trying to get Cause ID by Cause Address")
         causeIdFromCall = await getCauseIdByCauseAddress()
         if (!causeIdFromCall || causeIdFromCall?.toString() == "0") {
-            console.log("trying to get cause Id from Owner wallet")
             causeIdFromCall = await getCauseIdByOwnerAddress({
-                onSuccess: () => {
-                    console.log("gotten causeID from owner wallet")
+                onSuccess: () => {},
+                onError: () => {
+                    dispatch({
+                        title: "Error getting cause",
+                        message: "There was an error getting the cause please try again",
+                        type: "error",
+                        icon: "bell",
+                        position:"topR"
+                    })
                 },
             })
-            console.log(causeIdFromCall?.toString())
-            console.log(causeIdFromCall?.toString())
+
             if (!causeIdFromCall || causeIdFromCall?.toString() == "0") {
                 setError("This Address is not a cause and has no cause")
             }
@@ -142,7 +144,7 @@ export default function Home() {
                 <meta name="description" content="A Web3 CrowdFunding Website" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Header/>
+            <Header />
             <input
                 type="text"
                 onChange={(e) => {
