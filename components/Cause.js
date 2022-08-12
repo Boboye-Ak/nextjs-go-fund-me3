@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useMoralis, useWeb3Contract } from "react-moralis"
+import { useRouter } from "next/router"
 import { causeABI, crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { useNotification } from "web3uikit"
 import { ethers } from "ethers"
@@ -12,6 +13,7 @@ const Cause = ({ id }) => {
     const crowdFunderAddress =
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
     const dispatch = useNotification()
+    const router = useRouter()
     const [causeAddress, setCauseAddress] = useState("")
     const [causeName, setCauseName] = useState("")
     const [amICauseOwner, setAmICauseOwner] = useState(false)
@@ -120,6 +122,7 @@ const Cause = ({ id }) => {
         msgValue: donationAmountG,
     })
 
+    //EVENT HANDLER FUNCTIONS
     const updateUI = async () => {
         const causeBalanceFromCall = await getCauseBalance()
         const causeNameFromCall = await getCauseName()
@@ -184,7 +187,7 @@ const Cause = ({ id }) => {
             },
         })
     }
-
+    //UseEffects
     useEffect(() => {
         if (isWeb3Enabled) {
             getCrowdFunderOwner()
@@ -192,9 +195,17 @@ const Cause = ({ id }) => {
                     setCrowdFunderOwner(res?.toString())
                 })
                 .then(() => {
-                    getCauseById().then((res) => {
-                        setCauseAddress(res?.toString())
+                    getCauseById({
+                        onError: async () => {
+                            router.push("/404")
+                        },
                     })
+                        .then((res) => {
+                            setCauseAddress(res?.toString())
+                        })
+                        .catch((e) => {
+                            console.log(e)
+                        })
                 })
         }
     }, [isWeb3Enabled])
