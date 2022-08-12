@@ -5,6 +5,7 @@ import { useNotification } from "web3uikit"
 import { ethers } from "ethers"
 import { convertweiToEth, convertEthToWei } from "../utils/converter"
 import Header from "./Header"
+import Four0FourComponent from "./404 Component"
 const Cause = ({ id }) => {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
     const chainId = parseInt(chainIdHex)
@@ -82,6 +83,7 @@ const Cause = ({ id }) => {
         functionName: "getIsWithdrawn",
         params: {},
     })
+
     const { runContractFunction: getIsLocked } = useWeb3Contract({
         abi: causeABI,
         contractAddress: causeAddress,
@@ -94,11 +96,22 @@ const Cause = ({ id }) => {
         functionName: "getIsGoalReached",
         params: {},
     })
+    //Pure Web3 Functions
+    const {
+        runContractFunction: withdraw,
+        isFetching: withdrawIsFetching,
+        isLoading: withdrawIsLoading,
+    } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "withdraw",
+        params: {},
+    })
 
     const {
         runContractFunction: donate,
-        isFetching,
-        isLoading,
+        isFetching: donateIsFetching,
+        isLoading: donateIsLoading,
     } = useWeb3Contract({
         abi: causeABI,
         contractAddress: causeAddress,
@@ -149,7 +162,28 @@ const Cause = ({ id }) => {
             },
         })
     }
-    const handleWithdraw = async () => {}
+    const handleWithdraw = async () => {
+        withdraw({
+            onSuccess: async (tx) => {
+                await tx.wait(1)
+                dispatch({
+                    title: "Withdrawal Successful",
+                    position: "topR",
+                    icon: "bell",
+                    message: `You successfully withdrew ${causeBalance} from your cause`,
+                })
+                await updateUI()
+            },
+            onError: () => {
+                dispatch({
+                    title: "Withdrawal Failed",
+                    position: "topR",
+                    icon: "bell",
+                    message: `There was an error processing your withdrawal.`,
+                })
+            },
+        })
+    }
 
     useEffect(() => {
         if (isWeb3Enabled) {
@@ -184,6 +218,7 @@ const Cause = ({ id }) => {
             } else {
                 setAmICauseOwner(false)
             }
+            updateUI()
         }
     }, [isWeb3Enabled, causeOwner, account])
     useEffect(() => {
@@ -193,6 +228,7 @@ const Cause = ({ id }) => {
             } else {
                 setAmICrowdFunderOwner(false)
             }
+            updateUI()
         }
     }, [isWeb3Enabled, crowdFunderOwner, account])
     useEffect(() => {
@@ -200,6 +236,10 @@ const Cause = ({ id }) => {
             setDonationAmountG(convertEthToWei(donationAmount))
         }
     }, [isWeb3Enabled, donationAmount])
+
+    if (id == "0") {
+        return <Four0FourComponent />
+    }
 
     return (
         <div>
@@ -230,16 +270,17 @@ const Cause = ({ id }) => {
                         <button
                             onClick={handleDonate}
                             disabled={
-                                isWithdrawn || isLocked || isGoalReached || isFetching || isLoading
+                                isWithdrawn ||
+                                isLocked ||
+                                isGoalReached ||
+                                donateIsFetching ||
+                                donateIsLoading
                             }
                         >
                             DONATE
                         </button>
                     </div>
                 )}
-            </div>
-            <div>
-                {amICauseOwner ? <div>I am Cause owner</div> : <div>I am not cause owner</div>}
             </div>
             {!amICauseOwner && (
                 <div>You have donated {convertweiToEth(myDonations)} to this cause</div>
@@ -257,8 +298,19 @@ const Cause = ({ id }) => {
                     </div>
                 ))}
 
-            {amICauseOwner && <button onClick={handleWithdraw}>WITHDRAW</button>}
-            {amICrowdFunderOwner && <div>I am CrowdFunder Owner</div>}
+            {amICauseOwner && (
+                <button onClick={handleWithdraw} disabled={isWithdrawn || isLocked}>
+                    WITHDRAW
+                </button>
+            )}
+            {isWithdrawn && (
+                <div>
+                    This Cause has been withdrawn from, hence donations and withdrawals can no
+                    longer be made.{" "}
+                </div>
+            )}
+            {amICrowdFunderOwner && <div>You are currently connected as the site admin.</div>}
+            {amICauseOwner && <div>You are currently connected as the owner of this cause.</div>}
         </div>
     )
 }
