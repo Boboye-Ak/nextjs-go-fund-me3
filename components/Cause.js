@@ -128,14 +128,16 @@ const Cause = ({ id }) => {
 
     const handleDonate = async () => {
         donate({
-            onSuccess: async () => {
+            onSuccess: async (tx) => {
+                await tx.wait(1)
+                await updateUI()
+                setDonationAmount("")
                 dispatch({
                     title: "Donation Successful",
                     position: "topR",
                     icon: "bell",
                     message: `You successfully donated ${donationAmount} eth`,
                 })
-                
             },
             onError: () => {
                 dispatch({
@@ -199,7 +201,6 @@ const Cause = ({ id }) => {
         }
     }, [isWeb3Enabled, donationAmount])
 
-
     return (
         <div>
             <Header />
@@ -226,7 +227,6 @@ const Cause = ({ id }) => {
                             }}
                         ></input>
                         ETH
-                        <p>{donationAmount}</p>{" "}
                         <button
                             onClick={handleDonate}
                             disabled={
