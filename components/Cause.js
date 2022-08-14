@@ -34,6 +34,7 @@ const Cause = ({ id }) => {
     const [showEditModal, toggleEditModal] = useState(false)
     const [description, setDescription] = useState("")
     const [fileImg, setFileImg] = useState(null)
+    const [isUploading, setIsUploading] = useState(false)
     const [error, setError] = useState("")
 
     const { runContractFunction: getCauseById } = useWeb3Contract({
@@ -206,6 +207,7 @@ const Cause = ({ id }) => {
 
     const handleSubmit = async () => {
         try {
+            setIsUploading(true)
             const imgLink = await sendFileToIPFS(fileImg)
             console.log(imgLink)
             const causeMetadata = { description: description, img: imgLink }
@@ -216,6 +218,7 @@ const Cause = ({ id }) => {
                 })
                 .catch((error) => {
                     console.log(error)
+                    setIsUploading(false)
                 })
         } catch (error) {
             console.log(error)
@@ -226,6 +229,7 @@ const Cause = ({ id }) => {
                 type: "error",
                 icon: "bell",
             })
+            setIsUploading(false)
         }
     }
     //UseEffects
@@ -289,7 +293,7 @@ const Cause = ({ id }) => {
         }
     }, [isWeb3Enabled, donationAmount])
     useEffect(() => {
-        if (isWeb3Enabled && uriString) {
+        if (isWeb3Enabled && uriString != "") {
             setCauseURI({
                 onSuccess: async () => {
                     dispatch({
@@ -298,6 +302,7 @@ const Cause = ({ id }) => {
                         icon: "bell",
                         type: "success",
                     })
+                    setIsUploading(false)
                 },
                 onError: async () => {
                     dispatch({
@@ -305,8 +310,11 @@ const Cause = ({ id }) => {
                         message: "There was an error editing cause data",
                         icon: "bell",
                         type: "error",
+                        position:"topR"
                     })
+                    console.log("error editing")
                     setUriString("")
+                    setIsUploading(false)
                 },
             })
         }
@@ -424,7 +432,7 @@ const Cause = ({ id }) => {
                                 e.preventDefault()
                                 await handleSubmit()
                             }}
-                            disabled={setURIIsFetching || setURIIsLoading}
+                            disabled={setURIIsFetching || setURIIsLoading || isUploading}
                         >
                             SUBMIT
                         </button>
