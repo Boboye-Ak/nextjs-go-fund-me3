@@ -237,33 +237,7 @@ const Cause = ({ id }) => {
                     console.log(res)
                     setUriString(res)
                 })
-                .then(() => {
-                    setCauseURI({
-                        onSuccess: async () => {
-                            dispatch({
-                                title: "Edit successful",
-                                message: "You have successfully edited cause data",
-                                icon: "bell",
-                                type: "success",
-                                position: "topR",
-                            })
-                            setIsUploading(false)
-                            toggleEditModal(false)
-                            updateUI()
-                        },
-                        onError: async () => {
-                            dispatch({
-                                title: "Edit failed",
-                                message: "There was an error editing cause data",
-                                icon: "bell",
-                                type: "error",
-                                position: "topR",
-                            })
-                            console.log("error editing")
-                            setIsUploading(false)
-                        },
-                    })
-                })
+
                 .catch((error) => {
                     console.log(error)
                     setIsUploading(false)
@@ -343,7 +317,36 @@ const Cause = ({ id }) => {
     }, [isWeb3Enabled, donationAmount])
     useEffect(() => {
         if (isWeb3Enabled && uriString) {
-            updateMetadata()
+            if (isUploading) {
+                setCauseURI({
+                    onSuccess: async () => {
+                        dispatch({
+                            title: "Edit successful",
+                            message: "You have successfully edited cause data",
+                            icon: "bell",
+                            type: "success",
+                            position: "topR",
+                        })
+                        setIsUploading(false)
+                        toggleEditModal(false)
+                        updateUI()
+                        updateMetadata()
+                    },
+                    onError: async () => {
+                        dispatch({
+                            title: "Edit failed",
+                            message: "There was an error editing cause data",
+                            icon: "bell",
+                            type: "error",
+                            position: "topR",
+                        })
+                        console.log("error editing")
+                        setIsUploading(false)
+                    },
+                })
+            } else {
+                updateMetadata()
+            }
         }
     }, [isWeb3Enabled, uriString])
 
