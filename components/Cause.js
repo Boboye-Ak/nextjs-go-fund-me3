@@ -3,6 +3,7 @@ import { useMoralis, useWeb3Contract } from "react-moralis"
 import { useRouter } from "next/router"
 import { causeABI, crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { useNotification } from "web3uikit"
+import axios from "axios"
 import { ethers } from "ethers"
 import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
 import { convertweiToEth, convertEthToWei } from "../utils/converter"
@@ -34,6 +35,7 @@ const Cause = ({ id }) => {
     const [showEditModal, toggleEditModal] = useState(false)
     const [description, setDescription] = useState("")
     const [fileImg, setFileImg] = useState(null)
+    const [imgUri, setImgUri] = useState("")
     const [isUploading, setIsUploading] = useState(false)
     const [error, setError] = useState("")
 
@@ -77,6 +79,12 @@ const Cause = ({ id }) => {
         abi: causeABI,
         contractAddress: causeAddress,
         functionName: "getCauseOwner",
+        params: {},
+    })
+    const { runContractFunction: getCauseURI } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getCauseURI",
         params: {},
     })
     const { runContractFunction: getIsOpenToDonations } = useWeb3Contract({
@@ -149,6 +157,8 @@ const Cause = ({ id }) => {
         const isWithdrawnFromCall = await getIsWithdrawn()
         const isGoalReachedFromCall = await getIsGoalReached()
         const myDonationFromCall = await getMyDonation()
+        const causeURIFromCall = await getCauseURI()
+        setUriString(causeURIFromCall?.toString())
         setCauseBalance(causeBalanceFromCall?.toString())
         setCauseName(causeNameFromCall?.toString())
         setGoal(goalFromCall?.toString())
@@ -157,6 +167,17 @@ const Cause = ({ id }) => {
         setIsGoalReached(isGoalReachedFromCall)
         setIsLocked(isLockedFromCall)
         setMyDonations(myDonationFromCall?.toString())
+    }
+
+    const updateMetadata = async () => {
+        console.log(uriString)
+        try {
+            const res = await axios.get(uriString)
+            setDescription(res.data.description)
+            setImgUri(res.data.img)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const handleDonate = async () => {
@@ -216,6 +237,33 @@ const Cause = ({ id }) => {
                     console.log(res)
                     setUriString(res)
                 })
+                .then(() => {
+                    setCauseURI({
+                        onSuccess: async () => {
+                            dispatch({
+                                title: "Edit successful",
+                                message: "You have successfully edited cause data",
+                                icon: "bell",
+                                type: "success",
+                                position: "topR",
+                            })
+                            setIsUploading(false)
+                            toggleEditModal(false)
+                            updateUI()
+                        },
+                        onError: async () => {
+                            dispatch({
+                                title: "Edit failed",
+                                message: "There was an error editing cause data",
+                                icon: "bell",
+                                type: "error",
+                                position: "topR",
+                            })
+                            console.log("error editing")
+                            setIsUploading(false)
+                        },
+                    })
+                })
                 .catch((error) => {
                     console.log(error)
                     setIsUploading(false)
@@ -232,7 +280,8 @@ const Cause = ({ id }) => {
             setIsUploading(false)
         }
     }
-    //UseEffects
+    //USEEFFECTS
+
     useEffect(() => {
         if (isWeb3Enabled) {
             getCrowdFunderOwner()
@@ -293,30 +342,8 @@ const Cause = ({ id }) => {
         }
     }, [isWeb3Enabled, donationAmount])
     useEffect(() => {
-        if (isWeb3Enabled && uriString != "") {
-            setCauseURI({
-                onSuccess: async () => {
-                    dispatch({
-                        title: "Edit successful",
-                        message: "You have successfully edited cause data",
-                        icon: "bell",
-                        type: "success",
-                    })
-                    setIsUploading(false)
-                },
-                onError: async () => {
-                    dispatch({
-                        title: "Edit failed",
-                        message: "There was an error editing cause data",
-                        icon: "bell",
-                        type: "error",
-                        position:"topR"
-                    })
-                    console.log("error editing")
-                    setUriString("")
-                    setIsUploading(false)
-                },
-            })
+        if (isWeb3Enabled && uriString) {
+            updateMetadata()
         }
     }, [isWeb3Enabled, uriString])
 
@@ -335,7 +362,8 @@ const Cause = ({ id }) => {
                 <h3>
                     DONATIONS: {convertweiToEth(causeBalance)}/{convertweiToEth(goal)}ETH
                 </h3>
-                <div>CAUSEURI: {uriString}</div>
+                <div>DESCRIPTION: {description}</div>
+                <img src={imgUri}></img>
             </div>
 
             <div>

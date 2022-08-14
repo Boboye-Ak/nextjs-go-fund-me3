@@ -17,8 +17,9 @@ const sendFileToIPFS = async (fileImg) => {
                     "Content-Type": "multipart/form-data",
                 },
             })
+            console.log(resFile.data.IpfsHash)
 
-            const ImgHash = `ipfs://${resFile.data.IpfsHash}`
+            const ImgHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`
             return ImgHash
         } catch (error) {
             console.log("Error sending File to IPFS: ")
@@ -40,7 +41,8 @@ const uploadJSONToIPFS = async (causeMetadata) => {
             },
             data: data,
         })
-        const fileHash = `ipfs://${res.data.IpfsHash}`
+        //console.log(res.data)
+        const fileHash = `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}`
         return fileHash
     } catch (error) {
         console.log("Error Uploading Metadata")
@@ -49,3 +51,5 @@ const uploadJSONToIPFS = async (causeMetadata) => {
 }
 
 module.exports = { sendFileToIPFS, uploadJSONToIPFS }
+
+//QmdR5TJgVYBeMhFwpwCvmerdN5jQquqLNHyNZ951yaHDWR
