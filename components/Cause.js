@@ -129,8 +129,8 @@ const Cause = ({ id }) => {
 
     const {
         runContractFunction: setCauseURI,
-        isFetching: causeURIIsFetching,
-        isLoading: causeURIIsLoading,
+        isFetching: setURIIsFetching,
+        isLoading: setURIIsLoading,
     } = useWeb3Contract({
         abi: causeABI,
         contractAddress: causeAddress,
@@ -212,7 +212,7 @@ const Cause = ({ id }) => {
             uploadJSONToIPFS(causeMetadata)
                 .then((res) => {
                     console.log(res)
-                    setCauseURI()
+                    setUriString(res)
                 })
                 .catch((error) => {
                     console.log(error)
@@ -288,6 +288,29 @@ const Cause = ({ id }) => {
             setDonationAmountG(convertEthToWei(donationAmount))
         }
     }, [isWeb3Enabled, donationAmount])
+    useEffect(() => {
+        if (isWeb3Enabled && uriString) {
+            setCauseURI({
+                onSuccess: async () => {
+                    dispatch({
+                        title: "Edit successful",
+                        message: "You have successfully edited cause data",
+                        icon: "bell",
+                        type: "success",
+                    })
+                },
+                onError: async () => {
+                    dispatch({
+                        title: "Edit failed",
+                        message: "There was an error editing cause data",
+                        icon: "bell",
+                        type: "error",
+                    })
+                    setUriString("")
+                },
+            })
+        }
+    }, [isWeb3Enabled, uriString])
 
     if (id == "0") {
         return <Four0FourComponent />
@@ -304,6 +327,7 @@ const Cause = ({ id }) => {
                 <h3>
                     DONATIONS: {convertweiToEth(causeBalance)}/{convertweiToEth(goal)}ETH
                 </h3>
+                <div>CAUSEURI: {uriString}</div>
             </div>
 
             <div>
@@ -400,6 +424,7 @@ const Cause = ({ id }) => {
                                 e.preventDefault()
                                 await handleSubmit()
                             }}
+                            disabled={setURIIsFetching || setURIIsLoading}
                         >
                             SUBMIT
                         </button>
