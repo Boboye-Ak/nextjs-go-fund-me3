@@ -125,6 +125,17 @@ const Cause = ({ id }) => {
     })
 
     const {
+        runContractFunction: demandRefund,
+        isFetching: refundIsFetching,
+        isLoading: refundIsLoading,
+    } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "demandRefund",
+        params: {},
+    })
+
+    const {
         runContractFunction: donate,
         isFetching: donateIsFetching,
         isLoading: donateIsLoading,
@@ -254,6 +265,31 @@ const Cause = ({ id }) => {
             setIsUploading(false)
         }
     }
+
+    const handleRefund = async () => {
+        demandRefund({
+            onSuccess: async (tx) => {
+                await tx.wait(1)
+                await updateUI()
+                dispatch({
+                    title: "Refund given",
+                    message: "We have refunded your donation",
+                    position: "topR",
+                    type: "success",
+                    icon: "bell",
+                })
+            },
+            onError: () => {
+                dispatch({
+                    title: "Refund failed",
+                    message: "We were unable to issue a refund",
+                    position: "topR",
+                    type: "error",
+                    icon: "bell",
+                })
+            },
+        })
+    }
     //USEEFFECTS
 
     useEffect(() => {
@@ -319,7 +355,8 @@ const Cause = ({ id }) => {
         if (isWeb3Enabled && uriString) {
             if (isUploading) {
                 setCauseURI({
-                    onSuccess: async () => {
+                    onSuccess: async (tx) => {
+                        await tx.wait(1)
                         dispatch({
                             title: "Edit successful",
                             message: "You have successfully edited cause data",
@@ -329,8 +366,8 @@ const Cause = ({ id }) => {
                         })
                         setIsUploading(false)
                         toggleEditModal(false)
-                        updateUI()
-                        updateMetadata()
+                        await updateUI()
+                        await updateMetadata()
                     },
                     onError: async () => {
                         dispatch({
@@ -349,10 +386,6 @@ const Cause = ({ id }) => {
             }
         }
     }, [isWeb3Enabled, uriString])
-
-    if (id == "0") {
-        return <Four0FourComponent />
-    }
 
     return (
         <div>
@@ -398,7 +431,15 @@ const Cause = ({ id }) => {
                 )}
             </div>
             {!amICauseOwner && (
-                <div>You have donated {convertweiToEth(myDonations)} to this cause</div>
+                <div>
+                    You have donated {convertweiToEth(myDonations)} to this cause
+                    <button
+                        onClick={handleRefund}
+                        disabled={myDonations == "0" || refundIsFetching || refundIsLoading}
+                    >
+                        DEMAND REFUND
+                    </button>
+                </div>
             )}
             {isWithdrawn &&
                 (amICauseOwner ? (
@@ -426,17 +467,19 @@ const Cause = ({ id }) => {
             )}
             {amICrowdFunderOwner && <div>You are currently connected as the site admin.</div>}
             {amICauseOwner && <div>You are currently connected as the owner of this cause.</div>}
-            <button
-                onClick={() => {
-                    if (showEditModal) {
-                        toggleEditModal(false)
-                    } else {
-                        toggleEditModal(true)
-                    }
-                }}
-            >
-                EDIT
-            </button>
+            {amICauseOwner && (
+                <button
+                    onClick={() => {
+                        if (showEditModal) {
+                            toggleEditModal(false)
+                        } else {
+                            toggleEditModal(true)
+                        }
+                    }}
+                >
+                    EDIT
+                </button>
+            )}
 
             {amICauseOwner && showEditModal && (
                 <div>
