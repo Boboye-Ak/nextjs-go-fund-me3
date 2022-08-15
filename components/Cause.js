@@ -146,6 +146,17 @@ const Cause = ({ id }) => {
         params: {},
         msgValue: donationAmountG,
     })
+    
+    const {
+        runContractFunction: setCauseURI,
+        isFetching: setURIIsFetching,
+        isLoading: setURIIsLoading,
+    } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "setCauseURI",
+        params: { causeURI: uriString },
+    })
 
     const {
         runContractFunction: lock,
@@ -558,7 +569,7 @@ const Cause = ({ id }) => {
                 </button>
             )}
 
-            {amICauseOwner && showEditModal && (
+            {amICauseOwner && showEditModal && !isLocked && (
                 <div>
                     <form>
                         <textarea
