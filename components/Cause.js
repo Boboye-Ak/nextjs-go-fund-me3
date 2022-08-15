@@ -37,6 +37,8 @@ const Cause = ({ id }) => {
     const [fileImg, setFileImg] = useState(null)
     const [imgUri, setImgUri] = useState("")
     const [isUploading, setIsUploading] = useState(false)
+    const [newOwner, setNewOwner] = useState("")
+    const [changeOwnershipModal, toggleChangeOwnershipModal] = useState(false)
     const [error, setError] = useState("")
 
     const { runContractFunction: getCauseById } = useWeb3Contract({
@@ -146,7 +148,7 @@ const Cause = ({ id }) => {
         params: {},
         msgValue: donationAmountG,
     })
-    
+
     const {
         runContractFunction: setCauseURI,
         isFetching: setURIIsFetching,
@@ -177,6 +179,17 @@ const Cause = ({ id }) => {
         contractAddress: crowdFunderAddress,
         functionName: "unlock",
         params: { causeId: id },
+    })
+
+    const {
+        runContractFunction: changeOwnership,
+        isFetching: changeOwnershipIsFetching,
+        isLoading: changeOwnershipIsLoading,
+    } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "changeOwnership",
+        params: { newOwner: newOwner },
     })
 
     //EVENT HANDLER FUNCTIONS
@@ -355,6 +368,32 @@ const Cause = ({ id }) => {
                 dispatch({
                     title: "Error unlocking cause",
                     message: "There was an error unlocking the cause",
+                    position: "topR",
+                    type: "error",
+                    icon: "bell",
+                })
+            },
+        })
+    }
+
+    const handleChangeOwner = async () => {
+        changeOwnership({
+            onSuccess: async (tx) => {
+                await tx.wait(1)
+                await updateUI()
+                dispatch({
+                    title: "Ownership changed successfully",
+                    message: `The new owner of this cause is ${newOwner}`,
+                    position: "topR",
+                    type: "success",
+                    icon: "bell",
+                })
+                setNewOwner("")
+            },
+            onError: (tx) => {
+                dispatch({
+                    title: "Error Changing Ownership",
+                    message: "There was an error changing the owner of this cause",
                     position: "topR",
                     type: "error",
                     icon: "bell",
@@ -599,6 +638,34 @@ const Cause = ({ id }) => {
                             SUBMIT
                         </button>
                     </form>
+                    <button
+                        onClick={() => {
+                            if (changeOwnershipModal) {
+                                toggleChangeOwnershipModal(false)
+                            } else {
+                                toggleChangeOwnershipModal(true)
+                            }
+                        }}
+                    >
+                        CHANGE OWNERSHIP
+                    </button>
+                    {changeOwnershipModal && (
+                        <div>
+                            <input
+                                type="text"
+                                onChange={(e) => {
+                                    setNewOwner(e.target.value)
+                                }}
+                                placeholder="New Owner"
+                            ></input>
+                            <button
+                                onClick={handleChangeOwner}
+                                disabled={changeOwnershipIsFetching || changeOwnershipIsLoading}
+                            >
+                                CHANGE OWNER
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
         </div>
