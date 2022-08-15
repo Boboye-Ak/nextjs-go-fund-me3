@@ -459,10 +459,18 @@ const Cause = ({ id }) => {
                     WITHDRAW
                 </button>
             )}
+            {amICrowdFunderOwner && !isLocked && <button>LOCK CAUSE</button>}
+            {amICrowdFunderOwner && isLocked && <button>UNLOCK CAUSE</button>}
             {isWithdrawn && (
                 <div>
                     This Cause has been withdrawn from, hence donations and withdrawals can no
                     longer be made.{" "}
+                </div>
+            )}
+            {isLocked && (
+                <div>
+                    This cause is currently locked by the site admin. You cannot make a donation at
+                    the moment.
                 </div>
             )}
             {amICrowdFunderOwner && <div>You are currently connected as the site admin.</div>}
