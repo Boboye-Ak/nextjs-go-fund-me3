@@ -148,14 +148,24 @@ const Cause = ({ id }) => {
     })
 
     const {
-        runContractFunction: setCauseURI,
-        isFetching: setURIIsFetching,
-        isLoading: setURIIsLoading,
+        runContractFunction: lock,
+        isFetching: lockIsFetching,
+        isLoading: lockIsLoading,
     } = useWeb3Contract({
-        abi: causeABI,
-        contractAddress: causeAddress,
-        functionName: "setCauseURI",
-        params: { causeURI: uriString },
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "lock",
+        params: { causeId: id },
+    })
+    const {
+        runContractFunction: unlock,
+        isFetching: unlockIsFetching,
+        isLoading: unlockIsLoading,
+    } = useWeb3Contract({
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "unlock",
+        params: { causeId: id },
     })
 
     //EVENT HANDLER FUNCTIONS
@@ -283,6 +293,57 @@ const Cause = ({ id }) => {
                 dispatch({
                     title: "Refund failed",
                     message: "We were unable to issue a refund",
+                    position: "topR",
+                    type: "error",
+                    icon: "bell",
+                })
+            },
+        })
+    }
+
+    const handleLock = async () => {
+        await lock({
+            onSuccess: async (tx) => {
+                await tx.wait(1)
+                await updateUI()
+                dispatch({
+                    title: "Cause locked",
+                    message:
+                        "The cause has been successfully locked. Donations and withdrawals cannot be made right now",
+                    position: "topR",
+                    type: "success",
+                    icon: "bell",
+                })
+            },
+            onError: async () => {
+                dispatch({
+                    title: "Error locking the cause",
+                    message: "There was an error locking the cause",
+                    position: "topR",
+                    type: "error",
+                    icon: "bell",
+                })
+            },
+        })
+    }
+    const handleUnlock = async () => {
+        await unlock({
+            onSuccess: async (tx) => {
+                await tx.wait(1)
+                await updateUI()
+                dispatch({
+                    title: "Cause Unlocked",
+                    message:
+                        "The cause has been successfully unlocked. Donations and withdrawals can now be made",
+                    position: "topR",
+                    type: "success",
+                    icon: "bell",
+                })
+            },
+            onError: async () => {
+                dispatch({
+                    title: "Error unlocking cause",
+                    message: "There was an error unlocking the cause",
                     position: "topR",
                     type: "error",
                     icon: "bell",
@@ -459,8 +520,16 @@ const Cause = ({ id }) => {
                     WITHDRAW
                 </button>
             )}
-            {amICrowdFunderOwner && !isLocked && <button>LOCK CAUSE</button>}
-            {amICrowdFunderOwner && isLocked && <button>UNLOCK CAUSE</button>}
+            {amICrowdFunderOwner && !isLocked && (
+                <button onClick={handleLock} disabled={lockIsFetching || lockIsLoading}>
+                    LOCK CAUSE
+                </button>
+            )}
+            {amICrowdFunderOwner && isLocked && (
+                <button onClick={handleUnlock} disabled={unlockIsFetching || unlockIsLoading}>
+                    UNLOCK CAUSE
+                </button>
+            )}
             {isWithdrawn && (
                 <div>
                     This Cause has been withdrawn from, hence donations and withdrawals can no
