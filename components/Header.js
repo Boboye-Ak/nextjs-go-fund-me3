@@ -34,19 +34,24 @@ export default function Header({ id, amICauseOwner, amICrowdFunderOwner }) {
     }, [isWeb3Enabled, account])
     return (
         <div className="header">
-            {doIHaveACause ? (
-                <button>
-                    <Link href={`/cause/${myCauseId}`}>My Cause</Link>
-                </button>
-            ) : (
-                <button>
-                    <Link href="/createcause">Create Cause</Link>
-                </button>
-            )}
-            {amICauseOwner && <div>You are currently logged in as the Cause Owner</div>}
-            {amICrowdFunderOwner && <div>You are currently logged in as the Site Admin</div>}
+            <div>
+                {doIHaveACause ? (
+                    <button>
+                        <Link href={`/cause/${myCauseId}`}>My Cause</Link>
+                    </button>
+                ) : (
+                    <button>
+                        <Link href="/createcause">Create Cause</Link>
+                    </button>
+                )}
+            </div>
 
-            <ConnectButton moralisAuth={false} />
+            <div>
+                {" "}
+                {amICauseOwner && <div>You are currently logged in as the Cause Owner</div>}
+                {amICrowdFunderOwner && <div>You are currently logged in as the Site Admin</div>}
+                <ConnectButton moralisAuth={false} />
+            </div>
         </div>
     )
 }

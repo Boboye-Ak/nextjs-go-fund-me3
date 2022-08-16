@@ -527,173 +527,192 @@ const Cause = ({ id }) => {
                 amICauseOwner={amICauseOwner}
                 amICrowdFunderOwner={amICrowdFunderOwner}
             />
-            <div>
-                <h1>CAUSE NAME: {causeName}</h1>
-                <h2>CAUSE ID: {id}</h2>
-                <h2>CAUSE ADDRESS: {causeAddress}</h2>
-                <h2>OWNED BY: {causeOwner}</h2>
-                <h3>
-                    DONATIONS: {convertweiToEth(causeBalance)}/{convertweiToEth(goal)}ETH
-                </h3>
-                <div>DESCRIPTION: {description}</div>
-                <img src={imgUri}></img>
-            </div>
-
-            <div>
-                {!amICauseOwner && (
-                    <div>
-                        {" "}
-                        <input
-                            type="number"
-                            placeholder="Donation amount in ETH"
-                            value={donationAmount}
-                            onChange={(e) => {
-                                setDonationAmount(e.target.value)
-                            }}
-                        ></input>
-                        ETH
+            <div className="cause-body">
+                <div className="cause-info">
+                    <img src={imgUri} className="cause-img"></img>
+                    <h1>{causeName?.toUpperCase()}</h1>
+                    <div>{description}</div>
+                    <h2>ID: {id}</h2>
+                    <h2>
+                        CAUSE ADDRESS: {causeAddress}
                         <button
-                            onClick={handleDonate}
-                            disabled={
-                                isWithdrawn ||
-                                isLocked ||
-                                isGoalReached ||
-                                donateIsFetching ||
-                                donateIsLoading
-                            }
+                            onClick={() => {
+                                navigator.clipboard.writeText(causeAddress)
+                            }}
                         >
-                            DONATE
+                            copy
                         </button>
-                    </div>
-                )}
-            </div>
-            {!amICauseOwner && (
-                <div>
-                    You have donated {convertweiToEth(myDonations)} to this cause
-                    <button
-                        onClick={handleRefund}
-                        disabled={myDonations == "0" || refundIsFetching || refundIsLoading}
-                    >
-                        DEMAND REFUND
-                    </button>
-                </div>
-            )}
-            {isWithdrawn &&
-                (amICauseOwner ? (
-                    <div>
-                        You have withdrawn the donations to this cause to your wallet with address
-                        {causeOwner}
-                    </div>
-                ) : (
-                    <div>
-                        The owner of this cause has withdrawn the donations to his wallet{" "}
-                        {causeOwner}
-                    </div>
-                ))}
-
-            {amICauseOwner && (
-                <button onClick={handleWithdraw} disabled={isWithdrawn || isLocked}>
-                    WITHDRAW
-                </button>
-            )}
-            {amICrowdFunderOwner && !isLocked && (
-                <button onClick={handleLock} disabled={lockIsFetching || lockIsLoading}>
-                    LOCK CAUSE
-                </button>
-            )}
-            {amICrowdFunderOwner && isLocked && (
-                <button onClick={handleUnlock} disabled={unlockIsFetching || unlockIsLoading}>
-                    UNLOCK CAUSE
-                </button>
-            )}
-            {isWithdrawn && (
-                <div>
-                    This Cause has been withdrawn from, hence donations and withdrawals can no
-                    longer be made.{" "}
-                </div>
-            )}
-            {isLocked && (
-                <div>
-                    This cause is currently locked by the site admin. You cannot make a donation at
-                    the moment.
-                </div>
-            )}
-            {amICrowdFunderOwner && <div>You are currently connected as the site admin.</div>}
-            {amICauseOwner && <div>You are currently connected as the owner of this cause.</div>}
-            {amICauseOwner && (
-                <button
-                    onClick={() => {
-                        if (showEditModal) {
-                            toggleEditModal(false)
-                        } else {
-                            toggleEditModal(true)
-                        }
-                    }}
-                >
-                    EDIT
-                </button>
-            )}
-
-            {amICauseOwner && showEditModal && !isLocked && (
-                <div>
-                    <form>
-                        <textarea
-                            value={description}
-                            onChange={(e) => {
-                                setDescription(e.target.value)
-                            }}
-                            placeholder="Cause Description"
-                            required
-                        ></textarea>
-                        <label>Upload Image</label>
-                        <input
-                            type="file"
-                            accept="image/png, image/gif, image/jpeg"
-                            onChange={(e) => {
-                                setFileImg(e.target.files[0])
-                            }}
-                            required
-                        ></input>
+                    </h2>
+                    <h2>
+                        OWNED BY: {causeOwner}
                         <button
-                            onClick={async (e) => {
-                                e.preventDefault()
-                                await handleSubmit()
+                            onClick={() => {
+                                navigator.clipboard.writeText(causeOwner)
                             }}
-                            disabled={setURIIsFetching || setURIIsLoading || isUploading}
                         >
-                            SUBMIT
+                            copy
                         </button>
-                    </form>
-                    <button
-                        onClick={() => {
-                            if (changeOwnershipModal) {
-                                toggleChangeOwnershipModal(false)
-                            } else {
-                                toggleChangeOwnershipModal(true)
-                            }
-                        }}
-                    >
-                        CHANGE OWNERSHIP
-                    </button>
-                    {changeOwnershipModal && (
+                    </h2>
+                    <h3>
+                        DONATIONS: {convertweiToEth(causeBalance)}/{convertweiToEth(goal)}ETH
+                    </h3>
+                </div>
+
+                <div>
+                    {!amICauseOwner && (
                         <div>
+                            {" "}
                             <input
-                                type="text"
+                                type="number"
+                                placeholder="Donation amount in ETH"
+                                value={donationAmount}
                                 onChange={(e) => {
-                                    setNewOwner(e.target.value)
+                                    setDonationAmount(e.target.value)
                                 }}
-                                placeholder="New Owner"
                             ></input>
+                            ETH
                             <button
-                                onClick={handleChangeOwner}
-                                disabled={changeOwnershipIsFetching || changeOwnershipIsLoading}
+                                onClick={handleDonate}
+                                disabled={
+                                    isWithdrawn ||
+                                    isLocked ||
+                                    isGoalReached ||
+                                    donateIsFetching ||
+                                    donateIsLoading
+                                }
                             >
-                                CHANGE OWNER
+                                DONATE
                             </button>
                         </div>
                     )}
                 </div>
-            )}
+                {!amICauseOwner && (
+                    <div>
+                        You have donated {convertweiToEth(myDonations)} to this cause
+                        <button
+                            onClick={handleRefund}
+                            disabled={myDonations == "0" || refundIsFetching || refundIsLoading}
+                        >
+                            DEMAND REFUND
+                        </button>
+                    </div>
+                )}
+                {isWithdrawn &&
+                    (amICauseOwner ? (
+                        <div>
+                            You have withdrawn the donations to this cause to your wallet with
+                            address
+                            {causeOwner}
+                        </div>
+                    ) : (
+                        <div>
+                            The owner of this cause has withdrawn the donations to his wallet{" "}
+                            {causeOwner}
+                        </div>
+                    ))}
+
+                {amICauseOwner && (
+                    <button onClick={handleWithdraw} disabled={isWithdrawn || isLocked}>
+                        WITHDRAW
+                    </button>
+                )}
+                {amICrowdFunderOwner && !isLocked && (
+                    <button onClick={handleLock} disabled={lockIsFetching || lockIsLoading}>
+                        LOCK CAUSE
+                    </button>
+                )}
+                {amICrowdFunderOwner && isLocked && (
+                    <button onClick={handleUnlock} disabled={unlockIsFetching || unlockIsLoading}>
+                        UNLOCK CAUSE
+                    </button>
+                )}
+                {isWithdrawn && (
+                    <div>
+                        This Cause has been withdrawn from, hence donations and withdrawals can no
+                        longer be made.{" "}
+                    </div>
+                )}
+                {isLocked && (
+                    <div>
+                        This cause is currently locked by the site admin. You cannot make a donation
+                        at the moment.
+                    </div>
+                )}
+                {amICauseOwner && (
+                    <button
+                        onClick={() => {
+                            if (showEditModal) {
+                                toggleEditModal(false)
+                            } else {
+                                toggleEditModal(true)
+                            }
+                        }}
+                    >
+                        EDIT
+                    </button>
+                )}
+
+                {amICauseOwner && showEditModal && !isLocked && (
+                    <div>
+                        <form>
+                            <textarea
+                                value={description}
+                                onChange={(e) => {
+                                    setDescription(e.target.value)
+                                }}
+                                placeholder="Cause Description"
+                                required
+                            ></textarea>
+                            <label>Upload Image</label>
+                            <input
+                                type="file"
+                                accept="image/png, image/gif, image/jpeg"
+                                onChange={(e) => {
+                                    setFileImg(e.target.files[0])
+                                }}
+                                required
+                            ></input>
+                            <button
+                                onClick={async (e) => {
+                                    e.preventDefault()
+                                    await handleSubmit()
+                                }}
+                                disabled={setURIIsFetching || setURIIsLoading || isUploading}
+                            >
+                                SUBMIT
+                            </button>
+                        </form>
+                        <button
+                            onClick={() => {
+                                if (changeOwnershipModal) {
+                                    toggleChangeOwnershipModal(false)
+                                } else {
+                                    toggleChangeOwnershipModal(true)
+                                }
+                            }}
+                        >
+                            CHANGE OWNERSHIP
+                        </button>
+                        {changeOwnershipModal && (
+                            <div>
+                                <input
+                                    type="text"
+                                    onChange={(e) => {
+                                        setNewOwner(e.target.value)
+                                    }}
+                                    placeholder="New Owner"
+                                ></input>
+                                <button
+                                    onClick={handleChangeOwner}
+                                    disabled={changeOwnershipIsFetching || changeOwnershipIsLoading}
+                                >
+                                    CHANGE OWNER
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     )
 }
