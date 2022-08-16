@@ -41,6 +41,7 @@ const Cause = ({ id }) => {
     const [changeOwnershipModal, toggleChangeOwnershipModal] = useState(false)
     const [error, setError] = useState("")
 
+    //WEB3 VIEW FUNCTIONS
     const { runContractFunction: getCauseById } = useWeb3Contract({
         abi: crowdFunderABI,
         contractAddress: crowdFunderAddress,
@@ -120,7 +121,7 @@ const Cause = ({ id }) => {
         functionName: "getIsGoalReached",
         params: {},
     })
-    //Pure Web3 Functions
+    //WEB3 PURE FUNCTIONS
     const {
         runContractFunction: withdraw,
         isFetching: withdrawIsFetching,
