@@ -53,6 +53,12 @@ const Cause = ({ id }) => {
         functionName: "getContractOwner",
         params: {},
     })
+    const { runContractFunction: handover } = useWeb3Contract({
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "handover",
+        params: { newOwner: newOwner },
+    })
     const { runContractFunction: getCauseName } = useWeb3Contract({
         abi: causeABI,
         contractAddress: causeAddress,
@@ -380,15 +386,29 @@ const Cause = ({ id }) => {
         changeOwnership({
             onSuccess: async (tx) => {
                 await tx.wait(1)
-                await updateUI()
-                dispatch({
-                    title: "Ownership changed successfully",
-                    message: `The new owner of this cause is ${newOwner}`,
-                    position: "topR",
-                    type: "success",
-                    icon: "bell",
+
+                await handover({
+                    onSuccess: async (tx) => {
+                        await tx.wait(1)
+                        await updateUI()
+                        dispatch({
+                            title: "Ownership changed successfully",
+                            message: `The new owner of this cause is ${newOwner}`,
+                            position: "topR",
+                            type: "success",
+                            icon: "bell",
+                        })
+                    },
+                    onError: async () => {
+                        dispatch({
+                            title: "Error Changing Ownership",
+                            message: "There was an error changing the owner of this cause",
+                            position: "topR",
+                            type: "error",
+                            icon: "bell",
+                        })
+                    },
                 })
-                setNewOwner("")
             },
             onError: (tx) => {
                 dispatch({
