@@ -390,7 +390,6 @@ const Cause = ({ id }) => {
                 await handover({
                     onSuccess: async (tx) => {
                         await tx.wait(1)
-                        await updateUI()
                         dispatch({
                             title: "Ownership changed successfully",
                             message: `The new owner of this cause is ${newOwner}`,
@@ -398,6 +397,8 @@ const Cause = ({ id }) => {
                             type: "success",
                             icon: "bell",
                         })
+                        await updateUI()
+                        setNewOwner("")
                     },
                     onError: async () => {
                         dispatch({
@@ -520,7 +521,11 @@ const Cause = ({ id }) => {
 
     return (
         <div>
-            <Header />
+            <Header
+                id={id}
+                amICauseOwner={amICauseOwner}
+                amICrowdFunderOwner={amICrowdFunderOwner}
+            />
             <div>
                 <h1>CAUSE NAME: {causeName}</h1>
                 <h2>CAUSE ID: {id}</h2>

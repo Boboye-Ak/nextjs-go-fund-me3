@@ -4,7 +4,7 @@ import { useMoralis, useWeb3Contract } from "react-moralis"
 import { useEffect, useState } from "react"
 import { crowdFunderABI, crowdFunderAddresses } from "../constants"
 
-export default function Header() {
+export default function Header({ id, amICauseOwner, amICrowdFunderOwner }) {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
@@ -43,6 +43,8 @@ export default function Header() {
                     <Link href="/createcause">Create Cause</Link>
                 </button>
             )}
+            {amICauseOwner && <div>You are currently logged in as the Cause Owner</div>}
+            {amICrowdFunderOwner && <div>You are currently logged in as the Site Admin</div>}
 
             <ConnectButton moralisAuth={false} />
         </div>
