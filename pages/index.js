@@ -138,7 +138,7 @@ export default function Home() {
         }
     }, [causeId])
     return (
-        <div className={styles.container}>
+        <div className="container">
             <Head>
                 <title>Go Fund Me 3</title>
                 <meta name="description" content="A Web3 CrowdFunding Website" />
