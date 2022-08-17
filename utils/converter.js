@@ -16,4 +16,14 @@ const convertEthToWei = (eth) => {
     return result
 }
 
-module.exports = { convertweiToEth, convertEthToWei }
+const convertweiToEthNum = (eth) => {
+    let result
+    if (eth != "") {
+        result = ethers.utils.parseEther(eth)
+    } else {
+        result = "0"
+    }
+    return parseFloat(result)
+}
+
+module.exports = { convertweiToEth, convertEthToWei, convertweiToEthNum }

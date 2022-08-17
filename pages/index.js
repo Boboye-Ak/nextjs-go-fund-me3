@@ -90,7 +90,7 @@ export default function Home() {
                         message: "There was an error getting the cause please try again",
                         type: "error",
                         icon: "bell",
-                        position:"topR"
+                        position: "topR",
                     })
                 },
             })
@@ -138,30 +138,32 @@ export default function Home() {
         }
     }, [causeId])
     return (
-        <div className="container">
+        <div>
             <Head>
                 <title>Go Fund Me 3</title>
                 <meta name="description" content="A Web3 CrowdFunding Website" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header />
-            <input
-                type="text"
-                onChange={(e) => {
-                    handleTextChange(e)
-                }}
-                value={searchText}
-                placeholder="CAUSE ID, CAUSE OWNER ADDRESS, CAUSE ADDRESS"
-            ></input>
-            <p>{error ? error : causeId}</p>
-            <button
-                onClick={async (e) => {
-                    await search()
-                }}
-            >
-                SEARCH
-            </button>
-            <Link href="/cause/1">Link to Cause with ID 1</Link>
+            <div>
+                <input
+                    type="text"
+                    onChange={(e) => {
+                        handleTextChange(e)
+                    }}
+                    value={searchText}
+                    placeholder="CAUSE ID, CAUSE OWNER ADDRESS, CAUSE ADDRESS"
+                ></input>
+                <p>{error ? error : causeId}</p>
+                <button
+                    onClick={async (e) => {
+                        await search()
+                    }}
+                >
+                    SEARCH
+                </button>
+                <Link href="/cause/1">Link to Cause with ID 1</Link>
+            </div>
         </div>
     )
 }

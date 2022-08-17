@@ -6,9 +6,10 @@ import { useNotification } from "web3uikit"
 import axios from "axios"
 import { ethers } from "ethers"
 import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
-import { convertweiToEth, convertEthToWei } from "../utils/converter"
+import { convertweiToEth, convertEthToWei, convertweiToEthNum } from "../utils/converter"
 import Header from "./Header"
 import Four0FourComponent from "./404 Component"
+import ProgressBar from "./progressbar"
 const Cause = ({ id }) => {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
     const chainId = parseInt(chainIdHex)
@@ -32,6 +33,7 @@ const Cause = ({ id }) => {
     const [crowdFunderOwner, setCrowdFunderOwner] = useState("")
     const [amICrowdFunderOwner, setAmICrowdFunderOwner] = useState(false)
     const [uriString, setUriString] = useState("")
+    const [numDonations, setNumDonations] = useState("0")
     const [showEditModal, toggleEditModal] = useState(false)
     const [description, setDescription] = useState("")
     const [fileImg, setFileImg] = useState(null)
@@ -64,6 +66,12 @@ const Cause = ({ id }) => {
         abi: causeABI,
         contractAddress: causeAddress,
         functionName: "getCauseName",
+        params: {},
+    })
+    const { runContractFunction: getNumDonations } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getNumDonations",
         params: {},
     })
     const { runContractFunction: getCauseBalance } = useWeb3Contract({
@@ -210,6 +218,7 @@ const Cause = ({ id }) => {
         const isGoalReachedFromCall = await getIsGoalReached()
         const myDonationFromCall = await getMyDonation()
         const causeURIFromCall = await getCauseURI()
+        const numDonationsFromCall = await getNumDonations()
         setUriString(causeURIFromCall?.toString())
         setCauseBalance(causeBalanceFromCall?.toString())
         setCauseName(causeNameFromCall?.toString())
@@ -219,6 +228,7 @@ const Cause = ({ id }) => {
         setIsGoalReached(isGoalReachedFromCall)
         setIsLocked(isLockedFromCall)
         setMyDonations(myDonationFromCall?.toString())
+        setNumDonations(numDonationsFromCall?.toString())
     }
 
     const updateMetadata = async () => {
@@ -533,7 +543,7 @@ const Cause = ({ id }) => {
                     <div className="cause-info">
                         <h1>{causeName?.toUpperCase()}</h1>
                         <img src={imgUri} className="cause-img"></img>
-                        <div>{description}</div>
+                        <div className="cause-description">{description}</div>
                         <h2>ID: {id}</h2>
                         <div className="cause-owner">
                             CAUSE ADDRESS: {causeAddress}
@@ -555,9 +565,15 @@ const Cause = ({ id }) => {
                                 copy
                             </button>
                         </div>
-                        <h3>
+                        <div>
                             DONATIONS: {convertweiToEth(causeBalance)}/{convertweiToEth(goal)}ETH
-                        </h3>
+                        </div>
+                        <ProgressBar
+                            bgcolor={"#6a1b9a"}
+                            completed={
+                                (convertweiToEth(causeBalance) / convertweiToEth(goal)) * 100
+                            }
+                        />
                         {!amICauseOwner && (
                             <div>
                                 {" "}
@@ -723,9 +739,12 @@ const Cause = ({ id }) => {
                 <div className="donor-list">
                     {!amICauseOwner && (
                         <div className="your-donation">
-                            Your Donation: {convertweiToEth(myDonations)} ETH
+                            Your Donation: {convertweiToEth(myDonations)}ETH
                         </div>
                     )}
+                    <div className="num-donations">
+                        {numDonations} donation{numDonations != "1" && "s"}
+                    </div>
                 </div>
             </div>
         </div>
