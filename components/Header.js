@@ -48,8 +48,10 @@ export default function Header({ id, amICauseOwner, amICrowdFunderOwner }) {
 
             <div>
                 {" "}
-                {amICauseOwner && <div>You are currently logged in as the Cause Owner</div>}
-                {amICrowdFunderOwner && <div>You are currently logged in as the Site Admin</div>}
+                {amICauseOwner && <div>Logged in as the Cause Owner</div>}
+                {amICrowdFunderOwner && (
+                    <div className="logged-in-as">Logged in as the Site Admin</div>
+                )}
                 <ConnectButton moralisAuth={false} />
             </div>
         </div>

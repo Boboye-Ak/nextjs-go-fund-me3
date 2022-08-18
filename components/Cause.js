@@ -39,6 +39,7 @@ const Cause = ({ id }) => {
     const [name, setName] = useState("")
     const [newName, setNewName] = useState("")
     const [description, setDescription] = useState("")
+    const [showFullDescription, toggleShowFullDescription] = useState(false)
     const [fileImg, setFileImg] = useState(null)
     const [imgUri, setImgUri] = useState("")
     const [isUploading, setIsUploading] = useState(false)
@@ -566,7 +567,35 @@ const Cause = ({ id }) => {
                             <img src={imgUri}></img>
                         </div>
                         {name && <div className="cause-owner-name">Donations for {name}</div>}
-                        <div className="cause-description">{description}</div>
+                        <div className="cause-description">
+                            {!showFullDescription ? (
+                                <div>
+                                    {description.slice(0, 200)}...
+                                    <a
+                                        className="read-more-button"
+                                        onClick={() => {
+                                            toggleShowFullDescription(true)
+                                        }}
+                                    >
+                                        {"  "}read more
+                                    </a>
+                                </div>
+                            ) : (
+                                <div>
+                                    {" "}
+                                    {description}
+                                    <a
+                                        className="read-more-button"
+                                        onClick={() => {
+                                            toggleShowFullDescription(false)
+                                        }}
+                                    >
+                                        {"  "}
+                                        read less
+                                    </a>
+                                </div>
+                            )}
+                        </div>
                         <div className="cause-id">ID: {id}</div>
                         <div className="cause-owner">
                             CAUSE ADDRESS: {causeAddress}
