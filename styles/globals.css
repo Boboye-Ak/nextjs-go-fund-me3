@@ -42,27 +42,7 @@ input[type="number"] {
     display: flex;
     align-items: center;
     flex-direction: column;
-}
-.cause-info {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
     justify-content: flex-start;
-}
-.cause-img {
-    border-radius: 1em;
-    margin: 1em;
-    width: 70%;
-    height: 30%;
-}
-.cause-owner {
-    margin: 0.25em;
-    background-color: rgb(213, 204, 210);
-    padding: 1em;
-    border-radius: 2em;
-}
-.cause-description {
-    font-size: 1em;
 }
 .donor-list {
     border-radius: 1em;
@@ -71,8 +51,41 @@ input[type="number"] {
     width: 40%;
     background-color: rgb(213, 204, 210);
 }
+
+.cause-name {
+    text-align: center;
+}
+
+.cause-img {
+    border-radius: 1em;
+    margin: 1em;
+    width: 100%;
+    height: 30%;
+}
+img {
+    width: 100%;
+    height: 100%;
+}
+.cause-id {
+    text-align: center;
+}
+.cause-owner {
+    margin: 0.25em;
+    background-color: rgb(213, 204, 210);
+    padding: 1em;
+    border-radius: 2em;
+    text-align: center;
+}
+.cause-description {
+    font-size: 1em;
+    text-align: left;
+}
+.cause-donations {
+    text-align: center;
+}
+
 .progress-bar {
-    width: 75%;
+    width: 100%;
 }
 
 .your-donation {
@@ -84,6 +97,9 @@ input[type="number"] {
     border-bottom: solid;
     padding: 0.5em;
     margin: 0.5em;
+}
+.cause-owner-only {
+    text-align: center;
 }
 button {
     padding: 1em;
