@@ -144,6 +144,16 @@ const Cause = ({ id }) => {
         functionName: "withdraw",
         params: {},
     })
+    const {
+        runContractFunction: switchIsOpenToDonations,
+        isFetching: switchIsOpenToDonationsIsFetching,
+        isLoading: switchIsOpenToDonationsIsLoading,
+    } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "switchIsOpenToDonations",
+        params: {},
+    })
 
     const {
         runContractFunction: demandRefund,
@@ -227,7 +237,7 @@ const Cause = ({ id }) => {
         setCauseBalance(causeBalanceFromCall?.toString())
         setCauseName(causeNameFromCall?.toString())
         setGoal(goalFromCall?.toString())
-        setIsOpenToDonations(isOpenToDonationsFromCall?.toString())
+        setIsOpenToDonations(isOpenToDonationsFromCall)
         setIsWithdrawn(isWithdrawnFromCall)
         setIsGoalReached(isGoalReachedFromCall)
         setIsLocked(isLockedFromCall)
@@ -453,6 +463,33 @@ const Cause = ({ id }) => {
             },
         })
     }
+
+    const handleOpenToDonations = async () => {
+        switchIsOpenToDonations({
+            onSuccess: async (tx) => {
+                await tx.wait(1)
+                await updateUI()
+                dispatch({
+                    title: isOpenToDonations ? "Opened to donations" : "Closed to donations",
+                    message: isOpenToDonations
+                        ? "Your cause is now open to donations"
+                        : "Your cause is now closed to donations",
+                    position: "topR",
+                    type: "success",
+                    icon: "bell",
+                })
+            },
+            onError: async () => {
+                dispatch({
+                    title: "Error",
+                    message: "There was an error opening/closing to donations",
+                    position: "topR",
+                    type: "error",
+                    icon: "bell",
+                })
+            },
+        })
+    }
     //USEEFFECTS
 
     useEffect(() => {
@@ -643,6 +680,7 @@ const Cause = ({ id }) => {
                                     onClick={handleDonate}
                                     disabled={
                                         isWithdrawn ||
+                                        !isOpenToDonations ||
                                         isLocked ||
                                         isGoalReached ||
                                         donateIsFetching ||
@@ -798,6 +836,31 @@ const Cause = ({ id }) => {
                                             CHANGE OWNER
                                         </button>
                                     </div>
+                                )}
+                                {isOpenToDonations ? (
+                                    <button
+                                        onClick={handleOpenToDonations}
+                                        disabled={
+                                            isWithdrawn ||
+                                            isLocked ||
+                                            switchIsOpenToDonationsIsFetching ||
+                                            switchIsOpenToDonationsIsLoading
+                                        }
+                                    >
+                                        CLOSE TO DONATIONS
+                                    </button>
+                                ) : (
+                                    <button
+                                        disabled={
+                                            isWithdrawn ||
+                                            isLocked ||
+                                            switchIsOpenToDonationsIsFetching ||
+                                            switchIsOpenToDonationsIsLoading
+                                        }
+                                        onClick={handleOpenToDonations}
+                                    >
+                                        OPEN TO DONATIONS
+                                    </button>
                                 )}
                             </div>
                         )}
