@@ -45,6 +45,9 @@ export default function Header({ id, amICauseOwner, amICrowdFunderOwner }) {
                     </button>
                 )}
             </div>
+            <div>
+                <img src="/crowdfunder-tentative-logo.png" className="header-image"></img>
+            </div>
 
             <div>
                 {" "}

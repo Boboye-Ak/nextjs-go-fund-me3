@@ -9,7 +9,12 @@ import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
 import { convertweiToEth, convertEthToWei, convertweiToEthNum } from "../utils/converter"
 import Header from "./Header"
 import Four0FourComponent from "./404 Component"
-import { RiFileCopyLine } from "react-icons/ri"
+import {
+    RiFileCopyLine,
+    RiArrowDownSLine,
+    RiArrowDropRightLine,
+    RiUpload2Fill,
+} from "react-icons/ri"
 import ProgressBar from "./progressbar"
 const Cause = ({ id }) => {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
@@ -626,7 +631,12 @@ const Cause = ({ id }) => {
                         <div className="cause-img">
                             <img src={imgUri}></img>
                         </div>
-                        {name && <div className="cause-owner-name">Donations for {name}</div>}
+                        {name && (
+                            <div className="cause-owner-name">
+                                Donations for{" "}
+                                <span className="cause-owner-actual-name">{name}</span>
+                            </div>
+                        )}
                         <div className="cause-description">
                             {!showFullDescription ? (
                                 <div>
@@ -657,16 +667,24 @@ const Cause = ({ id }) => {
                             )}
                         </div>
                         <div className="cause-id">ID: {id}</div>
-                        <div className="cause-owner">
+                        <div
+                            className="cause-owner"
+                            title="The ethereum contract address of the cause You can donate to this cause by transferring ethereum to this address.(You can demand a refund later)"
+                        >
                             CAUSE ADDRESS: {causeAddress}
+                            {"  "}
                             <RiFileCopyLine
                                 onClick={() => {
                                     navigator.clipboard.writeText(causeAddress)
                                 }}
                             />
                         </div>
-                        <div className="cause-owner">
+                        <div
+                            className="cause-owner"
+                            title="The ethereum address of the owner of the cause. You can send ethereum directly to them through this route(Non-refundable)"
+                        >
                             OWNED BY: {causeOwner}
+                            {"  "}
                             <RiFileCopyLine
                                 onClick={() => {
                                     navigator.clipboard.writeText(causeOwner)
@@ -750,9 +768,6 @@ const Cause = ({ id }) => {
                         {amICauseOwner && (
                             <div className="cause-owner-only">
                                 {" "}
-                                <button onClick={handleWithdraw} disabled={isWithdrawn || isLocked}>
-                                    WITHDRAW
-                                </button>
                                 <button
                                     onClick={() => {
                                         if (showEditModal) {
@@ -763,40 +778,19 @@ const Cause = ({ id }) => {
                                     }}
                                 >
                                     EDIT
+                                    {showEditModal ? (
+                                        <RiArrowDownSLine />
+                                    ) : (
+                                        <RiArrowDropRightLine />
+                                    )}
                                 </button>
                             </div>
                         )}
-
-                        {amICrowdFunderOwner && !isLocked && (
-                            <button onClick={handleLock} disabled={lockIsFetching || lockIsLoading}>
-                                LOCK CAUSE
-                            </button>
-                        )}
-                        {amICrowdFunderOwner && isLocked && (
-                            <button
-                                onClick={handleUnlock}
-                                disabled={unlockIsFetching || unlockIsLoading}
-                            >
-                                UNLOCK CAUSE
-                            </button>
-                        )}
-                        {isWithdrawn && (
-                            <div>
-                                This Cause has been withdrawn from, hence donations and withdrawals
-                                can no longer be made.{" "}
-                            </div>
-                        )}
-                        {isLocked && (
-                            <div>
-                                This cause is currently locked by the site admin. You cannot make a
-                                donation at the moment.
-                            </div>
-                        )}
-
                         {amICauseOwner && showEditModal && !isLocked && (
                             <div>
-                                <form>
+                                <div className="edit-modal">
                                     <input
+                                        type="text"
                                         value={newName}
                                         placeholder="Cause Owner Name"
                                         onChange={(e) => {
@@ -813,15 +807,20 @@ const Cause = ({ id }) => {
                                     >
                                         {description}
                                     </textarea>
-                                    <label>Upload Image</label>
+                                    <label for="cause-image">
+                                        Upload picture for cause{"  "}
+                                        <RiUpload2Fill />
+                                    </label>
                                     <input
                                         type="file"
                                         accept="image/png, image/gif, image/jpeg"
                                         onChange={(e) => {
                                             setFileImg(e.target.files[0])
                                         }}
-                                        required
+                                        id="cause-image"
+                                        hidden
                                     ></input>
+                                    {!fileImg && <p>No file chosen</p>}
                                     <button
                                         onClick={async (e) => {
                                             e.preventDefault()
@@ -831,22 +830,31 @@ const Cause = ({ id }) => {
                                             setURIIsFetching || setURIIsLoading || isUploading
                                         }
                                     >
-                                        SUBMIT
+                                        EDIT
                                     </button>
-                                </form>
-                                <button
-                                    onClick={() => {
-                                        if (changeOwnershipModal) {
-                                            toggleChangeOwnershipModal(false)
-                                        } else {
-                                            toggleChangeOwnershipModal(true)
-                                        }
-                                    }}
-                                >
-                                    CHANGE OWNERSHIP
-                                </button>
+                                </div>
+                                <div className="cause-owner-only">
+                                    {" "}
+                                    <button
+                                        onClick={() => {
+                                            if (changeOwnershipModal) {
+                                                toggleChangeOwnershipModal(false)
+                                            } else {
+                                                toggleChangeOwnershipModal(true)
+                                            }
+                                        }}
+                                    >
+                                        CHANGE OWNERSHIP{"  "}
+                                        {changeOwnershipModal ? (
+                                            <RiArrowDownSLine />
+                                        ) : (
+                                            <RiArrowDropRightLine />
+                                        )}
+                                    </button>
+                                </div>
+
                                 {changeOwnershipModal && (
-                                    <div>
+                                    <div className="cause-owner-only">
                                         <input
                                             type="text"
                                             onChange={(e) => {
@@ -892,12 +900,46 @@ const Cause = ({ id }) => {
                                 )}
                             </div>
                         )}
+                        {amICauseOwner && (
+                            <div className="cause-owner-only">
+                                {" "}
+                                <button onClick={handleWithdraw} disabled={isWithdrawn || isLocked}>
+                                    WITHDRAW
+                                </button>
+                            </div>
+                        )}
+
+                        {amICrowdFunderOwner && !isLocked && (
+                            <button onClick={handleLock} disabled={lockIsFetching || lockIsLoading}>
+                                LOCK CAUSE
+                            </button>
+                        )}
+                        {amICrowdFunderOwner && isLocked && (
+                            <button
+                                onClick={handleUnlock}
+                                disabled={unlockIsFetching || unlockIsLoading}
+                            >
+                                UNLOCK CAUSE
+                            </button>
+                        )}
+                        {isWithdrawn && (
+                            <div>
+                                This Cause has been withdrawn from, hence donations and withdrawals
+                                can no longer be made.{" "}
+                            </div>
+                        )}
+                        {isLocked && (
+                            <div>
+                                This cause is currently locked by the site admin. You cannot make a
+                                donation at the moment.
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="donor-list">
                     {!amICauseOwner && (
                         <div className="your-donation">
-                            Your Donation: {convertweiToEth(myDonations)}ETH
+                            You've donated {convertweiToEth(myDonations)}ETH to this cause
                         </div>
                     )}
                     <div className="num-donations">
@@ -906,21 +948,22 @@ const Cause = ({ id }) => {
                         {numRefunds} refund{numRefunds != "1" && "s"}
                     </div>
                     <div>
-                        {donationList?.map((donation, index) => {
+                        {donationList?.slice(0, 6)?.map((donation, index) => {
                             if (parseFloat(donation.amount) > 0) {
                                 return (
                                     <div key={index} className="donation">
-                                        {donation.donor} donated {donation.amount}
+                                        {donation.donor} donated {donation.amount}ETH
                                     </div>
                                 )
                             } else {
                                 return (
                                     <div key={index} className="donation">
-                                        {donation.donor} got a refund of {donation.amount}
+                                        {donation.donor} got a refund of {donation.amount}ETH
                                     </div>
                                 )
                             }
                         })}
+                        <a className="read-more-button">Show full donor list</a>
                     </div>
                 </div>
             </div>

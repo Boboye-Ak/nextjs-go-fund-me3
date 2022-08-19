@@ -20,6 +20,28 @@ input[type="number"] {
     height: 4em;
     border-radius: 2em;
 }
+input[type="text"] {
+    font-size: 1em;
+    padding: 1em;
+    border-radius: 1em;
+}
+
+label[for="cause-image"] {
+    font-size: 1em;
+    padding: 1em;
+    border-radius: 1em;
+    text-align: center;
+    cursor: pointer;
+    background: rgb(213, 204, 210);
+    margin: 1em;
+}
+
+textarea {
+    font-size: 1em;
+    margin: 1em;
+    height: 15em;
+    border-radius: 1em;
+}
 
 .cause {
     margin-left: 20%;
@@ -31,8 +53,14 @@ input[type="number"] {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1em;
-    padding-bottom: 1em;
+    padding-bottom: 0.5em;
     border-bottom: solid;
+    border-width: meduim;
+    border-color: rgb(115, 115, 115);
+}
+.header-image {
+    width: 50px;
+    height: 50px;
 }
 .container {
     display: flex;
@@ -44,19 +72,26 @@ input[type="number"] {
     flex-direction: column;
     justify-content: flex-start;
 }
+
 .donor-list {
     border-radius: 1em;
     padding: 1em;
     margin: 1em;
     width: 35%;
     background-color: rgb(213, 204, 210);
+    height: 700px;
 }
 
 .cause-name {
     text-align: center;
+    font-size: 2em;
+    font-weight: bold;
 }
 
 .cause-img {
+    border: solid;
+    border-radius: 1em;
+    border-width: thin;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -67,7 +102,6 @@ input[type="number"] {
 img {
     width: 70%;
     height: 100%;
-    border-radius: 1em;
 }
 .cause-id {
     text-align: center;
@@ -86,6 +120,7 @@ img {
 .read-more-button {
     text-decoration: underline;
     color: rgb(15, 41, 242);
+    cursor: pointer;
 }
 .cause-donations {
     text-align: center;
@@ -108,6 +143,18 @@ img {
 .cause-owner-only {
     text-align: center;
 }
+.cause-owner-name {
+    font-size: 1.5em;
+    border-top: solid;
+    border-bottom: solid;
+    border-width: thin;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.cause-owner-actual-name {
+    text-weight: bolder;
+    text-transform: capitalize;
+}
 
 .donation {
     border: solid;
@@ -116,6 +163,13 @@ img {
     padding: 20px;
     padding-left: 5px;
     font-size: 0.8em;
+}
+.edit-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 button {
