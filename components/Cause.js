@@ -30,6 +30,7 @@ const Cause = ({ id }) => {
     const [isGoalReached, setIsGoalReached] = useState(false)
     const [isLocked, setIsLocked] = useState(false)
     const [isWithdrawn, setIsWithdrawn] = useState(false)
+    const [donationList, setDonationList] = useState([])
     const [crowdFunderOwner, setCrowdFunderOwner] = useState("")
     const [amICrowdFunderOwner, setAmICrowdFunderOwner] = useState(false)
     const [uriString, setUriString] = useState("")
@@ -118,6 +119,12 @@ const Cause = ({ id }) => {
         abi: causeABI,
         contractAddress: causeAddress,
         functionName: "getIsWithdrawn",
+        params: {},
+    })
+    const { runContractFunction: getDonationList } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getDonationList",
         params: {},
     })
 
@@ -230,6 +237,15 @@ const Cause = ({ id }) => {
         const isLockedFromCall = await getIsLocked()
         const isWithdrawnFromCall = await getIsWithdrawn()
         const isGoalReachedFromCall = await getIsGoalReached()
+        const donationListFromCall = await getDonationList()
+        const newDonationList = donationListFromCall?.map((donation) => {
+            const newDonation = {
+                donor: donation[0],
+                amount: convertweiToEth(donation[1]?.toString()),
+            }
+            return newDonation
+        })
+        console.log(newDonationList)
         const myDonationFromCall = await getMyDonation()
         const causeURIFromCall = await getCauseURI()
         const numDonationsFromCall = await getNumDonations()
@@ -243,6 +259,7 @@ const Cause = ({ id }) => {
         setIsLocked(isLockedFromCall)
         setMyDonations(myDonationFromCall?.toString())
         setNumDonations(numDonationsFromCall?.toString())
+        setDonationList(newDonationList.reverse())
     }
 
     const updateMetadata = async () => {
@@ -469,15 +486,6 @@ const Cause = ({ id }) => {
             onSuccess: async (tx) => {
                 await tx.wait(1)
                 await updateUI()
-                dispatch({
-                    title: isOpenToDonations ? "Opened to donations" : "Closed to donations",
-                    message: isOpenToDonations
-                        ? "Your cause is now open to donations"
-                        : "Your cause is now closed to donations",
-                    position: "topR",
-                    type: "success",
-                    icon: "bell",
-                })
             },
             onError: async () => {
                 dispatch({
@@ -587,6 +595,11 @@ const Cause = ({ id }) => {
         }
     }, [isWeb3Enabled, uriString])
 
+    useEffect(() => {
+        if (isWeb3Enabled) {
+        }
+    }, [isWeb3Enabled, isOpenToDonations])
+
     //Return Value
     return (
         <div className="cause">
@@ -689,6 +702,15 @@ const Cause = ({ id }) => {
                                 >
                                     DONATE
                                 </button>
+                                {!isOpenToDonations && (
+                                    <div>This cause is currently closed to donations</div>
+                                )}
+                                {isWithdrawn && (
+                                    <div>
+                                        The owner of this cause has withdrawn the balance hence you
+                                        cannot donate to it.
+                                    </div>
+                                )}
                             </div>
                         )}
                         {!amICauseOwner && (
@@ -874,6 +896,15 @@ const Cause = ({ id }) => {
                     )}
                     <div className="num-donations">
                         {numDonations} donation{numDonations != "1" && "s"}
+                    </div>
+                    <div>
+                        {donationList.map((donation, index) => {
+                            return (
+                                <div key={index}>
+                                    {donation.donor} donated {donation.amount}
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

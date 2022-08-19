@@ -18,7 +18,7 @@ export default function Header({ id, amICauseOwner, amICrowdFunderOwner }) {
         params: {},
     })
     const updateUI = async () => {
-        const myCauseFromCall = (await getMyCauseId()).toString()
+        const myCauseFromCall = (await getMyCauseId())?.toString()
         if (myCauseFromCall != "0") {
             setDoIHaveACause(true)
             setMyCauseId(myCauseFromCall?.toString())
