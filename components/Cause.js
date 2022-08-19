@@ -9,6 +9,7 @@ import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
 import { convertweiToEth, convertEthToWei, convertweiToEthNum } from "../utils/converter"
 import Header from "./Header"
 import Four0FourComponent from "./404 Component"
+import { RiFileCopyLine } from "react-icons/ri"
 import ProgressBar from "./progressbar"
 const Cause = ({ id }) => {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
@@ -35,6 +36,7 @@ const Cause = ({ id }) => {
     const [amICrowdFunderOwner, setAmICrowdFunderOwner] = useState(false)
     const [uriString, setUriString] = useState("")
     const [numDonations, setNumDonations] = useState("0")
+    const [numRefunds, setNumRefunds] = useState("0")
     const [showEditModal, toggleEditModal] = useState(false)
     const [newDescription, setNewDescription] = useState("")
     const [name, setName] = useState("")
@@ -77,6 +79,12 @@ const Cause = ({ id }) => {
         abi: causeABI,
         contractAddress: causeAddress,
         functionName: "getNumDonations",
+        params: {},
+    })
+    const { runContractFunction: getNumRefunds } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getNumRefunds",
         params: {},
     })
     const { runContractFunction: getCauseBalance } = useWeb3Contract({
@@ -249,6 +257,7 @@ const Cause = ({ id }) => {
         const myDonationFromCall = await getMyDonation()
         const causeURIFromCall = await getCauseURI()
         const numDonationsFromCall = await getNumDonations()
+        const numRefundsFromCall = await getNumRefunds()
         setUriString(causeURIFromCall?.toString())
         setCauseBalance(causeBalanceFromCall?.toString())
         setCauseName(causeNameFromCall?.toString())
@@ -259,7 +268,8 @@ const Cause = ({ id }) => {
         setIsLocked(isLockedFromCall)
         setMyDonations(myDonationFromCall?.toString())
         setNumDonations(numDonationsFromCall?.toString())
-        setDonationList(newDonationList.reverse())
+        setNumRefunds(numRefundsFromCall?.toString())
+        setDonationList(newDonationList?.reverse())
     }
 
     const updateMetadata = async () => {
@@ -649,23 +659,19 @@ const Cause = ({ id }) => {
                         <div className="cause-id">ID: {id}</div>
                         <div className="cause-owner">
                             CAUSE ADDRESS: {causeAddress}
-                            <button
+                            <RiFileCopyLine
                                 onClick={() => {
                                     navigator.clipboard.writeText(causeAddress)
                                 }}
-                            >
-                                copy
-                            </button>
+                            />
                         </div>
                         <div className="cause-owner">
                             OWNED BY: {causeOwner}
-                            <button
+                            <RiFileCopyLine
                                 onClick={() => {
                                     navigator.clipboard.writeText(causeOwner)
                                 }}
-                            >
-                                copy
-                            </button>
+                            />
                         </div>
                         <div className="cause-donations">
                             DONATIONS: {convertweiToEth(causeBalance)}ETH out of{" "}
@@ -896,14 +902,24 @@ const Cause = ({ id }) => {
                     )}
                     <div className="num-donations">
                         {numDonations} donation{numDonations != "1" && "s"}
+                        {"  "}
+                        {numRefunds} refund{numRefunds != "1" && "s"}
                     </div>
                     <div>
-                        {donationList.map((donation, index) => {
-                            return (
-                                <div key={index}>
-                                    {donation.donor} donated {donation.amount}
-                                </div>
-                            )
+                        {donationList?.map((donation, index) => {
+                            if (parseFloat(donation.amount) > 0) {
+                                return (
+                                    <div key={index} className="donation">
+                                        {donation.donor} donated {donation.amount}
+                                    </div>
+                                )
+                            } else {
+                                return (
+                                    <div key={index} className="donation">
+                                        {donation.donor} got a refund of {donation.amount}
+                                    </div>
+                                )
+                            }
                         })}
                     </div>
                 </div>
