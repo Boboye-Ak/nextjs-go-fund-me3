@@ -4,7 +4,7 @@ import { useMoralis, useWeb3Contract } from "react-moralis"
 import { useEffect, useState } from "react"
 import { crowdFunderABI, crowdFunderAddresses } from "../constants"
 
-export default function Header({ id, amICauseOwner, amICrowdFunderOwner }) {
+export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =

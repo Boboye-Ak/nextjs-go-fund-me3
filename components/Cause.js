@@ -524,7 +524,7 @@ const Cause = ({ id }) => {
                 .then(() => {
                     getCauseById({
                         onError: async () => {
-                            router.push("/404")
+                            router.push("/")
                         },
                     })
                         .then((res) => {
