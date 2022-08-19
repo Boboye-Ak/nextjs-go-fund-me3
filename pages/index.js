@@ -19,10 +19,9 @@ export default function Home() {
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
     const [searchText, setSearchText] = useState("")
     const [causeId, setCauseId] = useState("0")
-    const [myCauseId, setMyCauseId] = useState("0")
-    const [causeAddress, setCauseAddress] = useState("")
+    const [crowdFunderOwner, setCrowdFunderOwner] = useState("")
+    const [amICrowdFunderOwner, setAmICrowdFunderOwner] = useState(false)
     const [error, setError] = useState("")
-    const [doIHaveACause, setDoIHaveACause] = useState(false)
     const dispatch = useNotification()
     const handleTextChange = (e) => {
         setSearchText(e.target.value)
@@ -57,6 +56,12 @@ export default function Home() {
         abi: crowdFunderABI,
         contractAddress: crowdFunderAddress,
         functionName: "getMyCauseId",
+        params: {},
+    })
+    const { runContractFunction: getContractOwner } = useWeb3Contract({
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "getContractOwner",
         params: {},
     })
 
@@ -117,21 +122,23 @@ export default function Home() {
     }
 
     const updateUI = async () => {
-        const myCauseFromCall = (await getMyCauseId())?.toString()
-        if (myCauseFromCall != "0") {
-            setDoIHaveACause(true)
-            setMyCauseId(myCauseFromCall)
-        } else {
-            setDoIHaveACause(false)
-            setMyCauseId(myCauseFromCall)
-        }
+        const crowdFunderOwnerFromCall = (await getContractOwner())?.toString()
+        setCrowdFunderOwner(crowdFunderOwnerFromCall)
     }
 
     useEffect(() => {
-        if (isWeb3Enabled) {
-            updateUI()
+        updateUI()
+    }, [isWeb3Enabled])
+
+    useEffect(() => {
+        if (isWeb3Enabled && crowdFunderOwner) {
+            if (crowdFunderOwner?.toLowerCase() == account.toLowerCase()) {
+                setAmICrowdFunderOwner(true)
+            } else {
+                setAmICrowdFunderOwner(false)
+            }
         }
-    }, [isWeb3Enabled, account, myCauseId])
+    }, [isWeb3Enabled, crowdFunderOwner, account])
 
     useEffect(() => {
         if (isWeb3Enabled) {
@@ -145,7 +152,7 @@ export default function Home() {
                 <meta name="description" content="A Web3 CrowdFunding Website" />
                 <link rel="icon" href="/crowdfunder-tentative-logo.ico" />
             </Head>
-            <Header />
+            <Header amICauseOwner={false} amICrowdFunderOwner={amICrowdFunderOwner} />
             <div className="big-search">
                 <div className="big-search-bar">
                     {" "}
@@ -159,11 +166,13 @@ export default function Home() {
                         placeholder="CAUSE ID, CAUSE OWNER ADDRESS, CAUSE ADDRESS"
                     ></input>
                     <RiSearch2Line
+                        size="2.2em"
                         onClick={async (e) => {
                             await search()
                         }}
                     />
                 </div>
+                {error && <div>{error}</div>}
             </div>
         </div>
     )

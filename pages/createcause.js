@@ -82,7 +82,7 @@ const CreateCause = () => {
     }, [isWeb3Enabled])
     return (
         <div>
-            <Header />
+            <Header amICauseOwner={false} amICrowdFunderOwner={false} />
             Create Cause Page
             <form>
                 <input

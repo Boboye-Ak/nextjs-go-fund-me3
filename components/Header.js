@@ -46,7 +46,9 @@ export default function Header({ id, amICauseOwner, amICrowdFunderOwner }) {
                 )}
             </div>
             <div>
-                <img src="/crowdfunder-tentative-logo.png" className="header-image"></img>
+                <Link href="/">
+                    <img src="/crowdfunder-tentative-logo.png" className="header-image"></img>
+                </Link>
             </div>
 
             <div>
