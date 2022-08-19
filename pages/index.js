@@ -3,6 +3,7 @@ import Image from "next/image"
 import styles from "../styles/Home.module.css"
 import Header from "../components/Header"
 import Link from "next/link"
+import { RiSearch2Line } from "react-icons/ri"
 import { useNotification } from "web3uikit"
 import { useEffect, useState } from "react"
 import { useMoralis, useWeb3Contract } from "react-moralis"
@@ -145,24 +146,24 @@ export default function Home() {
                 <link rel="icon" href="/crowdfunder-tentative-logo.ico" />
             </Head>
             <Header />
-            <div>
-                <input
-                    type="text"
-                    onChange={(e) => {
-                        handleTextChange(e)
-                    }}
-                    value={searchText}
-                    placeholder="CAUSE ID, CAUSE OWNER ADDRESS, CAUSE ADDRESS"
-                ></input>
-                <p>{error ? error : causeId}</p>
-                <button
-                    onClick={async (e) => {
-                        await search()
-                    }}
-                >
-                    SEARCH
-                </button>
-                <Link href="/cause/1">Link to Cause with ID 1</Link>
+            <div className="big-search">
+                <div className="big-search-bar">
+                    {" "}
+                    <input
+                        id="big-search-bar-input"
+                        type="text"
+                        onChange={(e) => {
+                            handleTextChange(e)
+                        }}
+                        value={searchText}
+                        placeholder="CAUSE ID, CAUSE OWNER ADDRESS, CAUSE ADDRESS"
+                    ></input>
+                    <RiSearch2Line
+                        onClick={async (e) => {
+                            await search()
+                        }}
+                    />
+                </div>
             </div>
         </div>
     )

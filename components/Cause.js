@@ -830,7 +830,7 @@ const Cause = ({ id }) => {
                                             setURIIsFetching || setURIIsLoading || isUploading
                                         }
                                     >
-                                        EDIT
+                                        SUBMIT EDIT
                                     </button>
                                 </div>
                                 <div className="cause-owner-only">
@@ -874,29 +874,35 @@ const Cause = ({ id }) => {
                                     </div>
                                 )}
                                 {isOpenToDonations ? (
-                                    <button
-                                        onClick={handleOpenToDonations}
-                                        disabled={
-                                            isWithdrawn ||
-                                            isLocked ||
-                                            switchIsOpenToDonationsIsFetching ||
-                                            switchIsOpenToDonationsIsLoading
-                                        }
-                                    >
-                                        CLOSE TO DONATIONS
-                                    </button>
+                                    <div className="cause-owner-only">
+                                        {" "}
+                                        <button
+                                            onClick={handleOpenToDonations}
+                                            disabled={
+                                                isWithdrawn ||
+                                                isLocked ||
+                                                switchIsOpenToDonationsIsFetching ||
+                                                switchIsOpenToDonationsIsLoading
+                                            }
+                                        >
+                                            CLOSE TO DONATIONS
+                                        </button>
+                                    </div>
                                 ) : (
-                                    <button
-                                        disabled={
-                                            isWithdrawn ||
-                                            isLocked ||
-                                            switchIsOpenToDonationsIsFetching ||
-                                            switchIsOpenToDonationsIsLoading
-                                        }
-                                        onClick={handleOpenToDonations}
-                                    >
-                                        OPEN TO DONATIONS
-                                    </button>
+                                    <div className="cause-owner-only">
+                                        {" "}
+                                        <button
+                                            disabled={
+                                                isWithdrawn ||
+                                                isLocked ||
+                                                switchIsOpenToDonationsIsFetching ||
+                                                switchIsOpenToDonationsIsLoading
+                                            }
+                                            onClick={handleOpenToDonations}
+                                        >
+                                            OPEN TO DONATIONS
+                                        </button>
+                                    </div>
                                 )}
                             </div>
                         )}
