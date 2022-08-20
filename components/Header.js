@@ -57,7 +57,9 @@ export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
                 {amICrowdFunderOwner && (
                     <div className="logged-in-as">Logged in as the Site Admin</div>
                 )}
-                <ConnectButton moralisAuth={false} />
+                <div className="connect-button">
+                    <ConnectButton moralisAuth={false} />
+                </div>
             </div>
         </div>
     )

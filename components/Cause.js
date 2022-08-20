@@ -16,6 +16,7 @@ import {
     RiArrowDropRightLine,
     RiUpload2Fill,
     RiInstagramLine,
+    RiArrowDropUpLine,
 } from "react-icons/ri"
 import { FaShareSquare, FaEthereum } from "react-icons/fa"
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi"
@@ -665,7 +666,7 @@ const Cause = ({ id }) => {
                                             toggleShowFullDescription(true)
                                         }}
                                     >
-                                        {"  "}read more
+                                        <RiArrowDownSLine size="1.5em" />
                                     </a>
                                 </>
                             ) : (
@@ -678,8 +679,7 @@ const Cause = ({ id }) => {
                                             toggleShowFullDescription(false)
                                         }}
                                     >
-                                        {"  "}
-                                        read less
+                                        <RiArrowDropUpLine size="1.5em" />
                                     </a>
                                 </div>
                             )}
@@ -731,14 +731,14 @@ const Cause = ({ id }) => {
                             {convertweiToEth(causeBalance)} out of {convertweiToEth(goal)}
                             <FaEthereum />
                             <ProgressBar
-                                bgcolor={"#6a1b9a"}
+                                bgcolor={"#02ba23"}
                                 completed={
                                     (convertweiToEth(causeBalance) / convertweiToEth(goal)) * 100
                                 }
                             />
                         </div>
 
-                        {!amICauseOwner && (
+                        {!amICauseOwner && !isWithdrawn && !isGoalReached && (
                             <div>
                                 {" "}
                                 <input
@@ -749,7 +749,7 @@ const Cause = ({ id }) => {
                                         setDonationAmount(e.target.value)
                                     }}
                                 ></input>
-                                ETH
+                                <FaEthereum />
                                 <button
                                     onClick={handleDonate}
                                     disabled={
@@ -765,12 +765,6 @@ const Cause = ({ id }) => {
                                 </button>
                                 {!isOpenToDonations && (
                                     <div>This cause is currently closed to donations</div>
-                                )}
-                                {isWithdrawn && (
-                                    <div>
-                                        The owner of this cause has withdrawn the balance hence you
-                                        cannot donate to it.
-                                    </div>
                                 )}
                             </div>
                         )}
@@ -789,13 +783,13 @@ const Cause = ({ id }) => {
 
                         {isWithdrawn &&
                             (amICauseOwner ? (
-                                <div>
+                                <div className="withdrawal-info">
                                     You have withdrawn the donations to this cause to your wallet
                                     with address
                                     {causeOwner}
                                 </div>
                             ) : (
-                                <div>
+                                <div className="withdrawal-info">
                                     The owner of this cause has withdrawn the donations to his
                                     wallet {causeOwner}
                                 </div>
@@ -967,15 +961,15 @@ const Cause = ({ id }) => {
                             </button>
                         )}
                         {isWithdrawn && (
-                            <div>
-                                This Cause has been withdrawn from, hence donations and withdrawals
-                                can no longer be made.{" "}
+                            <div className="red-info">
+                                This Cause has been withdrawn from, hence donations can no longer be
+                                made.{" "}
                             </div>
                         )}
                         {isLocked && (
-                            <div>
+                            <div className="red-info">
                                 This cause is currently locked by the site admin. You cannot make a
-                                donation at the moment.
+                                donation or withdrawal at the moment.
                             </div>
                         )}
                     </div>
@@ -996,19 +990,28 @@ const Cause = ({ id }) => {
                                 if (parseFloat(donation.amount) > 0) {
                                     return (
                                         <div key={index} className="donation">
-                                            {donation.donor} donated {donation.amount}ETH
+                                            <FaEthereum color="#02ba23" />
+                                            <div>
+                                                {donation.donor} donated {donation.amount}ETH
+                                            </div>
                                         </div>
                                     )
                                 } else {
                                     return (
                                         <div key={index} className="donation">
-                                            {donation.donor} got a refund of {donation.amount}ETH
+                                            <FaEthereum color="#02ba23" />
+                                            <div>
+                                                {donation.donor} got a refund of {donation.amount}
+                                                ETH
+                                            </div>
                                         </div>
                                     )
                                 }
                             })}
                             {numDonations > 6 && (
-                                <a className="read-more-button">Show full donor list</a>
+                                <a className="read-more-button">
+                                    <RiArrowDownSLine />
+                                </a>
                             )}
                         </div>
                         <div
@@ -1035,6 +1038,7 @@ const Cause = ({ id }) => {
                                         target="_blank"
                                     >
                                         <IoLogoTwitter
+                                            color="#02ba23"
                                             size={iconSize.twitter}
                                             onMouseEnter={(e) => {
                                                 setIconSize({ ...iconSize, twitter: "3em" })
@@ -1046,6 +1050,7 @@ const Cause = ({ id }) => {
                                     </a>
                                     <a className="share-icon">
                                         <IoLogoFacebook
+                                            color="#02ba23"
                                             size={iconSize.faceBook}
                                             onMouseEnter={(e) => {
                                                 setIconSize({ ...iconSize, faceBook: "3em" })
@@ -1057,6 +1062,7 @@ const Cause = ({ id }) => {
                                     </a>
                                     <a className="share-icon">
                                         <SiGmail
+                                            color="#02ba23"
                                             size={iconSize.email}
                                             onMouseEnter={(e) => {
                                                 setIconSize({ ...iconSize, email: "3em" })
@@ -1068,6 +1074,7 @@ const Cause = ({ id }) => {
                                     </a>
                                     <a className="share-icon">
                                         <RiInstagramLine
+                                            color="#02ba23"
                                             size={iconSize.instagram}
                                             onMouseEnter={(e) => {
                                                 setIconSize({ ...iconSize, instagram: "3em" })
@@ -1079,9 +1086,17 @@ const Cause = ({ id }) => {
                                     </a>
                                     <a className="share-icon">
                                         <RiFileCopyLine
+                                            color="#02ba23"
                                             size={iconSize.copyToClip}
                                             onClick={() => {
                                                 navigator.clipboard.writeText(shareURL)
+                                                dispatch({
+                                                    title: "Copied!",
+                                                    message: "Campaign link copied to clipboard",
+                                                    icon: "bell",
+                                                    position: "topR",
+                                                    type: "success",
+                                                })
                                             }}
                                             onMouseEnter={(e) => {
                                                 setIconSize({ ...iconSize, copyToClip: "3em" })
@@ -1096,7 +1111,7 @@ const Cause = ({ id }) => {
                                 <>
                                     <span id="share-text">
                                         SHARE {"  "}
-                                        <FaShareSquare />
+                                        <FaShareSquare color="#02ba23" />
                                     </span>
                                 </>
                             )}
