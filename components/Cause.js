@@ -14,7 +14,12 @@ import {
     RiArrowDownSLine,
     RiArrowDropRightLine,
     RiUpload2Fill,
+    RiInstagramLine,
 } from "react-icons/ri"
+import { FaShareSquare } from "react-icons/fa"
+import { GiPadlock, GiPadlockOpen } from "react-icons/gi"
+import { IoLogoTwitter, IoLogoFacebook } from "react-icons/io"
+import { SiGmail } from "react-icons/si"
 import ProgressBar from "./progressbar"
 const Cause = ({ id }) => {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
@@ -43,6 +48,7 @@ const Cause = ({ id }) => {
     const [numDonations, setNumDonations] = useState("0")
     const [numRefunds, setNumRefunds] = useState("0")
     const [showEditModal, toggleEditModal] = useState(false)
+    const [showShareModal, toggleShowShareModal] = useState(false)
     const [newDescription, setNewDescription] = useState("")
     const [name, setName] = useState("")
     const [newName, setNewName] = useState("")
@@ -625,8 +631,8 @@ const Cause = ({ id }) => {
             />
 
             <div className="container">
-                <div className="cause-body">
-                    <div className="cause-info">
+                <div className="body-and-donors">
+                    <div className="cause-body">
                         <div className="cause-name">{causeName?.toUpperCase()}</div>
                         <div className="cause-img">
                             <img src={imgUri}></img>
@@ -640,7 +646,7 @@ const Cause = ({ id }) => {
                         <div className="cause-description">
                             {!showFullDescription ? (
                                 <div>
-                                    {description.slice(0, 200)}...
+                                    {description.slice(0, 500)}...
                                     <a
                                         className="read-more-button"
                                         onClick={() => {
@@ -691,16 +697,17 @@ const Cause = ({ id }) => {
                                 }}
                             />
                         </div>
-                        <div className="cause-donations">
-                            DONATIONS: {convertweiToEth(causeBalance)}ETH out of{" "}
-                            {convertweiToEth(goal)}ETH
+                        <div className="progress">
+                            {convertweiToEth(causeBalance)}ETH out of {convertweiToEth(goal)}
+                            ETH
+                            <ProgressBar
+                                bgcolor={"#6a1b9a"}
+                                completed={
+                                    (convertweiToEth(causeBalance) / convertweiToEth(goal)) * 100
+                                }
+                            />
                         </div>
-                        <ProgressBar
-                            bgcolor={"#6a1b9a"}
-                            completed={
-                                (convertweiToEth(causeBalance) / convertweiToEth(goal)) * 100
-                            }
-                        />
+
                         {!amICauseOwner && (
                             <div>
                                 {" "}
@@ -739,7 +746,6 @@ const Cause = ({ id }) => {
                         )}
                         {!amICauseOwner && (
                             <div>
-                                You have donated {convertweiToEth(myDonations)} to this cause
                                 <button
                                     onClick={handleRefund}
                                     disabled={
@@ -787,7 +793,7 @@ const Cause = ({ id }) => {
                             </div>
                         )}
                         {amICauseOwner && showEditModal && !isLocked && (
-                            <div>
+                            <div className="edit-area">
                                 <div className="edit-modal">
                                     <input
                                         type="text"
@@ -887,6 +893,7 @@ const Cause = ({ id }) => {
                                         >
                                             CLOSE TO DONATIONS
                                         </button>
+                                        <GiPadlock size="1.5em" />
                                     </div>
                                 ) : (
                                     <div className="cause-owner-only">
@@ -902,6 +909,7 @@ const Cause = ({ id }) => {
                                         >
                                             OPEN TO DONATIONS
                                         </button>
+                                        <GiPadlockOpen size="1.5em" />
                                     </div>
                                 )}
                             </div>
@@ -941,35 +949,74 @@ const Cause = ({ id }) => {
                             </div>
                         )}
                     </div>
-                </div>
-                <div className="donor-list">
-                    {!amICauseOwner && (
-                        <div className="your-donation">
-                            You've donated {convertweiToEth(myDonations)}ETH to this cause
+                    <div className="donor-list-and-share">
+                        {!amICauseOwner && (
+                            <div className="your-donation">
+                                You've donated {convertweiToEth(myDonations)}ETH to this cause
+                            </div>
+                        )}
+                        <div className="num-donations">
+                            {numDonations} donation{numDonations != "1" && "s"}
+                            {"  "}
+                            {numRefunds} refund{numRefunds != "1" && "s"}
                         </div>
-                    )}
-                    <div className="num-donations">
-                        {numDonations} donation{numDonations != "1" && "s"}
-                        {"  "}
-                        {numRefunds} refund{numRefunds != "1" && "s"}
-                    </div>
-                    <div>
-                        {donationList?.slice(0, 6)?.map((donation, index) => {
-                            if (parseFloat(donation.amount) > 0) {
-                                return (
-                                    <div key={index} className="donation">
-                                        {donation.donor} donated {donation.amount}ETH
-                                    </div>
-                                )
-                            } else {
-                                return (
-                                    <div key={index} className="donation">
-                                        {donation.donor} got a refund of {donation.amount}ETH
-                                    </div>
-                                )
-                            }
-                        })}
-                        <a className="read-more-button">Show full donor list</a>
+                        <div className="donor-list">
+                            {donationList?.slice(0, 6)?.map((donation, index) => {
+                                if (parseFloat(donation.amount) > 0) {
+                                    return (
+                                        <div key={index} className="donation">
+                                            {donation.donor} donated {donation.amount}ETH
+                                        </div>
+                                    )
+                                } else {
+                                    return (
+                                        <div key={index} className="donation">
+                                            {donation.donor} got a refund of {donation.amount}ETH
+                                        </div>
+                                    )
+                                }
+                            })}
+                            {numDonations > 6 && (
+                                <a className="read-more-button">Show full donor list</a>
+                            )}
+                        </div>
+                        <div
+                            className="share-module"
+                            onMouseEnter={() => {
+                                toggleShowShareModal(true)
+                            }}
+                            onMouseLeave={() => {
+                                toggleShowShareModal(false)
+                            }}
+                        >
+                            {showShareModal ? (
+                                <>
+                                    {" "}
+                                    <a className="share-icon">
+                                        <IoLogoTwitter size="2em" />
+                                    </a>
+                                    <a className="share-icon">
+                                        <IoLogoFacebook size="2em" />
+                                    </a>
+                                    <a className="share-icon">
+                                        <SiGmail size="2em" />
+                                    </a>
+                                    <a className="share-icon">
+                                        <RiInstagramLine size="2em" />
+                                    </a>
+                                    <a className="share-icon">
+                                        <RiFileCopyLine size="2em" />
+                                    </a>
+                                </>
+                            ) : (
+                                <>
+                                    <span id="share-text">
+                                        SHARE {"  "}
+                                        <FaShareSquare />
+                                    </span>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -28,6 +28,7 @@ input[type="text"] {
 
 .big-search-bar {
     border: solid;
+    border-color: rgb(115, 115, 115);
     width: 40vw;
     display: flex;
     justify-content: flex-start;
@@ -60,8 +61,8 @@ textarea {
 }
 
 .cause {
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 15%;
+    margin-right: 15%;
 }
 .header {
     display: flex;
@@ -80,34 +81,62 @@ textarea {
 }
 .container {
     display: flex;
+    flex-direction: column;
+}
+.body-and-donors {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .cause-body {
+    padding: 1em;
+    border-left: solid;
+    border-right: solid;
+    border-width: thin;
+    border-color: rgb(115, 115, 115);
     margin: 1em;
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: flex-start;
+    width: 62.5%;
 }
 
-.donor-list {
+.donor-list-and-share {
     border-radius: 1em;
     padding: 1em;
     margin: 1em;
-    width: 35%;
+    width: 32.5%;
     background-color: rgb(213, 204, 210);
-    height: 700px;
+    height: 800px;
 }
-
+.donor-list {
+    height: 70%;
+}
+.share-module {
+    text-weight: bold;
+    padding: 1em;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    height: 70px;
+    border: solid;
+    border-radius: 2em;
+}
+#share-text {
+    font-size: 2em;
+}
 .cause-name {
-    text-align: center;
+    width: 100%;
     font-size: 2em;
     font-weight: bold;
+    text-align: center;
 }
 
 .cause-img {
     border: solid;
     border-radius: 1em;
     border-width: thin;
+    border-color: rgb(115, 115, 115);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -130,6 +159,11 @@ img {
     text-align: center;
 }
 .cause-description {
+    margin-top: 0;
+    padding-top: 0.5em;
+    border-botton: solid;
+    border-width: thin;
+    border-color: rgb(115, 115, 115);
     font-size: 1em;
     text-align: left;
 }
@@ -138,34 +172,46 @@ img {
     color: rgb(15, 41, 242);
     cursor: pointer;
 }
-.cause-donations {
-    text-align: center;
+.progress {
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+    border-radius: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid;
+    width: 90%;
 }
-
 .progress-bar {
-    width: 100%;
+    width: 90%;
 }
 
 .your-donation {
     border-bottom: solid;
+    border-color: rgb(115, 115, 115);
     padding: 0.5em;
     margin: 0.5em;
 }
 .num-donations {
     border-bottom: solid;
+    border-color: rgb(115, 115, 115);
     padding: 0.5em;
     margin: 0.5em;
 }
 .cause-owner-only {
     text-align: center;
+    margin: 1em;
 }
 .cause-owner-name {
+    width: 100%;
+    text-align: left;
     font-size: 1.5em;
-    border-top: solid;
     border-bottom: solid;
     border-width: thin;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    border-color: rgb(115, 115, 115);
+    margin-top: 0.5em;
+    margin-bottom: 0;
+    padding-bottom: 0.5em;
 }
 .cause-owner-actual-name {
     text-weight: bolder;
@@ -174,6 +220,7 @@ img {
 
 .donation {
     border: solid;
+    border-color: rgb(115, 115, 115);
     border-radius: 1em;
     margin: 0.5em;
     padding: 20px;
@@ -181,11 +228,15 @@ img {
     font-size: 0.8em;
 }
 .edit-modal {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin-top: 1em;
     margin-bottom: 1em;
+}
+.edit-area {
+    width: 100%;
 }
 
 button {
