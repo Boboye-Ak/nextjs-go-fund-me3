@@ -1035,7 +1035,12 @@ const Cause = ({ id }) => {
                                         <RiInstagramLine size="2em" />
                                     </a>
                                     <a className="share-icon">
-                                        <RiFileCopyLine size="2em" />
+                                        <RiFileCopyLine
+                                            size="2em"
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(shareURL)
+                                            }}
+                                        />
                                     </a>
                                 </>
                             ) : (
