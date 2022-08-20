@@ -61,6 +61,13 @@ const Cause = ({ id }) => {
     const [isUploading, setIsUploading] = useState(false)
     const [newOwner, setNewOwner] = useState("")
     const [changeOwnershipModal, toggleChangeOwnershipModal] = useState(false)
+    const [iconSize, setIconSize] = useState({
+        twitter: "2em",
+        faceBook: "2em",
+        instagram: "2em",
+        email: "2em",
+        copyToClip: "2em",
+    })
     const [error, setError] = useState("")
 
     //WEB3 VIEW FUNCTIONS
@@ -684,18 +691,20 @@ const Cause = ({ id }) => {
                         >
                             CAUSE ADDRESS: {causeAddress}
                             {"  "}
-                            <RiFileCopyLine
-                                onClick={() => {
-                                    navigator.clipboard.writeText(causeAddress)
-                                    dispatch({
-                                        title: "Copied!",
-                                        message: "Cause Address Copied To Clipboard",
-                                        icon: "bell",
-                                        position: "topR",
-                                        type: "success",
-                                    })
-                                }}
-                            />
+                            <span className="copy-icon">
+                                <RiFileCopyLine
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(causeAddress)
+                                        dispatch({
+                                            title: "Copied!",
+                                            message: "Cause Address Copied To Clipboard",
+                                            icon: "bell",
+                                            position: "topR",
+                                            type: "success",
+                                        })
+                                    }}
+                                />
+                            </span>
                         </div>
                         <div
                             className="cause-owner"
@@ -703,18 +712,20 @@ const Cause = ({ id }) => {
                         >
                             OWNED BY: {causeOwner}
                             {"  "}
-                            <RiFileCopyLine
-                                onClick={() => {
-                                    navigator.clipboard.writeText(causeOwner)
-                                    dispatch({
-                                        title: "Copied!",
-                                        message: "Cause Owner Address Copied To Clipboard",
-                                        icon: "bell",
-                                        position: "topR",
-                                        type: "success",
-                                    })
-                                }}
-                            />
+                            <span className="copy-icon">
+                                <RiFileCopyLine
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(causeOwner)
+                                        dispatch({
+                                            title: "Copied!",
+                                            message: "Cause Owner Address Copied To Clipboard",
+                                            icon: "bell",
+                                            position: "topR",
+                                            type: "success",
+                                        })
+                                    }}
+                                />
+                            </span>
                         </div>
                         <div className="progress">
                             {convertweiToEth(causeBalance)} out of {convertweiToEth(goal)}
@@ -1014,31 +1025,69 @@ const Cause = ({ id }) => {
                                     {" "}
                                     <a
                                         className="share-icon"
-                                        href={`https://twitter.com/intent/tweet?text=Donate%20to%20${name.replace(
+                                        href={`https://twitter.com/intent/tweet?text=Donate%20to%20${name?.replace(
                                             / /g,
                                             "%20"
-                                        )}'s%20campaign%20"${causeName.replace(
+                                        )}'s%20campaign%20"${causeName?.replace(
                                             / /g,
                                             "%20"
                                         )}"%20${shareURL}`}
                                         target="_blank"
                                     >
-                                        <IoLogoTwitter size="2em" />
+                                        <IoLogoTwitter
+                                            size={iconSize.twitter}
+                                            onMouseEnter={(e) => {
+                                                setIconSize({ ...iconSize, twitter: "3em" })
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                setIconSize({ ...iconSize, twitter: "2em" })
+                                            }}
+                                        />
                                     </a>
                                     <a className="share-icon">
-                                        <IoLogoFacebook size="2em" />
+                                        <IoLogoFacebook
+                                            size={iconSize.faceBook}
+                                            onMouseEnter={(e) => {
+                                                setIconSize({ ...iconSize, faceBook: "3em" })
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                setIconSize({ ...iconSize, faceBook: "2em" })
+                                            }}
+                                        />
                                     </a>
                                     <a className="share-icon">
-                                        <SiGmail size="2em" />
+                                        <SiGmail
+                                            size={iconSize.email}
+                                            onMouseEnter={(e) => {
+                                                setIconSize({ ...iconSize, email: "3em" })
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                setIconSize({ ...iconSize, email: "2em" })
+                                            }}
+                                        />
                                     </a>
                                     <a className="share-icon">
-                                        <RiInstagramLine size="2em" />
+                                        <RiInstagramLine
+                                            size={iconSize.instagram}
+                                            onMouseEnter={(e) => {
+                                                setIconSize({ ...iconSize, instagram: "3em" })
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                setIconSize({ ...iconSize, instagram: "2em" })
+                                            }}
+                                        />
                                     </a>
                                     <a className="share-icon">
                                         <RiFileCopyLine
-                                            size="2em"
+                                            size={iconSize.copyToClip}
                                             onClick={() => {
                                                 navigator.clipboard.writeText(shareURL)
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                setIconSize({ ...iconSize, copyToClip: "3em" })
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                setIconSize({ ...iconSize, copyToClip: "2em" })
                                             }}
                                         />
                                     </a>
