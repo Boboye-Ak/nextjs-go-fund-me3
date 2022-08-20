@@ -682,6 +682,13 @@ const Cause = ({ id }) => {
                             <RiFileCopyLine
                                 onClick={() => {
                                     navigator.clipboard.writeText(causeAddress)
+                                    dispatch({
+                                        title: "Copied!",
+                                        message: "Cause Address Copied To Clipboard",
+                                        icon: "bell",
+                                        position: "topR",
+                                        type: "success",
+                                    })
                                 }}
                             />
                         </div>
@@ -694,6 +701,13 @@ const Cause = ({ id }) => {
                             <RiFileCopyLine
                                 onClick={() => {
                                     navigator.clipboard.writeText(causeOwner)
+                                    dispatch({
+                                        title: "Copied!",
+                                        message: "Cause Owner Address Copied To Clipboard",
+                                        icon: "bell",
+                                        position: "topR",
+                                        type: "success",
+                                    })
                                 }}
                             />
                         </div>
