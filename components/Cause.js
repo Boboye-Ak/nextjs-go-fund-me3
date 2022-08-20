@@ -7,6 +7,7 @@ import axios from "axios"
 import { ethers } from "ethers"
 import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
 import { convertweiToEth, convertEthToWei, convertweiToEthNum } from "../utils/converter"
+import { siteURL } from "../nextjs.helper.config"
 import Header from "./Header"
 import Four0FourComponent from "./404 Component"
 import {
@@ -16,12 +17,13 @@ import {
     RiUpload2Fill,
     RiInstagramLine,
 } from "react-icons/ri"
-import { FaShareSquare } from "react-icons/fa"
+import { FaShareSquare, FaEthereum } from "react-icons/fa"
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi"
 import { IoLogoTwitter, IoLogoFacebook } from "react-icons/io"
 import { SiGmail } from "react-icons/si"
 import ProgressBar from "./progressbar"
 const Cause = ({ id }) => {
+    const shareURL = `${siteURL}/cause/${id}`
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
@@ -633,7 +635,10 @@ const Cause = ({ id }) => {
             <div className="container">
                 <div className="body-and-donors">
                     <div className="cause-body">
-                        <div className="cause-name">{causeName?.toUpperCase()}</div>
+                        <div className="cause-name">
+                            <div>{causeName?.toUpperCase()}</div>
+                            <div className="cause-id">#{id}</div>
+                        </div>
                         <div className="cause-img">
                             <img src={imgUri}></img>
                         </div>
@@ -643,9 +648,9 @@ const Cause = ({ id }) => {
                                 <span className="cause-owner-actual-name">{name}</span>
                             </div>
                         )}
-                        <div className="cause-description">
+                        <div className={`cause-description ${!showFullDescription && "fade"}`}>
                             {!showFullDescription ? (
-                                <div>
+                                <>
                                     {description.slice(0, 500)}...
                                     <a
                                         className="read-more-button"
@@ -655,7 +660,7 @@ const Cause = ({ id }) => {
                                     >
                                         {"  "}read more
                                     </a>
-                                </div>
+                                </>
                             ) : (
                                 <div>
                                     {" "}
@@ -672,7 +677,7 @@ const Cause = ({ id }) => {
                                 </div>
                             )}
                         </div>
-                        <div className="cause-id">ID: {id}</div>
+
                         <div
                             className="cause-owner"
                             title="The ethereum contract address of the cause You can donate to this cause by transferring ethereum to this address.(You can demand a refund later)"
@@ -712,8 +717,8 @@ const Cause = ({ id }) => {
                             />
                         </div>
                         <div className="progress">
-                            {convertweiToEth(causeBalance)}ETH out of {convertweiToEth(goal)}
-                            ETH
+                            {convertweiToEth(causeBalance)} out of {convertweiToEth(goal)}
+                            <FaEthereum />
                             <ProgressBar
                                 bgcolor={"#6a1b9a"}
                                 completed={
@@ -966,7 +971,8 @@ const Cause = ({ id }) => {
                     <div className="donor-list-and-share">
                         {!amICauseOwner && (
                             <div className="your-donation">
-                                You've donated {convertweiToEth(myDonations)}ETH to this cause
+                                You've donated {convertweiToEth(myDonations)}
+                                <FaEthereum /> to this cause
                             </div>
                         )}
                         <div className="num-donations">
@@ -1006,7 +1012,17 @@ const Cause = ({ id }) => {
                             {showShareModal ? (
                                 <>
                                     {" "}
-                                    <a className="share-icon">
+                                    <a
+                                        className="share-icon"
+                                        href={`https://twitter.com/intent/tweet?text=Donate%20to%20${name.replace(
+                                            / /g,
+                                            "%20"
+                                        )}'s%20campaign%20"${causeName.replace(
+                                            / /g,
+                                            "%20"
+                                        )}"%20${shareURL}`}
+                                        target="_blank"
+                                    >
                                         <IoLogoTwitter size="2em" />
                                     </a>
                                     <a className="share-icon">

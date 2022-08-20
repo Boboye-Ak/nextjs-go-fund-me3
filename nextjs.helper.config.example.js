@@ -7,5 +7,5 @@ const pinataHeaders = {
     pinata_api_key: env.PINATA_API_KEY,
     pinata_secret_api_key: env.PINATA_API_SECRET,
 }
-
-module.exports = { env, pinataHeaders }
+const siteURL = "http://localhost:3000"
+module.exports = { env, pinataHeaders, siteURL }

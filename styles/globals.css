@@ -34,6 +34,7 @@ input[type="text"] {
     justify-content: flex-start;
     border-radius: 2em;
 }
+
 #big-search-bar-input {
     width: 95%;
     height: 100%;
@@ -123,9 +124,11 @@ textarea {
     border-radius: 2em;
 }
 #share-text {
-    font-size: 2em;
+    font-size: 1.5em;
 }
 .cause-name {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
     font-size: 2em;
     font-weight: bold;
@@ -160,6 +163,7 @@ img {
 }
 .cause-description {
     margin-top: 0;
+    margin-bottom: 1em;
     padding-top: 0.5em;
     border-botton: solid;
     border-width: thin;

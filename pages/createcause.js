@@ -92,6 +92,7 @@ const CreateCause = () => {
                     onChange={(e) => {
                         setCauseName(e.target.value)
                     }}
+                    maxlength="30"
                 ></input>
                 <input
                     type="number"
