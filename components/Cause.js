@@ -376,6 +376,8 @@ const Cause = ({ id }) => {
                 .then((res) => {
                     console.log(res)
                     setUriString(res)
+                    setNewDescription("")
+                    setNewName("")
                 })
 
                 .catch((error) => {
@@ -760,7 +762,8 @@ const Cause = ({ id }) => {
                                         isLocked ||
                                         isGoalReached ||
                                         donateIsFetching ||
-                                        donateIsLoading
+                                        donateIsLoading ||
+                                        !donationAmount
                                     }
                                 >
                                     DONATE

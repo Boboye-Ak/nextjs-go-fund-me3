@@ -83,8 +83,7 @@ const CreateCause = () => {
     return (
         <div>
             <Header amICauseOwner={false} amICrowdFunderOwner={false} />
-            Create Cause Page
-            <form>
+            <form className="create-cause-form">
                 <input
                     type="text"
                     value={causeName}

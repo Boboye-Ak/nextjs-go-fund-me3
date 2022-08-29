@@ -27,7 +27,7 @@ input[type="text"] {
 }
 .copy-icon {
     cursor: pointer;
-    transition: display ease-in-out 2s;
+    transition: 200ms ease-in-out;
 }
 .big-search-bar {
     border: solid;
@@ -183,7 +183,7 @@ img {
     border-color: rgb(115, 115, 115);
     font-size: 1em;
     text-align: left;
-    transition: display ease-in-out 2s;
+    transition: 200ms ease-in-out;
 }
 .read-more-button {
     text-decoration: underline;
@@ -250,7 +250,7 @@ img {
     padding: 20px;
     padding-left: 5px;
     font-size: 0.8em;
-    transition: display ease-in-out 2s;
+    transition: 200ms ease-in-out;
 }
 
 .donation:hover {
@@ -271,6 +271,7 @@ img {
 }
 
 button {
+    cursor: pointer;
     background-color: white;
     color: rgb(2, 186, 35);
     border-color: rgb(115, 115, 115);
@@ -290,6 +291,32 @@ button {
 }
 .red-info {
     color: red;
+}
+.create-cause-form {
+    margin-top: 5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80vh;
+}
+.create-cause-form > input {
+    height: 5em;
+    width: 70%;
+}
+
+.create-cause-form > button {
+    width: 70%;
+    height: 5em;
+}
+.container-404 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.container-404 > img {
+    width: 50vw;
+    height: 70vh;
 }
 
 @media (prefers-color-scheme: dark) {
