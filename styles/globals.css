@@ -117,7 +117,7 @@ textarea {
     height: 70%;
 }
 .share-module {
-    text-weight: bold;
+    font-size: bold;
     padding: 1em;
     display: flex;
     justify-content: space-around;
@@ -234,7 +234,7 @@ img {
     padding-bottom: 0.5em;
 }
 .cause-owner-actual-name {
-    text-weight: bolder;
+    font-size: bolder;
     text-transform: capitalize;
 }
 
@@ -243,7 +243,8 @@ img {
     cursor: pointer;
     border: solid;
     border-color: rgb(115, 115, 115);
-    border-radius: 1em;
+    border-bottom: rgb(8, 255, 54);
+    border-radius: 2em;
     margin: 0.5em;
     padding: 20px;
     padding-left: 5px;

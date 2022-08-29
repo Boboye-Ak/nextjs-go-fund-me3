@@ -648,7 +648,9 @@ const Cause = ({ id }) => {
                             <div className="cause-id">#{id}</div>
                         </div>
                         <div className="cause-img">
-                            <img src={imgUri}></img>
+                            <img
+                                src={imgUri ? imgUri : "/blank-profile-picture-g68da58bec_1280.png"}
+                            ></img>
                         </div>
                         {name && (
                             <div className="cause-owner-name">
