@@ -1040,8 +1040,10 @@ const Cause = ({ id }) => {
                             onMouseEnter={() => {
                                 toggleShowShareModal(true)
                             }}
-                            onMouseLeave={() => {
-                                toggleShowShareModal(false)
+                            onClick={() => {
+                                if (!showShareModal) {
+                                    toggleShowShareModal(true)
+                                }
                             }}
                         >
                             {showShareModal ? (
@@ -1083,7 +1085,13 @@ const Cause = ({ id }) => {
                                     </a>
                                     <a
                                         className="share-icon"
-                                        href="mailto:sample@gmail.com?subject="
+                                        href={`mailto:sample@gmail.com?subject=Donate%20to%20${name?.replace(
+                                            / /g,
+                                            "%20"
+                                        )}'s%20campaign%20"${causeName?.replace(
+                                            / /g,
+                                            "%20"
+                                        )}"%20${shareURL}`}
                                         target="_blank"
                                     >
                                         <SiGmail
