@@ -64,8 +64,8 @@ textarea {
 }
 
 .cause {
-    margin-left: 15%;
-    margin-right: 15%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 .header {
     display: flex;
@@ -89,7 +89,7 @@ textarea {
 .body-and-donors {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .cause-body {
     padding: 1em;
@@ -101,7 +101,7 @@ textarea {
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 62.5%;
+    width: 60%;
 }
 
 .donor-list-and-share {
@@ -110,7 +110,7 @@ textarea {
     border-radius: 1em;
     padding: 1em;
     margin: 1em;
-    width: 32.5%;
+    width: 35%;
     height: 800px;
 }
 .donor-list {
