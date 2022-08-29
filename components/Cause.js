@@ -992,20 +992,39 @@ const Cause = ({ id }) => {
                                 if (parseFloat(donation.amount) > 0) {
                                     return (
                                         <div key={index} className="donation">
-                                            <FaEthereum color="#02ba23" />
-                                            <div>
-                                                {donation.donor} donated {donation.amount}ETH
-                                            </div>
+                                            <a
+                                                href={
+                                                    "https://etherscan.io/address/" +
+                                                    `${donation.donor}`
+                                                }
+                                                target="_blank"
+                                            >
+                                                {" "}
+                                                <FaEthereum color="#02ba23" />
+                                                <div>
+                                                    {donation.donor} donated {donation.amount}ETH
+                                                </div>
+                                            </a>
                                         </div>
                                     )
                                 } else {
                                     return (
                                         <div key={index} className="donation">
-                                            <FaEthereum color="#02ba23" />
-                                            <div>
-                                                {donation.donor} got a refund of {donation.amount}
-                                                ETH
-                                            </div>
+                                            <a
+                                                href={
+                                                    "https://etherscan.io/address/" +
+                                                    `${donation.donor}`
+                                                }
+                                                target="_blank"
+                                            >
+                                                {" "}
+                                                <FaEthereum color="#02ba23" />
+                                                <div>
+                                                    {donation.donor} got a refund of{" "}
+                                                    {donation.amount}
+                                                    ETH
+                                                </div>
+                                            </a>
                                         </div>
                                     )
                                 }
@@ -1062,7 +1081,11 @@ const Cause = ({ id }) => {
                                             }}
                                         />
                                     </a>
-                                    <a className="share-icon">
+                                    <a
+                                        className="share-icon"
+                                        href="mailto:sample@gmail.com?subject="
+                                        target="_blank"
+                                    >
                                         <SiGmail
                                             color="#02ba23"
                                             size={iconSize.email}
