@@ -18,12 +18,12 @@ input[type="number"] {
     font-size: 1em;
     margin: 1em;
     height: 4em;
-    border-radius: 2em;
+    border-radius: 6px;
 }
 input[type="text"] {
     font-size: 1em;
     padding: 1em;
-    border-radius: 2em;
+    border-radius: 6px;
 }
 .copy-icon {
     cursor: pointer;
@@ -35,7 +35,7 @@ input[type="text"] {
     width: 40vw;
     display: flex;
     justify-content: flex-start;
-    border-radius: 2em;
+    border-radius: 6px;
 }
 
 #big-search-bar-input {
@@ -50,7 +50,7 @@ input[type="text"] {
 label[for="cause-image"] {
     font-size: 1em;
     padding: 1em;
-    border-radius: 1em;
+    border-radius: 6px;
     text-align: center;
     cursor: pointer;
     background: rgb(213, 204, 210);
@@ -61,7 +61,7 @@ textarea {
     font-size: 1em;
     margin: 1em;
     height: 15em;
-    border-radius: 1em;
+    border-radius: 6px;
 }
 
 .cause {
@@ -78,6 +78,9 @@ textarea {
     border-bottom: solid;
     border-width: meduim;
     border-color: rgb(115, 115, 115);
+}
+.header > button {
+    width: fit-content;
 }
 .header-image {
     width: 50px;
@@ -108,7 +111,7 @@ textarea {
 .donor-list-and-share {
     border: solid;
     border-width: thin;
-    border-radius: 1em;
+    border-radius: 6px;
     padding: 1em;
     margin: 1em;
     width: 35%;
@@ -125,7 +128,7 @@ textarea {
     flex-direction: row;
     height: 70px;
     border: solid;
-    border-radius: 2em;
+    border-radius: 6px;
     border-color: rgb(115, 115, 115);
 }
 #share-text {
@@ -148,7 +151,7 @@ textarea {
 
 .cause-img {
     border: solid;
-    border-radius: 1em;
+    border-radius: 6px;
     border-width: thin;
     border-color: rgb(115, 115, 115);
     display: flex;
@@ -170,7 +173,7 @@ img {
     margin: 0.25em;
     background-color: rgb(166, 255, 182);
     padding: 1em;
-    border-radius: 2em;
+    border-radius: 6px;
     text-align: center;
 }
 
@@ -193,7 +196,7 @@ img {
 .progress {
     margin-top: 1.5em;
     margin-bottom: 1em;
-    border-radius: 2em;
+    border-radius: 6px;
     padding-top: 1em;
     padding-bottom: 1em;
     display: flex;
@@ -245,7 +248,7 @@ img {
     cursor: pointer;
     border: solid;
     border-color: rgb(115, 115, 115);
-    border-radius: 2em;
+    border-radius: 6px;
     margin: 0.5em;
     padding: 20px;
     padding-left: 5px;
@@ -272,13 +275,72 @@ img {
 
 button {
     cursor: pointer;
-    background-color: white;
-    color: rgb(2, 186, 35);
+    background-color: #2ea44f;
+    color: #fff;
+    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji";
+    touch-action: manipulation;
+    text-align: center;
+    vertical-align: middle;
     border-color: rgb(115, 115, 115);
     padding: 1em;
     font-size: 1em;
+    font-weight: 600;
+    line-height: 20px;
     height: 3.5em;
-    border-radius: 2em;
+    border-radius: 6px;
+}
+button:focus:not(:focus-visible):not(.focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+button:hover {
+    background-color: #2c974b;
+}
+button:focus {
+    box-shadow: rgba(46, 164, 79, 0.4) 0 0 0 3px;
+    outline: none;
+}
+button:disabled {
+    background-color: #94d3a2;
+    border-color: rgba(27, 31, 35, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    cursor: default;
+}
+
+button:active {
+    background-color: #298e46;
+    box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}
+.demand-refund-button {
+    background: #e62143;
+    font-size: 1.15em;
+    transition: all 0.2s ease-in-out;
+    text-decoration-skip-ink: auto;
+    text-underline-offset: 1px;
+    text-shadow: rgba(0, 0, 0, 0.3) 1px 1px 1px;
+}
+.demand-refund-button:active,
+.demand-refund-button:focus {
+    border-bottom-style: none;
+    border-color: #dadada;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 3px 3px inset;
+    outline: 0;
+}
+
+.demand-refund-button:hover {
+    border-bottom-style: none;
+    border-color: #dadada;
+}
+.demand-refund-button:disabled {
+    color: #e66c72;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    background-color: #94d3a2;
+    border-color: rgba(27, 31, 35, 0.1);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .big-search {
@@ -317,15 +379,6 @@ button {
 .container-404 > img {
     width: 50vw;
     height: 70vh;
-}
-.demand-refund-button:hover {
-    color: white;
-    background-color: red;
-}
-.demand-refund-button:disabled {
-    color: white;
-    background-color: red;
-    cursor: not-allowed;
 }
 
 @media only screen and (max-width: 768px) {
@@ -367,6 +420,11 @@ button {
     .big-search-bar {
         width: 90vw;
         font-size: x-small;
+    }
+    .create-cause-form {
+        margin-top: 20%;
+        margin-bottom: 20%;
+        justify-content: space-between;
     }
 }
 

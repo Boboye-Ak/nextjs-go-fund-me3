@@ -769,7 +769,9 @@ const Cause = ({ id }) => {
                                         setDonationAmount(e.target.value)
                                     }}
                                 ></input>
-                                <div id="eth-sign"><FaEthereum /></div>
+                                <span ids="eth-sign">
+                                    <FaEthereum />
+                                </span>
                                 <button
                                     onClick={handleDonate}
                                     disabled={
@@ -789,7 +791,7 @@ const Cause = ({ id }) => {
                                 )}
                             </div>
                         )}
-                        {!amICauseOwner && (
+                        {!amICauseOwner && myDonations != "0" && (
                             <div>
                                 <button
                                     onClick={handleRefund}
