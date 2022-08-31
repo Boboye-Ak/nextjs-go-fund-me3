@@ -400,17 +400,26 @@ button:disabled {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    border: solid;
 }
 
 .cause-table-row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    border: solid;
 }
-.cause-table-item{
+.cause-table-item {
     text-align: center;
+    border: solid;
+    width: 40%;
 }
 
+.cause-table-id-item {
+    text-align: center;
+    border: solid;
+    width: 10%;
+}
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     .cause {

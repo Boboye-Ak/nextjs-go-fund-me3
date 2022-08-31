@@ -5,6 +5,7 @@ import { useNotification } from "web3uikit"
 import Header from "../../components/Header"
 
 const Causes = () => {
+    const perPage = 10
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
@@ -12,6 +13,8 @@ const Causes = () => {
     const dispatch = useNotification()
     const [causes, setCauses] = useState([])
     const [numCauses, setNumCauses] = useState(0)
+    const [topIndex, setTopIndex] = useState(null)
+    const [bottomIndex, setBottomIndex] = useState(null)
 
     const {
         runContractFunction: getLatestCauseId,
@@ -27,9 +30,9 @@ const Causes = () => {
     const { runContractFunction: getCauseName } = useWeb3Contract()
 
     const createCauseArray = async () => {
-        let numCausesFromCall = await getLatestCauseId()
-        numCausesFromCall = parseInt(numCausesFromCall?.toString())
-        setNumCauses(numCausesFromCall)
+        //let numCausesFromCall = await getLatestCauseId()
+        //numCausesFromCall = parseInt(numCausesFromCall?.toString())
+        //setNumCauses(numCausesFromCall)
         let causeAddress, causeName
         let causeArray = []
         let getCauseByIdOptions = {
@@ -44,7 +47,7 @@ const Causes = () => {
             functionName: "getCauseName",
             params: {},
         }
-        for (let n = numCausesFromCall; n > 0; n--) {
+        for (let n = topIndex; n > bottomIndex; n--) {
             getCauseByIdOptions.params.causeId = n
             causeAddress = (await getCauseById({ params: getCauseByIdOptions }))?.toString()
             console.log(causeAddress)
@@ -60,13 +63,26 @@ const Causes = () => {
     //USEEFFECTS
     useEffect(() => {
         if (isWeb3Enabled) {
-            createCauseArray()
+            getLatestCauseId().then((res) => {
+                setTopIndex(parseInt(res?.toString()))
+            })
         }
     }, [isWeb3Enabled])
     useEffect(() => {
-        if (isWeb3Enabled && numCauses) {
+        setBottomIndex(() => {
+            if (topIndex - perPage < 0) {
+                return 0
+            } else {
+                return topIndex - perPage
+            }
+        })
+    }, [topIndex])
+    useEffect(() => {
+        if (isWeb3Enabled) {
+            createCauseArray()
         }
-    }, [isWeb3Enabled, numCauses])
+    }, [isWeb3Enabled, bottomIndex])
+
     return (
         <div>
             <Header />
@@ -80,12 +96,27 @@ const Causes = () => {
                     return (
                         <div key={cause.causeId} className="cause-table-row">
                             <div className="cause-table-item">{cause.causeName}</div>
-                            <div className="cause-table-item">{cause.causeId}</div>
+                            <div className="cause-table-id-item">{cause.causeId}</div>
                             <div className="cause-table-item">{cause.causeAddress}</div>
                         </div>
                     )
                 })}
             </div>
+            {bottomIndex > 0 && (
+                <p
+                    onClick={() => {
+                        setBottomIndex((oldValue) => {
+                            if (oldValue - perPage < 0) {
+                                return 0
+                            } else {
+                                return oldValue - perPage
+                            }
+                        })
+                    }}
+                >
+                    show more
+                </p>
+            )}
         </div>
     )
 }
