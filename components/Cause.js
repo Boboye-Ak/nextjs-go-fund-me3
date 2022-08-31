@@ -759,7 +759,7 @@ const Cause = ({ id }) => {
                         </div>
 
                         {!amICauseOwner && !isWithdrawn && !isGoalReached && (
-                            <div>
+                            <div className="donate-module">
                                 {" "}
                                 <input
                                     type="number"
@@ -769,7 +769,7 @@ const Cause = ({ id }) => {
                                         setDonationAmount(e.target.value)
                                     }}
                                 ></input>
-                                <FaEthereum />
+                                <div id="eth-sign"><FaEthereum /></div>
                                 <button
                                     onClick={handleDonate}
                                     disabled={
@@ -796,6 +796,7 @@ const Cause = ({ id }) => {
                                     disabled={
                                         myDonations == "0" || refundIsFetching || refundIsLoading
                                     }
+                                    className="demand-refund-button"
                                 >
                                     DEMAND REFUND
                                 </button>

@@ -318,6 +318,57 @@ button {
     width: 50vw;
     height: 70vh;
 }
+.demand-refund-button:hover {
+    color: white;
+    background-color: red;
+}
+.demand-refund-button:disabled {
+    color: white;
+    background-color: red;
+    cursor: not-allowed;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .cause {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    .body-and-donors {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    .donor-list-and-share {
+        width: 100%;
+    }
+    .header-image {
+        visibility: hidden;
+    }
+    .cause-body {
+        width: 100%;
+        border-left: hidden;
+        border-right: hidden;
+    }
+    .cause-id {
+        visibility: hidden;
+    }
+    .donate-module {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    #eth-sign {
+        visibility: hidden;
+    }
+    .big-search-bar {
+        width: 90vw;
+        font-size: x-small;
+    }
+}
 
 @media (prefers-color-scheme: dark) {
     html {
