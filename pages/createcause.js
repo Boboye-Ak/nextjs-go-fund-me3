@@ -69,7 +69,7 @@ const CreateCause = () => {
     const updateUI = async () => {
         getMyCauseId().then((res) => {
             if (res?.toString() != "0") {
-                router.push(`/cause/${res?.toString()}`)
+                router.push(`/causes/${res?.toString()}`)
             }
         })
     }

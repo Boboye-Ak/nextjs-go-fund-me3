@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useMoralis, useWeb3Contract } from "react-moralis"
 import { useRouter } from "next/router"
 import { causeABI, crowdFunderABI, crowdFunderAddresses } from "../constants"
@@ -24,13 +24,14 @@ import { IoLogoTwitter, IoLogoFacebook } from "react-icons/io"
 import { SiGmail } from "react-icons/si"
 import ProgressBar from "./progressbar"
 const Cause = ({ id }) => {
-    const shareURL = `${siteURL}/cause/${id}`
+    const shareURL = `${siteURL}/causes/${id}`
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
     const dispatch = useNotification()
     const router = useRouter()
+    const editModal = useRef(null)
     const [causeAddress, setCauseAddress] = useState("")
     const [causeName, setCauseName] = useState("")
     const [amICauseOwner, setAmICauseOwner] = useState(false)
@@ -297,6 +298,17 @@ const Cause = ({ id }) => {
         console.log(uriString)
         try {
             const res = await axios.get(uriString)
+            if (!res.data.description || !res.data.img || (!res.data.name && amICauseOwner)) {
+                toggleEditModal(true)
+                editModal.current.scrollIntoView()
+                dispatch({
+                    title: "Edit Cause",
+                    message: "Please complete the information about your cause",
+                    type: "warning",
+                    icon: "bell",
+                    position: "topR",
+                })
+            }
             setDescription(res.data.description)
             setImgUri(res.data.img)
             setName(res.data.name)
@@ -737,7 +749,11 @@ const Cause = ({ id }) => {
                             <ProgressBar
                                 bgcolor={"#02ba23"}
                                 completed={
-                                    (convertweiToEth(causeBalance) / convertweiToEth(goal)) * 100
+                                    (convertweiToEth(causeBalance) / convertweiToEth(goal)) * 100 <
+                                    100
+                                        ? (convertweiToEth(causeBalance) / convertweiToEth(goal)) *
+                                          100
+                                        : 100
                                 }
                             />
                         </div>
@@ -823,7 +839,7 @@ const Cause = ({ id }) => {
                         )}
                         {amICauseOwner && showEditModal && !isLocked && (
                             <div className="edit-area">
-                                <div className="edit-modal">
+                                <div className="edit-modal" ref={editModal}>
                                     <input
                                         type="text"
                                         value={newName}

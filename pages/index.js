@@ -86,6 +86,8 @@ export default function Home() {
 
     const searchByAddress = async () => {
         let causeIdFromCall
+        let errorObject={error:true}
+        let successObject={success:true}
         causeIdFromCall = await getCauseIdByCauseAddress()
         if (!causeIdFromCall || causeIdFromCall?.toString() == "0") {
             causeIdFromCall = await getCauseIdByOwnerAddress({
@@ -103,8 +105,9 @@ export default function Home() {
 
             if (!causeIdFromCall || causeIdFromCall?.toString() == "0") {
                 setError("This Address is not a cause and has no cause")
+                return errorObject
             }
-            setError("")
+            
             setCauseId(causeIdFromCall?.toString())
         }
         setError("")
