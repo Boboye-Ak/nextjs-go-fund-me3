@@ -35,7 +35,7 @@ input[type="text"] {
     width: 40vw;
     display: flex;
     justify-content: flex-start;
-    border-radius: 6px;
+    border-radius: 2em;
 }
 
 #big-search-bar-input {
@@ -387,6 +387,27 @@ button:disabled {
     margin: 1em;
     position: relative;
     left: 5%;
+    text-align: center;
+}
+
+.causes-table {
+    border: solid;
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+}
+.cause-table-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.cause-table-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.cause-table-item{
     text-align: center;
 }
 
