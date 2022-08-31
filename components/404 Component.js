@@ -1,4 +1,5 @@
 import Header from "./Header"
+import { AiFillHome } from "react-icons/ai"
 
 const Four0FourComponent = () => {
     const randNum = Math.random() * 10
@@ -12,7 +13,18 @@ const Four0FourComponent = () => {
         <div>
             <Header />
             <div className="container-404">
-                <h1>&#60;404/&#62;</h1>
+                <div className="text-404">
+                    <h1>&#60;404/&#62;</h1>
+                    <p>The resource you are looking for does not exist or could not be found.</p>
+                    <a href="/">
+                        {" "}
+                        <button>
+                            RETURN TO HOME{"  "}
+                            <AiFillHome />
+                        </button>
+                    </a>
+                </div>
+
                 <img src={imgUri}></img>
             </div>
         </div>
