@@ -79,8 +79,18 @@ textarea {
     border-width: meduim;
     border-color: rgb(115, 115, 115);
 }
-.header > button {
-    width: fit-content;
+.menu-dropdown-button {
+    cursor: pointer;
+    font-size: 2em;
+    background-color: #298e46;
+    color: white;
+    text-align: center;
+    border: solid;
+    border-radius: 2em;
+    width: 30%;
+}
+.menu-dropdown-item{
+    background-color: #94d3a2;
 }
 .header-image {
     width: 50px;

@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import { crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { convertEthToWei } from "../utils/converter"
 import { useNotification } from "web3uikit"
+import Dropdown from "../components/dropdown"
 import ethers from "ethers"
 const CreateCause = () => {
     const router = useRouter()
@@ -108,6 +109,8 @@ const CreateCause = () => {
                     CREATE CAUSE
                 </button>
             </form>
+
+            <Dropdown/>
         </div>
     )
 }

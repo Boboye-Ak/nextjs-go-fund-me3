@@ -3,6 +3,8 @@ import Link from "next/link"
 import { useMoralis, useWeb3Contract } from "react-moralis"
 import { useEffect, useState } from "react"
 import { crowdFunderABI, crowdFunderAddresses } from "../constants"
+import Dropdown from "./dropdown"
+import Causes from "../pages/causes"
 
 export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
@@ -34,17 +36,22 @@ export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
     }, [isWeb3Enabled, account])
     return (
         <div className="header">
-            <div>
-                {doIHaveACause ? (
-                    <button>
-                        <Link href={`/causes/${myCauseId}`}>My Cause</Link>
-                    </button>
-                ) : (
-                    <button>
-                        <Link href="/createcause">Create Cause</Link>
-                    </button>
-                )}
+            <div className="menu-dropdown-button">
+                {" "}
+                <Dropdown
+                    title="MENU"
+                    items={[
+                        { name: "CAUSES", link: `/causes/` },
+                        {
+                            name: doIHaveACause ? "MY CAUSE" : "CREATE CAUSE",
+                            link: doIHaveACause ? `/causes/${myCauseId}` : "/createcause",
+                        },
+                        { name: "ABOUT SITE", link: "" },
+                        { name: "SPONSOR SITE", link: "" },
+                    ]}
+                />
             </div>
+
             <div>
                 <Link href="/">
                     <img src="/crowdfunder-tentative-logo.png" className="header-image"></img>
