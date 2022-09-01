@@ -1024,14 +1024,18 @@ const Cause = ({ id }) => {
                                                 {" "}
                                                 <FaEthereum color="#02ba23" />
                                                 <div>
-                                                    {donation.donor} donated {donation.amount}ETH
+                                                    {account.toLowerCase() !=
+                                                    donation.donor.toLowerCase()
+                                                        ? donation.donor
+                                                        : "You"}{" "}
+                                                    donated {donation.amount}ETH
                                                 </div>
                                             </a>
                                         </div>
                                     )
                                 } else {
                                     return (
-                                        <div key={index} className="donation">
+                                        <div key={index} className="donation refund">
                                             <a
                                                 href={
                                                     "https://etherscan.io/address/" +
@@ -1042,8 +1046,11 @@ const Cause = ({ id }) => {
                                                 {" "}
                                                 <FaEthereum color="#02ba23" />
                                                 <div>
-                                                    {donation.donor} got a refund of{" "}
-                                                    {donation.amount}
+                                                    {account.toLowerCase() !=
+                                                    donation.donor.toLowerCase()
+                                                        ? donation.donor
+                                                        : "You"}{" "}
+                                                    got a refund of {donation.amount}
                                                     ETH
                                                 </div>
                                             </a>
