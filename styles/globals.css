@@ -79,7 +79,7 @@ textarea {
     border-bottom: solid;
     border-width: meduim;
     border-color: rgb(115, 115, 115);
-    height: 65px;
+    height: 75px;
 }
 .menu-dropdown-button {
     cursor: pointer;
@@ -97,8 +97,9 @@ textarea {
     border-top: solid;
     border-bottom: solid;
     border-width: thin;
+    margin-top: 0;
 }
-.menu-dropdown-item:hover{
+.menu-dropdown-item:hover {
     background-color: #298e46;
 }
 .menu-dropdown-items {
@@ -471,6 +472,10 @@ button:disabled {
     display: flex;
     justify-content: center;
 }
+.about-container {
+    margin-left: 10%;
+    margin-right: 10%;
+}
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     .cause {
@@ -529,6 +534,9 @@ button:disabled {
     }
     .cause-table-row {
         height: 3em;
+    }
+    .menu-dropdown-button {
+        width: 50%;
     }
 }
 

@@ -41,12 +41,13 @@ export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
                 <Dropdown
                     title="MENU"
                     items={[
+                        { name: "SEARCH", link: "/" },
                         { name: "CAUSES", link: `/causes/` },
                         {
                             name: doIHaveACause ? "MY CAUSE" : "CREATE CAUSE",
                             link: doIHaveACause ? `/causes/${myCauseId}` : "/createcause",
                         },
-                        { name: "ABOUT SITE", link: "" },
+                        { name: "ABOUT SITE", link: "/about" },
                         { name: "SPONSOR SITE", link: "" },
                     ]}
                 />

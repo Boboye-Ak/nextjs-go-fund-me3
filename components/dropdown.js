@@ -3,7 +3,7 @@ import { useState } from "react"
 import { RiArrowDownSLine, RiArrowRightSLine } from "react-icons/ri"
 
 const Dropdown = ({ title, items }) => {
-    const [display, setDisplay] = useState(true)
+    const [display, setDisplay] = useState(false)
 
     function handleClick() {
         if (!display) {
