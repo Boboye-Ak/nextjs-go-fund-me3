@@ -3,7 +3,7 @@ import { useState } from "react"
 import { RiArrowDownSLine, RiArrowRightSLine } from "react-icons/ri"
 
 const Dropdown = ({ title, items }) => {
-    const [display, setDisplay] = useState(false)
+    const [display, setDisplay] = useState(true)
 
     function handleClick() {
         if (!display) {
@@ -16,11 +16,17 @@ const Dropdown = ({ title, items }) => {
         <div>
             <div onClick={handleClick}>
                 {title}
-                {"  "}
+                {"    "}
                 {!display ? <RiArrowRightSLine /> : <RiArrowDownSLine />}
             </div>
-            <div style={{ display: display ? "block" : "none" }}>
-                {items.map((item) => {
+            <div
+                style={{ display: display ? "block" : "none" }}
+                className="menu-dropdown-items"
+                onMouseLeave={() => {
+                    setDisplay(false)
+                }}
+            >
+                {items?.map((item) => {
                     return <Element title={item.name} link={item.link} />
                 })}
             </div>

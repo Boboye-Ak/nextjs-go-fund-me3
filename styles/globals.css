@@ -72,12 +72,14 @@ textarea {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 1em;
     padding-bottom: 0.5em;
+    padding-top: 0.5em;
     border-bottom: solid;
     border-width: meduim;
     border-color: rgb(115, 115, 115);
+    height: 65px;
 }
 .menu-dropdown-button {
     cursor: pointer;
@@ -86,11 +88,25 @@ textarea {
     color: white;
     text-align: center;
     border: solid;
-    border-radius: 2em;
-    width: 30%;
+    border-radius: 6px;
+    width: 20%;
+    overflow-y: visible;
+    z-index: 5;
 }
-.menu-dropdown-item{
+.menu-dropdown-item {
+    border-top: solid;
+    border-bottom: solid;
+    border-width: thin;
+}
+.menu-dropdown-item:hover{
+    background-color: #298e46;
+}
+.menu-dropdown-items {
     background-color: #94d3a2;
+    padding: 0.1em;
+    font-size: 0.75em;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 .header-image {
     width: 50px;
