@@ -37,7 +37,7 @@ export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
             <div>
                 {doIHaveACause ? (
                     <button>
-                        <Link href={`/cause/${myCauseId}`}>My Cause</Link>
+                        <Link href={`/causes/${myCauseId}`}>My Cause</Link>
                     </button>
                 ) : (
                     <button>

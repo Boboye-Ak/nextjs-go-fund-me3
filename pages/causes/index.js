@@ -52,11 +52,9 @@ const Causes = () => {
         for (let n = topIndex; n > bottomIndex; n--) {
             getCauseByIdOptions.params.causeId = n
             causeAddress = (await getCauseById({ params: getCauseByIdOptions }))?.toString()
-            console.log(causeAddress)
             getCauseNameOptions.contractAddress = causeAddress
             causeName = await getCauseName({ params: getCauseNameOptions })
             let causeObject = { causeId: n, causeAddress: causeAddress, causeName: causeName }
-            console.log(causeObject)
             causeArray.push(causeObject)
         }
         setCauses(causeArray)
@@ -66,24 +64,29 @@ const Causes = () => {
     useEffect(() => {
         if (isWeb3Enabled) {
             getLatestCauseId().then((res) => {
-                setTopIndex(parseInt(res?.toString()))
+                const newTopIndex = parseInt(res?.toString())
+                setTopIndex(newTopIndex)
             })
         }
     }, [isWeb3Enabled])
     useEffect(() => {
-        setBottomIndex(() => {
-            if (topIndex - perPage < 0) {
-                return 0
-            } else {
-                return topIndex - perPage
-            }
-        })
+        if (topIndex != null) {
+            console.log(`topIndex is ${topIndex}`)
+            setBottomIndex((oldValue) => {
+                if (topIndex - perPage < 0) {
+                    return 0
+                } else {
+                    return topIndex - perPage
+                }
+            })
+        }
     }, [topIndex])
     useEffect(() => {
-        if (isWeb3Enabled) {
+        if (bottomIndex != null) {
+            console.log(`bottom index is ${bottomIndex}`)
             createCauseArray()
         }
-    }, [isWeb3Enabled, bottomIndex])
+    }, [bottomIndex])
 
     return (
         <div>

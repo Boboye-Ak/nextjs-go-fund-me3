@@ -6,7 +6,9 @@ const Four0FourComponent = () => {
     const imgArray = [
         "404 images/why is my bowl empty meme.jpeg",
         "404 images/he aint got your money.jpeg",
-        "404 images/I don't know Goodluck Charlie",
+        "404 images/I don't know Goodluck Charlie.jpeg",
+        "404 images/I cant find it meme.jpeg",
+        "Ive looked but I cant find it meme.jpeg",
     ]
     const index = parseInt(randNum) % imgArray.length
     const imgUri = imgArray[index]

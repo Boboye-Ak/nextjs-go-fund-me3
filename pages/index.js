@@ -115,8 +115,9 @@ export default function Home() {
     }
 
     const search = async () => {
+        let res
         if (ethers.utils.isAddress(searchText)) {
-            await searchByAddress()
+            res=await searchByAddress()
         } else if (!isNaN(searchText)) {
             await searchByCauseId()
         } else {
@@ -145,7 +146,7 @@ export default function Home() {
 
     useEffect(() => {
         if (isWeb3Enabled) {
-            router.push(`./cause/${causeId}`)
+            router.push(`./causes/${causeId}`)
         }
     }, [causeId])
     return (
