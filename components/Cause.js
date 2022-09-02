@@ -13,6 +13,7 @@ import Four0FourComponent from "./404 Component"
 import {
     RiFileCopyLine,
     RiArrowDownSLine,
+    RiArrowUpSLine,
     RiArrowDropRightLine,
     RiUpload2Fill,
     RiInstagramLine,
@@ -70,6 +71,8 @@ const Cause = ({ id }) => {
         email: "2em",
         copyToClip: "2em",
     })
+    const [listTopIndex, setListTopIndex] = useState(0)
+    const [listBottomIndex, setListBottomIndex] = useState(5)
     const [error, setError] = useState("")
 
     //WEB3 VIEW FUNCTIONS
@@ -675,27 +678,29 @@ const Cause = ({ id }) => {
                         <div className={`cause-description ${!showFullDescription && "fade"}`}>
                             {!showFullDescription ? (
                                 <>
-                                    {description.slice(0, 500)}...
-                                    <a
-                                        className="read-more-button"
-                                        onClick={() => {
-                                            toggleShowFullDescription(true)
-                                        }}
-                                    >
-                                        <RiArrowDownSLine size="1.5em" />
-                                    </a>
+                                    {description.slice(0, 560)}...
+                                    <div className="read-more-button">
+                                        <RiArrowDownSLine
+                                            className="read-more-button-circle"
+                                            size="1.5em"
+                                            onClick={() => {
+                                                toggleShowFullDescription(true)
+                                            }}
+                                        />
+                                    </div>
                                 </>
                             ) : (
                                 <div>
                                     {" "}
                                     {description}
-                                    <a
-                                        className="read-more-button"
-                                        onClick={() => {
-                                            toggleShowFullDescription(false)
-                                        }}
-                                    >
-                                        <RiArrowDropUpLine size="1.5em" />
+                                    <a className="read-more-button">
+                                        <RiArrowDropUpLine
+                                            className="read-more-button-circle"
+                                            size="1.5em"
+                                            onClick={() => {
+                                                toggleShowFullDescription(false)
+                                            }}
+                                        />
                                     </a>
                                 </div>
                             )}
@@ -751,8 +756,11 @@ const Cause = ({ id }) => {
                                 completed={
                                     (convertweiToEth(causeBalance) / convertweiToEth(goal)) * 100 <
                                     100
-                                        ? (convertweiToEth(causeBalance) / convertweiToEth(goal)) *
-                                          100
+                                        ? (
+                                              (convertweiToEth(causeBalance) /
+                                                  convertweiToEth(goal)) *
+                                              100
+                                          ).toFixed(2)
                                         : 100
                                 }
                             />
@@ -1010,57 +1018,90 @@ const Cause = ({ id }) => {
                             {numRefunds} refund{numRefunds != "1" && "s"}
                         </div>
                         <div className="donor-list">
-                            {donationList?.slice(0, 6)?.map((donation, index) => {
-                                if (parseFloat(donation.amount) > 0) {
-                                    return (
-                                        <div key={index} className="donation">
-                                            <a
-                                                href={
-                                                    "https://etherscan.io/address/" +
-                                                    `${donation.donor}`
+                            <div className="read-more-button">
+                                {listTopIndex != 0 && (
+                                    <RiArrowUpSLine
+                                        className="read-more-button-circle"
+                                        onClick={() => {
+                                            setListTopIndex((oldValue) => {
+                                                if (oldValue != 0) {
+                                                    return oldValue - 1
                                                 }
-                                                target="_blank"
-                                            >
-                                                {" "}
-                                                <FaEthereum color="#02ba23" />
-                                                <div>
-                                                    {account.toLowerCase() !=
-                                                    donation.donor.toLowerCase()
-                                                        ? donation.donor
-                                                        : "You"}{" "}
-                                                    donated {donation.amount}ETH
-                                                </div>
-                                            </a>
-                                        </div>
-                                    )
-                                } else {
-                                    return (
-                                        <div key={index} className="donation refund">
-                                            <a
-                                                href={
-                                                    "https://etherscan.io/address/" +
-                                                    `${donation.donor}`
+                                            })
+                                            setListBottomIndex((oldValue) => {
+                                                if (oldValue != 5) {
+                                                    return oldValue - 1
                                                 }
-                                                target="_blank"
-                                            >
-                                                {" "}
-                                                <FaEthereum color="#02ba23" />
-                                                <div>
-                                                    {account.toLowerCase() !=
-                                                    donation.donor.toLowerCase()
-                                                        ? donation.donor
-                                                        : "You"}{" "}
-                                                    got a refund of {donation.amount}
-                                                    ETH
-                                                </div>
-                                            </a>
-                                        </div>
-                                    )
-                                }
-                            })}
-                            {numDonations > 6 && (
+                                            })
+                                        }}
+                                        size="1.5em"
+                                    />
+                                )}
+                            </div>
+                            {donationList
+                                ?.slice(listTopIndex, listBottomIndex)
+                                ?.map((donation, index) => {
+                                    if (parseFloat(donation.amount) > 0) {
+                                        return (
+                                            <div key={index} className="donation">
+                                                <a
+                                                    href={
+                                                        "https://etherscan.io/address/" +
+                                                        `${donation.donor}`
+                                                    }
+                                                    target="_blank"
+                                                >
+                                                    {" "}
+                                                    <FaEthereum color="#02ba23" />
+                                                    <div>
+                                                        {account.toLowerCase() !=
+                                                        donation.donor.toLowerCase()
+                                                            ? donation.donor
+                                                            : "You"}{" "}
+                                                        donated {donation.amount}ETH
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        )
+                                    } else {
+                                        return (
+                                            <div key={index} className="donation refund">
+                                                <a
+                                                    href={
+                                                        "https://etherscan.io/address/" +
+                                                        `${donation.donor}`
+                                                    }
+                                                    target="_blank"
+                                                >
+                                                    {" "}
+                                                    <FaEthereum color="#02ba23" />
+                                                    <div>
+                                                        {account.toLowerCase() !=
+                                                        donation.donor.toLowerCase()
+                                                            ? donation.donor
+                                                            : "You"}{" "}
+                                                        got a refund of {donation.amount}
+                                                        ETH
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        )
+                                    }
+                                })}
+                            {numDonations > 5 && listBottomIndex != donationList.length - 1 && (
                                 <a className="read-more-button">
-                                    <RiArrowDownSLine />
+                                    <RiArrowDownSLine
+                                        className="read-more-button-circle"
+                                        onClick={() => {
+                                            setListTopIndex((oldValue) => {
+                                                return oldValue + 1
+                                            })
+                                            setListBottomIndex((oldValue) => {
+                                                return oldValue + 1
+                                            })
+                                        }}
+                                        size="1.5em"
+                                    />
                                 </a>
                             )}
                         </div>
@@ -1100,7 +1141,12 @@ const Cause = ({ id }) => {
                                             }}
                                         />
                                     </a>
-                                    <a className="share-icon">
+                                    <a
+                                        className="share-icon"
+                                        href={`https://www.facebook.com/sharer/sharer.php?u=${shareURL}`}
+                                        target="_blank"
+                                        rel="noopener"
+                                    >
                                         <IoLogoFacebook
                                             color="#02ba23"
                                             size={iconSize.faceBook}

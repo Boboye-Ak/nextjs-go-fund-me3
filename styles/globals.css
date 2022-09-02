@@ -98,6 +98,7 @@ textarea {
     border-bottom: solid;
     border-width: thin;
     margin-top: 0;
+    transition: 100ms ease-in-out;
 }
 .menu-dropdown-item:hover {
     background-color: #298e46;
@@ -149,6 +150,7 @@ textarea {
 }
 .share-module {
     font-size: bold;
+    margin-top: 1em;
     padding: 1em;
     display: flex;
     justify-content: space-around;
@@ -213,12 +215,25 @@ img {
     border-color: rgb(115, 115, 115);
     font-size: 1em;
     text-align: left;
-    transition: 200ms ease-in-out;
+    transition: 100ms ease-in-out;
 }
 .read-more-button {
-    text-decoration: underline;
+    height: 2em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     color: rgb(2, 186, 35);
     cursor: pointer;
+}
+.read-more-button-circle {
+    border: solid;
+    border-color: #298e46;
+    border-radius: 50%;
+    transition: 100ms ease-in-out;
+}
+.read-more-button-circle:hover {
+    background-color: #298e46;
 }
 .progress {
     margin-top: 1.5em;
@@ -271,6 +286,7 @@ img {
 }
 
 .donation {
+    height: 7em;
     display: flex;
     cursor: pointer;
     border: solid;
@@ -280,7 +296,7 @@ img {
     padding: 20px;
     padding-left: 5px;
     font-size: 0.8em;
-    transition: 200ms ease-in-out;
+    transition: 100ms ease-in-out;
 }
 
 .donation:hover {
