@@ -14,10 +14,13 @@ const Dropdown = ({ title, items }) => {
     }
     return (
         <div>
-            <div onClick={handleClick}>
+            <div onClick={handleClick} className="dropdown-menu-button">
                 {title}
-                {"    "}
-                {!display ? <RiArrowRightSLine /> : <RiArrowDownSLine />}
+                {!display ? (
+                    <RiArrowRightSLine size="1em" className="read-more-button-circle" />
+                ) : (
+                    <RiArrowDownSLine size="1em" className="read-more-button-circle" />
+                )}
             </div>
             <div
                 style={{ display: display ? "block" : "none" }}

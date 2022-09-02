@@ -36,7 +36,7 @@ export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
     }, [isWeb3Enabled, account])
     return (
         <div className="header">
-            <div className="menu-dropdown-button">
+            <div className="dropdown-menu">
                 {" "}
                 <Dropdown
                     title="MENU"

@@ -603,7 +603,7 @@ const Cause = ({ id }) => {
         }
     }, [isWeb3Enabled, crowdFunderOwner, account])
     useEffect(() => {
-        if (isWeb3Enabled) {
+        if (isWeb3Enabled && donationAmount) {
             setDonationAmountG(convertEthToWei(donationAmount))
         }
     }, [isWeb3Enabled, donationAmount])
@@ -643,10 +643,7 @@ const Cause = ({ id }) => {
         }
     }, [isWeb3Enabled, uriString])
 
-    useEffect(() => {
-        if (isWeb3Enabled) {
-        }
-    }, [isWeb3Enabled, isOpenToDonations])
+  
 
     //Return Value
     return (

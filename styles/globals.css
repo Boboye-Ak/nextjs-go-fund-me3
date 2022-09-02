@@ -79,37 +79,52 @@ textarea {
     border-bottom: solid;
     border-width: meduim;
     border-color: rgb(115, 115, 115);
-    height: 75px;
+    height: 70px;
 }
-.menu-dropdown-button {
+.dropdown-menu {
     cursor: pointer;
-    font-size: 2em;
-    background-color: #298e46;
+    font-size: 1.5em;
+    box-shadow: 0 12px 35px 0;
     color: white;
-    text-align: center;
     border: solid;
-    border-radius: 6px;
-    width: 20%;
+    width: 30%;
+    height: 2em;
     overflow-y: visible;
     z-index: 5;
 }
-.menu-dropdown-item {
-    border-top: solid;
-    border-bottom: solid;
-    border-width: thin;
-    margin-top: 0;
-    transition: 100ms ease-in-out;
-}
-.menu-dropdown-item:hover {
+.dropdown-menu-button {
     background-color: #298e46;
+    border-radius: 2em;
+    font-size: larger;
+    height: 1.5em;
+    padding-top: 0.1em;
+    padding-left: 0.3em;
+    text-align: center;
 }
 .menu-dropdown-items {
-    background-color: #94d3a2;
     padding: 0.1em;
     font-size: 0.75em;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
+    transition: 3000ms ease-in-out;
 }
+.menu-dropdown-item {
+    height: 2.5em;
+    font-size: larger;
+    background-color: #94d3a2;
+    border: solid;
+    border-width: thin;
+    border-radius: 2em;
+    margin-top: 1em;
+    padding-top: 0.3em;
+    padding-left: 0.3em;
+    transition: 200ms ease-in-out;
+}
+.menu-dropdown-item:hover {
+    background-color: #298e46;
+    text-align: center;
+}
+
 .header-image {
     width: 50px;
     height: 50px;
@@ -150,7 +165,7 @@ textarea {
 }
 .share-module {
     font-size: bold;
-    margin-top: 1em;
+    margin-top: 0;
     padding: 1em;
     display: flex;
     justify-content: space-around;
@@ -286,14 +301,14 @@ img {
 }
 
 .donation {
-    height: 7em;
+    height: 6em;
     display: flex;
     cursor: pointer;
     border: solid;
     border-color: rgb(115, 115, 115);
     border-radius: 6px;
     margin: 0.5em;
-    padding: 20px;
+    padding: 1em;
     padding-left: 5px;
     font-size: 0.8em;
     transition: 100ms ease-in-out;
@@ -551,8 +566,11 @@ button:disabled {
     .cause-table-row {
         height: 3em;
     }
-    .menu-dropdown-button {
+    .dropdown-menu {
         width: 50%;
+    }
+    .menu-dropdown-item {
+        width: 150%;
     }
 }
 
