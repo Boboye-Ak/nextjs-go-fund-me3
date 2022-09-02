@@ -23,14 +23,28 @@ const Dropdown = ({ title, items }) => {
                 )}
             </div>
             <div
-                style={{ display: display ? "block" : "none" }}
                 className="menu-dropdown-items"
                 onMouseLeave={() => {
                     setDisplay(false)
                 }}
             >
-                {items?.map((item) => {
-                    return <Element title={item.name} link={item.link} />
+                {items?.map((item, index) => {
+                    return (
+                        <Element
+                            title={item.name}
+                            link={item.link}
+                            style={{
+                                opacity: display ? 1 : 0,
+                                transition: `opacity 500ms ease-in-out ${
+                                    display
+                                        ? `${index * 100}ms`
+                                        : `${
+                                              500 - index * 100
+                                          }ms, background 300ms ease-in-out`
+                                }`,
+                            }}
+                        />
+                    )
                 })}
             </div>
         </div>

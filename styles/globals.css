@@ -93,6 +93,7 @@ textarea {
     z-index: 5;
 }
 .dropdown-menu-button {
+    width: 50%;
     background-color: #298e46;
     border-radius: 2em;
     font-size: larger;
@@ -106,7 +107,6 @@ textarea {
     font-size: 0.75em;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
-    transition: 3000ms ease-in-out;
 }
 .menu-dropdown-item {
     height: 2.5em;
@@ -118,7 +118,6 @@ textarea {
     margin-top: 1em;
     padding-top: 0.3em;
     padding-left: 0.3em;
-    transition: 200ms ease-in-out;
 }
 .menu-dropdown-item:hover {
     background-color: #298e46;
@@ -568,6 +567,9 @@ button:disabled {
     }
     .dropdown-menu {
         width: 50%;
+    }
+    .dropdown-menu-button {
+        width: 100%;
     }
     .menu-dropdown-item {
         width: 150%;
