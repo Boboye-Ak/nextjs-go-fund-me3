@@ -91,7 +91,14 @@ const Causes = () => {
     return (
         <div>
             <Header />
-            <div className="causes-table">
+            <div
+                className="causes-table"
+                style={
+                    !causes?.length
+                        ? { position: "relative", bottom: "100%" }
+                        : { position: "relative", bottom: "0" }
+                }
+            >
                 <div className="cause-table-header">
                     <div className="cause-table-item">Cause Name</div>
                     <div className="cause-table-item">Cause ID</div>
