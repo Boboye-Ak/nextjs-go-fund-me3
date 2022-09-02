@@ -36,11 +36,7 @@ const Dropdown = ({ title, items }) => {
                             style={{
                                 opacity: display ? 1 : 0,
                                 transition: `opacity 500ms ease-in-out ${
-                                    display
-                                        ? `${index * 100}ms`
-                                        : `${
-                                              500 - index * 100
-                                          }ms, background 300ms ease-in-out`
+                                    display ? `${index * 100}ms` : `${500 - index * 150}ms`
                                 }`,
                             }}
                         />

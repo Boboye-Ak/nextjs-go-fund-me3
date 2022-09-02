@@ -643,8 +643,6 @@ const Cause = ({ id }) => {
         }
     }, [isWeb3Enabled, uriString])
 
-  
-
     //Return Value
     return (
         <div className="cause">
@@ -656,7 +654,14 @@ const Cause = ({ id }) => {
 
             <div className="container">
                 <div className="body-and-donors">
-                    <div className="cause-body">
+                    <div
+                        className="cause-body"
+                        style={
+                            !imgUri?.length
+                                ? { position: "relative", right: "100%" }
+                                : { position: "relative", right: "0" }
+                        }
+                    >
                         <div className="cause-name">
                             <div>{causeName?.toUpperCase()}</div>
                             <div className="cause-id">#{id}</div>
@@ -1002,7 +1007,14 @@ const Cause = ({ id }) => {
                             </div>
                         )}
                     </div>
-                    <div className="donor-list-and-share">
+                    <div
+                        className="donor-list-and-share"
+                        style={
+                            !donationList?.length
+                                ? { position: "relative", left: "100%" }
+                                : { position: "relative", left: "0" }
+                        }
+                    >
                         {!amICauseOwner && (
                             <div className="your-donation">
                                 You've donated {convertweiToEth(myDonations)}

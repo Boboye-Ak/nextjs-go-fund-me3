@@ -35,7 +35,14 @@ export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
         }
     }, [isWeb3Enabled, account])
     return (
-        <div className="header">
+        <div
+            className="header"
+            style={
+                !chainId?.length
+                    ? { position: "relative", bottom: "100%" }
+                    : { position: "relative", bottom: "0" }
+            }
+        >
             <div className="dropdown-menu">
                 {" "}
                 <Dropdown

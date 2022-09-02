@@ -80,6 +80,7 @@ textarea {
     border-width: meduim;
     border-color: rgb(115, 115, 115);
     height: 70px;
+    transition: right 1s linear;
 }
 .dropdown-menu {
     cursor: pointer;
@@ -148,6 +149,7 @@ textarea {
     align-items: center;
     flex-direction: column;
     width: 60%;
+    transition: right 1s linear;
 }
 
 .donor-list-and-share {
@@ -158,6 +160,7 @@ textarea {
     margin: 1em;
     width: 35%;
     height: 800px;
+    transition: left 1s linear;
 }
 .donor-list {
     height: 70%;
