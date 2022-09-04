@@ -6,7 +6,9 @@ import { crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { convertEthToWei } from "../utils/converter"
 import { useNotification } from "web3uikit"
 import Dropdown from "../components/dropdown"
+import axios from "axios"
 import ethers from "ethers"
+import { FaEthereum } from "react-icons/fa"
 const CreateCause = () => {
     const router = useRouter()
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
@@ -15,8 +17,10 @@ const CreateCause = () => {
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
     const dispatch = useNotification()
     const [causeName, setCauseName] = useState("")
-    const [goal, setGoal] = useState("")
+    const [goalEth, setGoalEth] = useState("")
+    const [goalDoll, setGoalDoll] = useState("")
     const [hasCause, setHasCause] = useState(null)
+    const [ethPrice, setEthPrice] = useState(0)
 
     //WEB3 VIEW FUNCTIONS
     const { runContractFunction: getMyCauseId } = useWeb3Contract({
@@ -35,7 +39,7 @@ const CreateCause = () => {
         abi: crowdFunderABI,
         contractAddress: crowdFunderAddress,
         functionName: "createCause",
-        params: { causeName: causeName, goal: convertEthToWei(goal) },
+        params: { causeName: causeName, goal: convertEthToWei(goalEth) },
     })
 
     //EVENT HANDLER FUNCTIONS
@@ -74,8 +78,15 @@ const CreateCause = () => {
             }
         })
     }
+    const getEthPrice = async () => {
+        const res = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDC")
+        setEthPrice(parseFloat(res.data.price))
+    }
 
     //USEEFFECTS
+    useEffect(() => {
+        getEthPrice()
+    }, [])
     useEffect(() => {
         if (isWeb3Enabled) {
             updateUI()
@@ -94,14 +105,60 @@ const CreateCause = () => {
                     }}
                     maxlength="30"
                 ></input>
-                <input
-                    type="number"
-                    value={goal}
-                    placeholder="Target Amount for Donations(in ETH)"
-                    onChange={(e) => {
-                        setGoal(e.target.value)
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
                     }}
-                ></input>
+                >
+                    <div className="input-bar">
+                        <input
+                            type="number"
+                            value={goalEth}
+                            placeholder="Target(in ETH)"
+                            onChange={(e) => {
+                                setGoalEth(e.target.value)
+                                if (e.target.value != "") {
+                                    setGoalDoll(
+                                        (parseFloat(e.target.value) * ethPrice)
+                                            ?.toFixed(2)
+                                            ?.toString()
+                                    )
+                                } else {
+                                    setGoalDoll("")
+                                }
+                            }}
+                        ></input>
+                        <span>
+                            <FaEthereum />
+                        </span>
+                    </div>
+                    <div style={{ fontWeight: "bolder" }}>OR</div>
+
+                    <div className="input-bar">
+                        <div style={{ fontWeight: "bolder" }}>$</div>
+                        <input
+                            type="number"
+                            value={goalDoll}
+                            placeholder="Target (in US DOLLARS)"
+                            onChange={(e) => {
+                                setGoalDoll(e.target.value)
+                                if (e.target.value != "") {
+                                    setGoalEth(
+                                        (parseFloat(e.target.value) / ethPrice)
+                                            ?.toFixed(2)
+                                            ?.toString()
+                                    )
+                                } else {
+                                    setGoalEth("")
+                                }
+                            }}
+                        ></input>
+                    </div>
+                </div>
+
                 <button
                     onClick={handleCreate}
                     disabled={createCauseIsFetching || createCauseIsLoading}
@@ -110,7 +167,7 @@ const CreateCause = () => {
                 </button>
             </form>
 
-            <Dropdown/>
+            <Dropdown />
         </div>
     )
 }

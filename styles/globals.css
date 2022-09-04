@@ -46,6 +46,25 @@ input[type="text"] {
     resize: none;
     outline: none;
 }
+.input-bar {
+    margin: 1em;
+    border: solid;
+    border-color: rgb(115, 115, 115);
+    width: 25%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 2em;
+}
+
+.input-bar > input {
+    width: 70%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    resize: none;
+    outline: none;
+}
 
 label[for="cause-image"] {
     font-size: 1em;
