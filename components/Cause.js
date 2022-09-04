@@ -767,9 +767,11 @@ const Cause = ({ id }) => {
                                 />
                             </span>
                         </div>
-                        <div className="progress">
-                            {convertweiToEth(causeBalance)} out of {convertweiToEth(goal)}
-                            <FaEthereum />
+                        <div className="progress" style={{ fontWeight: "bolder" }}>
+                            {convertweiToEth(causeBalance)} out of {convertweiToEth(goal)} ($
+                            {parseFloat(convertweiToEth(causeBalance) * ethPrice)?.toFixed(2)}/$
+                            {parseFloat(convertweiToEth(goal) * ethPrice)?.toFixed(2)})
+                            <FaEthereum color="#298e46" />
                             <ProgressBar
                                 bgcolor={"#02ba23"}
                                 completed={
@@ -794,6 +796,9 @@ const Cause = ({ id }) => {
                                     value={donationAmount}
                                     onChange={(e) => {
                                         setDonationAmount(e.target.value)
+                                        if (parseFloat(e.target.value) < 0) {
+                                            setDonationAmount("0")
+                                        }
                                     }}
                                 ></input>
                                 <span ids="eth-sign">
