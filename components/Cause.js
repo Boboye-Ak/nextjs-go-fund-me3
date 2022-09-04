@@ -657,7 +657,7 @@ const Cause = ({ id }) => {
                     <div
                         className="cause-body"
                         style={
-                            !imgUri?.length
+                            !causeName?.length
                                 ? { position: "relative", right: "100%" }
                                 : { position: "relative", right: "0" }
                         }
@@ -1010,7 +1010,7 @@ const Cause = ({ id }) => {
                     <div
                         className="donor-list-and-share"
                         style={
-                            !donationList?.length
+                            !causeName?.length
                                 ? { position: "relative", left: "100%" }
                                 : { position: "relative", left: "0" }
                         }
