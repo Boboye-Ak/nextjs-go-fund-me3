@@ -73,6 +73,8 @@ const Cause = ({ id }) => {
     })
     const [listTopIndex, setListTopIndex] = useState(0)
     const [listBottomIndex, setListBottomIndex] = useState(5)
+    const [ethPrice, setEthPrice] = useState(0)
+    const [dollarEquivalent, setDollarEquivalent] = useState(null)
     const [error, setError] = useState("")
 
     //WEB3 VIEW FUNCTIONS
@@ -278,7 +280,6 @@ const Cause = ({ id }) => {
             }
             return newDonation
         })
-        console.log(newDonationList)
         const myDonationFromCall = await getMyDonation()
         const causeURIFromCall = await getCauseURI()
         const numDonationsFromCall = await getNumDonations()
@@ -298,7 +299,6 @@ const Cause = ({ id }) => {
     }
 
     const updateMetadata = async () => {
-        console.log(uriString)
         try {
             const res = await axios.get(uriString)
             if (!res.data.description || !res.data.img || (!res.data.name && amICauseOwner)) {
@@ -385,11 +385,9 @@ const Cause = ({ id }) => {
             } else {
                 descriptionToSet = description
             }
-            console.log(imgLink)
             const causeMetadata = { name: nameToSet, description: newDescription, img: imgLink }
             uploadJSONToIPFS(causeMetadata)
                 .then((res) => {
-                    console.log(res)
                     setUriString(res)
                     setNewDescription("")
                     setNewName("")
@@ -546,6 +544,11 @@ const Cause = ({ id }) => {
             },
         })
     }
+
+    const getEthPrice = async () => {
+        const res = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDC")
+        setEthPrice(parseFloat(res.data.price))
+    }
     //USEEFFECTS
 
     useEffect(() => {
@@ -643,6 +646,18 @@ const Cause = ({ id }) => {
         }
     }, [isWeb3Enabled, uriString])
 
+    useEffect(() => {
+        getEthPrice()
+    }, [])
+    useEffect(() => {
+        if (donationAmount) {
+            setDollarEquivalent(ethPrice * parseFloat(donationAmount))
+        }
+        if (donationAmount == "") {
+            setDollarEquivalent(0)
+        }
+    }, [donationAmountG])
+
     //Return Value
     return (
         <div className="cause">
@@ -680,16 +695,18 @@ const Cause = ({ id }) => {
                         <div className={`cause-description ${!showFullDescription && "fade"}`}>
                             {!showFullDescription ? (
                                 <>
-                                    {description.slice(0, 560)}...
-                                    <div className="read-more-button">
-                                        <RiArrowDownSLine
-                                            className="read-more-button-circle"
-                                            size="1.5em"
-                                            onClick={() => {
-                                                toggleShowFullDescription(true)
-                                            }}
-                                        />
-                                    </div>
+                                    {description.slice(0, 560)}
+                                    {description && description.length > 560 && (
+                                        <div className="read-more-button">
+                                            <RiArrowDownSLine
+                                                className="read-more-button-circle"
+                                                size="1.5em"
+                                                onClick={() => {
+                                                    toggleShowFullDescription(true)
+                                                }}
+                                            />
+                                        </div>
+                                    )}
                                 </>
                             ) : (
                                 <div>
@@ -782,6 +799,11 @@ const Cause = ({ id }) => {
                                 <span ids="eth-sign">
                                     <FaEthereum />
                                 </span>
+                                {donationAmount && (
+                                    <span style={{ fontWeight: "bolder" }}>
+                                        ≈${dollarEquivalent?.toFixed(2)}
+                                    </span>
+                                )}
                                 <button
                                     onClick={handleDonate}
                                     disabled={

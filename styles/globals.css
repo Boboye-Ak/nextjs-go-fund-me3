@@ -546,6 +546,9 @@ button:disabled {
         align-items: center;
         justify-content: center;
     }
+    #dollar-equivalent {
+        font-weight: bolder;
+    }
     #eth-sign {
         visibility: hidden;
     }
