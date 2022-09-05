@@ -10,6 +10,7 @@ import { useMoralis, useWeb3Contract } from "react-moralis"
 import { useRouter } from "next/router"
 import { crowdFunderAddresses, crowdFunderABI, nullAddress } from "../constants"
 import { ethers } from "ethers"
+import BigSearchModule from "../components/big-search-module"
 
 export default function Home() {
     const router = useRouter()
@@ -52,12 +53,7 @@ export default function Home() {
         functionName: "getCauseById",
         params: { causeId: searchText },
     })
-    const { runContractFunction: getMyCauseId } = useWeb3Contract({
-        abi: crowdFunderABI,
-        contractAddress: crowdFunderAddress,
-        functionName: "getMyCauseId",
-        params: {},
-    })
+
     const { runContractFunction: getContractOwner } = useWeb3Contract({
         abi: crowdFunderABI,
         contractAddress: crowdFunderAddress,
@@ -86,8 +82,8 @@ export default function Home() {
 
     const searchByAddress = async () => {
         let causeIdFromCall
-        let errorObject={error:true}
-        let successObject={success:true}
+        let errorObject = { error: true }
+        let successObject = { success: true }
         causeIdFromCall = await getCauseIdByCauseAddress()
         if (!causeIdFromCall || causeIdFromCall?.toString() == "0") {
             causeIdFromCall = await getCauseIdByOwnerAddress({
@@ -107,7 +103,7 @@ export default function Home() {
                 setError("This Address is not a cause and has no cause")
                 return errorObject
             }
-            
+
             setCauseId(causeIdFromCall?.toString())
         }
         setError("")
@@ -117,7 +113,7 @@ export default function Home() {
     const search = async () => {
         let res
         if (ethers.utils.isAddress(searchText)) {
-            res=await searchByAddress()
+            res = await searchByAddress()
         } else if (!isNaN(searchText)) {
             await searchByCauseId()
         } else {
@@ -158,25 +154,7 @@ export default function Home() {
             </Head>
             <Header amICauseOwner={false} amICrowdFunderOwner={amICrowdFunderOwner} />
             <div className="big-search">
-                <div className="big-search-bar">
-                    {" "}
-                    <input
-                        id="big-search-bar-input"
-                        type="text"
-                        onChange={(e) => {
-                            handleTextChange(e)
-                        }}
-                        value={searchText}
-                        placeholder="CAUSE ID, CAUSE OWNER ADDRESS, CAUSE ADDRESS"
-                    ></input>
-                    <RiSearch2Line
-                        size="2.2em"
-                        onClick={async (e) => {
-                            await search()
-                        }}
-                    />
-                </div>
-                {error && <div>{error}</div>}
+                <BigSearchModule />
             </div>
         </div>
     )

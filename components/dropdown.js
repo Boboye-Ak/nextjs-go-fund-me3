@@ -45,7 +45,7 @@ const Dropdown = ({ title, items }) => {
                                     display ? `${index * 100}ms` : `${500 - index * 150}ms`
                                 }`,
                                 height: display ? "2.5em" : "0",
-                                width: display ? "50vw" : "0",
+                                width: display ? "30vw" : "0",
                             }}
                         />
                     )

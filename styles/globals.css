@@ -46,11 +46,26 @@ input[type="text"] {
     resize: none;
     outline: none;
 }
+
+.big-search-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid;
+    background-color: #94d3a2;
+    color: white;
+    margin: 1em;
+    border-radius: 2em;
+    height: 2.5em;
+}
+.big-search-result:hover {
+    background-color: #298e46;
+}
 .input-bar {
     margin: 1em;
     border: solid;
     border-color: rgb(115, 115, 115);
-    width: 25%;
+    width: 35%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -58,7 +73,7 @@ input[type="text"] {
 }
 
 .input-bar > input {
-    width: 70%;
+    width: 60%;
     height: 100%;
     border: none;
     background-color: transparent;
@@ -103,7 +118,7 @@ textarea {
 }
 .dropdown-menu {
     font-size: 1.5em;
-    width: 30%;
+    width: 20%;
     height: 2em;
     overflow-y: visible;
     z-index: 5;
@@ -135,7 +150,7 @@ textarea {
 }
 .menu-dropdown-item {
     cursor: pointer;
-    font-size: larger;
+    font-size: large;
     color: white;
     background-color: #94d3a2;
     border: solid;
@@ -616,6 +631,7 @@ button:disabled {
 
     .menu-dropdown-item {
         width: 500px;
+        font-size: x-small;
     }
     .for-mobile {
         display: block;

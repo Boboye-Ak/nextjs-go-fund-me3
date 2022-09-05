@@ -21,6 +21,7 @@ const CreateCause = () => {
     const [goalDoll, setGoalDoll] = useState("")
     const [hasCause, setHasCause] = useState(null)
     const [ethPrice, setEthPrice] = useState(0)
+    const [message, setMessage] = useState("")
 
     //WEB3 VIEW FUNCTIONS
     const { runContractFunction: getMyCauseId } = useWeb3Contract({
@@ -57,6 +58,7 @@ const CreateCause = () => {
                     type: "success",
                     icon: "bell",
                 })
+                setMessage("Please wait to be directed to your cause page...")
                 await updateUI()
             },
             onError: async () => {
@@ -117,7 +119,7 @@ const CreateCause = () => {
                         <input
                             type="number"
                             value={goalEth}
-                            placeholder="Target(in ETH)"
+                            placeholder="Target(ETH)"
                             onChange={(e) => {
                                 setGoalEth(e.target.value)
                                 if (e.target.value != "") {
@@ -138,11 +140,10 @@ const CreateCause = () => {
                     <div style={{ fontWeight: "bolder" }}>OR</div>
 
                     <div className="input-bar">
-                        <div style={{ fontWeight: "bolder" }}>$</div>
                         <input
                             type="number"
                             value={goalDoll}
-                            placeholder="Target (in US DOLLARS)"
+                            placeholder="Target (USD)"
                             onChange={(e) => {
                                 setGoalDoll(e.target.value)
                                 if (e.target.value != "") {
@@ -156,6 +157,7 @@ const CreateCause = () => {
                                 }
                             }}
                         ></input>
+                        <div style={{ fontWeight: "bolder", fontSize: "1.5em" }}>$</div>
                     </div>
                 </div>
 
@@ -167,7 +169,7 @@ const CreateCause = () => {
                 </button>
             </form>
 
-            <Dropdown />
+            <div>{message}...</div>
         </div>
     )
 }
