@@ -107,10 +107,11 @@ const BigSearchModule = () => {
                     placeholder="CAUSE ID, CAUSE OWNER ADDRESS, CAUSE ADDRESS"
                 ></input>
                 <RiSearch2Line
-                    size="2.2em"
+                    size="2em"
                     onClick={async (e) => {
                         await search()
                     }}
+                    style={{ cursor: "pointer" }}
                 />
             </div>
             {searched &&

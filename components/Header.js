@@ -66,13 +66,13 @@ export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
                 </Link>
             </div>
 
-            <div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
                 {" "}
                 {amICauseOwner && <div>Logged in as the Cause Owner</div>}
                 {amICrowdFunderOwner && (
                     <div className="logged-in-as">Logged in as the Site Admin</div>
                 )}
-                <div className="connect-button">
+                <div>
                     <ConnectButton moralisAuth={false} />
                 </div>
             </div>

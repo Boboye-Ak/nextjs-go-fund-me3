@@ -4,12 +4,10 @@ import { useRouter } from "next/router"
 import { causeABI, crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { useNotification } from "web3uikit"
 import axios from "axios"
-import { ethers } from "ethers"
 import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
 import { convertweiToEth, convertEthToWei, convertweiToEthNum } from "../utils/converter"
 import { siteURL } from "../nextjs.helper.config"
 import Header from "./Header"
-import Four0FourComponent from "./404 Component"
 import {
     RiFileCopyLine,
     RiArrowDownSLine,
@@ -75,7 +73,6 @@ const Cause = ({ id }) => {
     const [listBottomIndex, setListBottomIndex] = useState(5)
     const [ethPrice, setEthPrice] = useState(0)
     const [dollarEquivalent, setDollarEquivalent] = useState(null)
-    const [error, setError] = useState("")
 
     //WEB3 VIEW FUNCTIONS
     const { runContractFunction: getCauseById } = useWeb3Contract({

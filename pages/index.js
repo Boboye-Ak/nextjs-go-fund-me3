@@ -140,11 +140,6 @@ export default function Home() {
         }
     }, [isWeb3Enabled, crowdFunderOwner, account])
 
-    useEffect(() => {
-        if (isWeb3Enabled) {
-            router.push(`./causes/${causeId}`)
-        }
-    }, [causeId])
     return (
         <div>
             <Head>

@@ -41,7 +41,7 @@ const Dropdown = ({ title, items }) => {
                             link={item.link}
                             style={{
                                 opacity: display ? 1 : 0,
-                                transition: `opacity 200ms linear ${
+                                transition: `all 200ms linear ${
                                     display ? `${index * 100}ms` : `${500 - index * 150}ms`
                                 }`,
                                 height: display ? "2.5em" : "0",
