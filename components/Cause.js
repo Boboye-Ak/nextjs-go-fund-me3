@@ -14,7 +14,7 @@ import {
     RiArrowUpSLine,
     RiArrowDropRightLine,
     RiUpload2Fill,
-    RiInstagramLine,
+    RiQrCodeLine,
     RiArrowDropUpLine,
 } from "react-icons/ri"
 import { FaShareSquare, FaEthereum } from "react-icons/fa"
@@ -382,7 +382,12 @@ const Cause = ({ id }) => {
             } else {
                 descriptionToSet = description
             }
-            const causeMetadata = { name: nameToSet, description: newDescription, img: imgLink }
+            const causeMetadata = {
+                causeId: id,
+                name: nameToSet,
+                description: newDescription,
+                img: imgLink,
+            }
             uploadJSONToIPFS(causeMetadata)
                 .then((res) => {
                     setUriString(res)
@@ -1214,7 +1219,7 @@ const Cause = ({ id }) => {
                                         />
                                     </a>
                                     <a className="share-icon">
-                                        <RiInstagramLine
+                                        <RiQrCodeLine
                                             color="#02ba23"
                                             size={iconSize.instagram}
                                             onMouseEnter={(e) => {

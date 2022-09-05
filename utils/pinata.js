@@ -30,7 +30,13 @@ const sendFileToIPFS = async (fileImg) => {
 
 const uploadJSONToIPFS = async (causeMetadata) => {
     try {
-        const data = JSON.stringify(causeMetadata)
+        let data = JSON.stringify({
+            pinataMetadata: {
+                name: `${causeMetadata.causeId}-${causeMetadata.name}`,
+            },
+            pinataContent: causeMetadata,
+        })
+
         const res = await axios({
             method: "post",
             url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
