@@ -72,7 +72,7 @@ const Cause = ({ id }) => {
     const [listTopIndex, setListTopIndex] = useState(0)
     const [listBottomIndex, setListBottomIndex] = useState(5)
     const [ethPrice, setEthPrice] = useState(0)
-    const [dollarEquivalent, setDollarEquivalent] = useState(null)
+    const [dollarEquivalent, setDollarEquivalent] = useState("")
 
     //WEB3 VIEW FUNCTIONS
     const { runContractFunction: getCauseById } = useWeb3Contract({
@@ -651,14 +651,6 @@ const Cause = ({ id }) => {
     useEffect(() => {
         getEthPrice()
     }, [])
-    useEffect(() => {
-        if (donationAmount) {
-            setDollarEquivalent(ethPrice * parseFloat(donationAmount))
-        }
-        if (donationAmount == "") {
-            setDollarEquivalent(0)
-        }
-    }, [donationAmountG])
 
     //Return Value
     return (
@@ -790,27 +782,57 @@ const Cause = ({ id }) => {
                         </div>
 
                         {!amICauseOwner && !isWithdrawn && !isGoalReached && (
-                            <div className="donate-module">
-                                {" "}
-                                <input
-                                    type="number"
-                                    placeholder="Donation amount in ETH"
-                                    value={donationAmount}
-                                    onChange={(e) => {
-                                        setDonationAmount(e.target.value)
-                                        if (parseFloat(e.target.value) < 0) {
-                                            setDonationAmount("0")
-                                        }
-                                    }}
-                                ></input>
-                                <span ids="eth-sign">
-                                    <FaEthereum />
-                                </span>
-                                {donationAmount && (
-                                    <span style={{ fontWeight: "bolder" }}>
-                                        ≈${dollarEquivalent?.toFixed(2)}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <div className="input-bar">
+                                    <input
+                                        type="number"
+                                        value={donationAmount}
+                                        placeholder="(ETH)"
+                                        onChange={(e) => {
+                                            setDonationAmount(e.target.value)
+                                            if (e.target.value != "") {
+                                                setDollarEquivalent(
+                                                    (parseFloat(e.target.value) * ethPrice)
+                                                        ?.toFixed(2)
+                                                        ?.toString()
+                                                )
+                                            } else {
+                                                setDollarEquivalent("")
+                                            }
+                                        }}
+                                    ></input>
+                                    <span>
+                                        <FaEthereum />
                                     </span>
-                                )}
+                                </div>
+                                <div style={{ fontWeight: "bolder" }}>OR</div>
+                                <div className="input-bar">
+                                    <input
+                                        type="number"
+                                        value={dollarEquivalent}
+                                        placeholder="(USD)"
+                                        onChange={(e) => {
+                                            setDollarEquivalent(e.target.value)
+                                            if (e.target.value != "") {
+                                                setDonationAmount(
+                                                    (parseFloat(e.target.value) / ethPrice)
+                                                        ?.toFixed(6)
+                                                        ?.toString()
+                                                )
+                                            } else {
+                                                setDonationAmount("")
+                                            }
+                                        }}
+                                    ></input>
+                                    <div style={{ fontWeight: "bolder", fontSize: "1.5em" }}>$</div>
+                                </div>
                                 <button
                                     onClick={handleDonate}
                                     disabled={

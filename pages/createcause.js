@@ -149,7 +149,7 @@ const CreateCause = () => {
                                 if (e.target.value != "") {
                                     setGoalEth(
                                         (parseFloat(e.target.value) / ethPrice)
-                                            ?.toFixed(2)
+                                            ?.toFixed(5)
                                             ?.toString()
                                     )
                                 } else {
