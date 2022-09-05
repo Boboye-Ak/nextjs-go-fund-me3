@@ -5,6 +5,7 @@ import { useNotification } from "web3uikit"
 import Header from "../../components/Header"
 import { RiArrowDownSLine } from "react-icons/ri"
 import { siteURL } from "../../nextjs.helper.config"
+import BigSearchModule from "../../components/big-search-module"
 
 const Causes = () => {
     const perPage = 10
@@ -32,9 +33,6 @@ const Causes = () => {
     const { runContractFunction: getCauseName } = useWeb3Contract()
 
     const createCauseArray = async () => {
-        //let numCausesFromCall = await getLatestCauseId()
-        //numCausesFromCall = parseInt(numCausesFromCall?.toString())
-        //setNumCauses(numCausesFromCall)
         let causeAddress, causeName
         let causeArray = []
         let getCauseByIdOptions = {
@@ -91,56 +89,52 @@ const Causes = () => {
     return (
         <div>
             <Header />
-            <div
-                className="causes-table"
-                style={
-                    !causes?.length
-                        ? { position: "relative", bottom: "100%" }
-                        : { position: "relative", bottom: "0" }
-                }
-            >
-                <div className="cause-table-header">
-                    <div className="cause-table-item">Cause Name</div>
-                    <div className="cause-table-item">Cause ID</div>
-                    <div className="cause-table-item address-column">Cause Address</div>
+            <div className="search-and-table">
+                <BigSearchModule />
+                <div className="causes-table">
+                    <div className="cause-table-header">
+                        <div className="cause-table-item">Cause Name</div>
+                        <div className="cause-table-item">Cause ID</div>
+                        <div className="cause-table-item address-column">Cause Address</div>
+                    </div>
+                    {causes.map((cause) => {
+                        return (
+                            <div key={cause.causeId} className="cause-table-row">
+                                <div className="cause-table-item">{cause.causeName}</div>
+                                <div className="cause-table-id-item">
+                                    <a href={siteURL + "/causes/" + cause.causeId} target="_blank">
+                                        {cause.causeId}
+                                    </a>
+                                </div>
+                                <div className="cause-table-item cause-table-address-item address-column">
+                                    <a
+                                        href={"https://etherscan.io/address/" + cause.causeAddress}
+                                        target="_blank"
+                                    >
+                                        {cause.causeAddress}
+                                    </a>
+                                </div>
+                            </div>
+                        )
+                    })}
                 </div>
-                {causes.map((cause) => {
-                    return (
-                        <div key={cause.causeId} className="cause-table-row">
-                            <div className="cause-table-item">{cause.causeName}</div>
-                            <div className="cause-table-id-item">
-                                <a href={siteURL + "/causes/" + cause.causeId} target="_blank">
-                                    {cause.causeId}
-                                </a>
-                            </div>
-                            <div className="cause-table-item cause-table-address-item address-column">
-                                <a
-                                    href={"https://etherscan.io/address/" + cause.causeAddress}
-                                    target="_blank"
-                                >
-                                    {cause.causeAddress}
-                                </a>
-                            </div>
-                        </div>
-                    )
-                })}
+                {bottomIndex > 0 && (
+                    <div
+                        id="show-more-arrow"
+                        onClick={() => {
+                            setBottomIndex((oldValue) => {
+                                if (oldValue - perPage < 0) {
+                                    return 0
+                                } else {
+                                    return oldValue - perPage
+                                }
+                            })
+                        }}
+                    >
+                        <RiArrowDownSLine size="1.5em" color="#298e46" />
+                    </div>
+                )}
             </div>
-            {bottomIndex > 0 && (
-                <div
-                    id="show-more-arrow"
-                    onClick={() => {
-                        setBottomIndex((oldValue) => {
-                            if (oldValue - perPage < 0) {
-                                return 0
-                            } else {
-                                return oldValue - perPage
-                            }
-                        })
-                    }}
-                >
-                    <RiArrowDownSLine size="1.5em" color="#298e46" />
-                </div>
-            )}
         </div>
     )
 }

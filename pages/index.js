@@ -24,9 +24,6 @@ export default function Home() {
     const [amICrowdFunderOwner, setAmICrowdFunderOwner] = useState(false)
     const [error, setError] = useState("")
     const dispatch = useNotification()
-    const handleTextChange = (e) => {
-        setSearchText(e.target.value)
-    }
 
     //Web3 Functions
     const {
@@ -60,66 +57,6 @@ export default function Home() {
         functionName: "getContractOwner",
         params: {},
     })
-
-    const searchByCauseId = async () => {
-        const causeIdFromCall = await getCauseById({
-            onError: (error) => {
-                setError("Invalid Cause ID")
-                dispatch({
-                    type: "info",
-                    title: "Cannot Find Cause",
-                    position: "topR",
-                    icon: "bell",
-                    message: "Please Enter a valid Cause ID",
-                })
-            },
-            onSuccess: () => {
-                setCauseId(searchText)
-                setError("")
-            },
-        })
-    }
-
-    const searchByAddress = async () => {
-        let causeIdFromCall
-        let errorObject = { error: true }
-        let successObject = { success: true }
-        causeIdFromCall = await getCauseIdByCauseAddress()
-        if (!causeIdFromCall || causeIdFromCall?.toString() == "0") {
-            causeIdFromCall = await getCauseIdByOwnerAddress({
-                onSuccess: () => {},
-                onError: () => {
-                    dispatch({
-                        title: "Error getting cause",
-                        message: "There was an error getting the cause please try again",
-                        type: "error",
-                        icon: "bell",
-                        position: "topR",
-                    })
-                },
-            })
-
-            if (!causeIdFromCall || causeIdFromCall?.toString() == "0") {
-                setError("This Address is not a cause and has no cause")
-                return errorObject
-            }
-
-            setCauseId(causeIdFromCall?.toString())
-        }
-        setError("")
-        setCauseId(causeIdFromCall?.toString())
-    }
-
-    const search = async () => {
-        let res
-        if (ethers.utils.isAddress(searchText)) {
-            res = await searchByAddress()
-        } else if (!isNaN(searchText)) {
-            await searchByCauseId()
-        } else {
-            setError("Please enter a valid address or Cause ID")
-        }
-    }
 
     const updateUI = async () => {
         const crowdFunderOwnerFromCall = (await getContractOwner())?.toString()
