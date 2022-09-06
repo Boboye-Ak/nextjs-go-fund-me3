@@ -11,6 +11,7 @@ import { useRouter } from "next/router"
 import { crowdFunderAddresses, crowdFunderABI, nullAddress } from "../constants"
 import { ethers } from "ethers"
 import BigSearchModule from "../components/big-search-module"
+import UnsupportedChain from "../components/unsupported-chain"
 
 export default function Home() {
     const router = useRouter()
@@ -85,9 +86,18 @@ export default function Home() {
                 <link rel="icon" href="/crowdfunder-tentative-logo.ico" />
             </Head>
             <Header amICauseOwner={false} amICrowdFunderOwner={amICrowdFunderOwner} />
-            <div className="big-search">
-                <BigSearchModule />
-            </div>
+            {crowdFunderAddress ? (
+                <>
+                    {" "}
+                    <div className="big-search">
+                        <BigSearchModule />
+                    </div>
+                </>
+            ) : (
+                <>
+                    <UnsupportedChain />
+                </>
+            )}
         </div>
     )
 }

@@ -22,6 +22,7 @@ import { GiPadlock, GiPadlockOpen } from "react-icons/gi"
 import { IoLogoTwitter, IoLogoFacebook } from "react-icons/io"
 import { SiGmail } from "react-icons/si"
 import ProgressBar from "./progressbar"
+import UnsupportedChain from "./unsupported-chain"
 const Cause = ({ id }) => {
     const shareURL = `${siteURL}/causes/${id}`
     const { isWeb3Enabled, account, chainId: chainIdHex } = useMoralis()
@@ -661,645 +662,702 @@ const Cause = ({ id }) => {
                 amICauseOwner={amICauseOwner}
                 amICrowdFunderOwner={amICrowdFunderOwner}
             />
-
-            <div className="container">
-                <div className="body-and-donors">
-                    <div
-                        className="cause-body"
-                        style={
-                            !causeName?.length
-                                ? { position: "relative", right: "100%" }
-                                : { position: "relative", right: "0" }
-                        }
-                    >
-                        <div className="cause-name">
-                            <div>{causeName?.toUpperCase()}</div>
-                            <div className="cause-id">#{id}</div>
-                        </div>
-                        <div className="cause-img">
-                            <img
-                                src={imgUri ? imgUri : "/blank-profile-picture-g68da58bec_1280.png"}
-                            ></img>
-                        </div>
-                        {name && (
-                            <div className="cause-owner-name">
-                                Donations for{" "}
-                                <span className="cause-owner-actual-name">{name}</span>
-                            </div>
-                        )}
-                        <div className={`cause-description ${!showFullDescription && "fade"}`}>
-                            {!showFullDescription ? (
-                                <>
-                                    {description.slice(0, 560)}
-                                    {description && description.length > 560 && (
-                                        <div className="read-more-button">
-                                            <RiArrowDownSLine
-                                                className="read-more-button-circle"
-                                                size="1.5em"
-                                                onClick={() => {
-                                                    toggleShowFullDescription(true)
-                                                }}
-                                            />
+            {crowdFunderAddress ? (
+                <>
+                    {" "}
+                    <div className="container">
+                        <div className="body-and-donors">
+                            <div
+                                className="cause-body"
+                                style={
+                                    !causeName?.length
+                                        ? { position: "relative", right: "100%" }
+                                        : { position: "relative", right: "0" }
+                                }
+                            >
+                                <div className="cause-name">
+                                    <div>{causeName?.toUpperCase()}</div>
+                                    <div className="cause-id">#{id}</div>
+                                </div>
+                                <div className="cause-img">
+                                    <img
+                                        src={
+                                            imgUri
+                                                ? imgUri
+                                                : "/blank-profile-picture-g68da58bec_1280.png"
+                                        }
+                                    ></img>
+                                </div>
+                                {name && (
+                                    <div className="cause-owner-name">
+                                        Donations for{" "}
+                                        <span className="cause-owner-actual-name">{name}</span>
+                                    </div>
+                                )}
+                                <div
+                                    className={`cause-description ${
+                                        !showFullDescription && "fade"
+                                    }`}
+                                >
+                                    {!showFullDescription ? (
+                                        <>
+                                            {description.slice(0, 560)}
+                                            {description && description.length > 560 && (
+                                                <div className="read-more-button">
+                                                    <RiArrowDownSLine
+                                                        className="read-more-button-circle"
+                                                        size="1.5em"
+                                                        onClick={() => {
+                                                            toggleShowFullDescription(true)
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <div>
+                                            {" "}
+                                            {description}
+                                            <a className="read-more-button">
+                                                <RiArrowDropUpLine
+                                                    className="read-more-button-circle"
+                                                    size="1.5em"
+                                                    onClick={() => {
+                                                        toggleShowFullDescription(false)
+                                                    }}
+                                                />
+                                            </a>
                                         </div>
                                     )}
-                                </>
-                            ) : (
-                                <div>
-                                    {" "}
-                                    {description}
-                                    <a className="read-more-button">
-                                        <RiArrowDropUpLine
-                                            className="read-more-button-circle"
-                                            size="1.5em"
-                                            onClick={() => {
-                                                toggleShowFullDescription(false)
-                                            }}
-                                        />
-                                    </a>
                                 </div>
-                            )}
-                        </div>
 
-                        <div
-                            className="cause-owner"
-                            title="The ethereum contract address of the cause You can donate to this cause by transferring ethereum to this address.(You can demand a refund later)"
-                        >
-                            CAUSE ADDRESS: {causeAddress}
-                            {"  "}
-                            <span className="copy-icon">
-                                <RiFileCopyLine
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(causeAddress)
-                                        dispatch({
-                                            title: "Copied!",
-                                            message: "Cause Address Copied To Clipboard",
-                                            icon: "bell",
-                                            position: "topR",
-                                            type: "success",
-                                        })
-                                    }}
-                                />
-                            </span>
-                        </div>
-                        <div
-                            className="cause-owner"
-                            title="The ethereum address of the owner of the cause. You can send ethereum directly to them through this route(Non-refundable)"
-                        >
-                            OWNED BY: {causeOwner}
-                            {"  "}
-                            <span className="copy-icon">
-                                <RiFileCopyLine
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(causeOwner)
-                                        dispatch({
-                                            title: "Copied!",
-                                            message: "Cause Owner Address Copied To Clipboard",
-                                            icon: "bell",
-                                            position: "topR",
-                                            type: "success",
-                                        })
-                                    }}
-                                />
-                            </span>
-                        </div>
-                        <div className="progress" style={{ fontWeight: "bolder" }}>
-                            {convertweiToEth(causeBalance)} out of {convertweiToEth(goal)} ($
-                            {parseFloat(convertweiToEth(causeBalance) * ethPrice)?.toFixed(2)}/$
-                            {parseFloat(convertweiToEth(goal) * ethPrice)?.toFixed(2)})
-                            <FaEthereum color="#298e46" />
-                            <ProgressBar
-                                bgcolor={"#02ba23"}
-                                completed={
-                                    (convertweiToEth(causeBalance) / convertweiToEth(goal)) * 100 <
-                                    100
-                                        ? (
-                                              (convertweiToEth(causeBalance) /
-                                                  convertweiToEth(goal)) *
-                                              100
-                                          ).toFixed(2)
-                                        : 100
-                                }
-                            />
-                        </div>
-
-                        {!amICauseOwner && !isWithdrawn && !isGoalReached && (
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <div className="input-bar">
-                                    <input
-                                        type="number"
-                                        value={donationAmount}
-                                        placeholder="(ETH)"
-                                        onChange={(e) => {
-                                            setDonationAmount(e.target.value)
-                                            if (parseFloat(e.target.value) < 0) {
-                                                setDonationAmount("0")
-                                                setDollarEquivalent("0")
-                                            }
-                                            if (e.target.value != "") {
-                                                setDollarEquivalent(
-                                                    (parseFloat(e.target.value) * ethPrice)
-                                                        ?.toFixed(2)
-                                                        ?.toString()
-                                                )
-                                            } else {
-                                                setDollarEquivalent("")
-                                            }
-                                        }}
-                                    ></input>
-                                    <span>
-                                        <FaEthereum />
-                                    </span>
-                                </div>
-                                <div style={{ fontWeight: "bolder" }}>OR</div>
-                                <div className="input-bar">
-                                    <input
-                                        type="number"
-                                        value={dollarEquivalent}
-                                        placeholder="(USD)"
-                                        onChange={(e) => {
-                                            setDollarEquivalent(e.target.value)
-                                            if (parseFloat(e.target.value) < 0) {
-                                                setDollarEquivalent("0")
-                                                setDonationAmount("0")
-                                            }
-                                            if (
-                                                e.target.value != "" &&
-                                                parseFloat(e.target.value) >= 0
-                                            ) {
-                                                setDonationAmount(
-                                                    (parseFloat(e.target.value) / ethPrice)
-                                                        ?.toFixed(8)
-                                                        ?.toString()
-                                                )
-                                            } else {
-                                                setDonationAmount("")
-                                            }
-                                        }}
-                                    ></input>
-                                    <div style={{ fontWeight: "bolder", fontSize: "1.5em" }}>$</div>
-                                </div>
-                                <button
-                                    onClick={handleDonate}
-                                    disabled={
-                                        isWithdrawn ||
-                                        !isOpenToDonations ||
-                                        isLocked ||
-                                        isGoalReached ||
-                                        donateIsFetching ||
-                                        donateIsLoading ||
-                                        !donationAmount ||
-                                        !isWeb3Enabled
-                                    }
+                                <div
+                                    className="cause-owner"
+                                    title="The ethereum contract address of the cause You can donate to this cause by transferring ethereum to this address.(You can demand a refund later)"
                                 >
-                                    DONATE
-                                </button>
-                                {!isOpenToDonations && (
-                                    <div>This cause is currently closed to donations</div>
-                                )}
-                            </div>
-                        )}
-                        {!amICauseOwner && myDonations != "0" && (
-                            <div>
-                                <button
-                                    onClick={handleRefund}
-                                    disabled={
-                                        myDonations == "0" || refundIsFetching || refundIsLoading
-                                    }
-                                    className="demand-refund-button"
-                                >
-                                    DEMAND REFUND
-                                </button>
-                            </div>
-                        )}
-
-                        {isWithdrawn &&
-                            (amICauseOwner ? (
-                                <div className="withdrawal-info">
-                                    You have withdrawn the donations to this cause to your wallet
-                                    with address
-                                    {causeOwner}
-                                </div>
-                            ) : (
-                                <div className="withdrawal-info">
-                                    The owner of this cause has withdrawn the donations to his
-                                    wallet {causeOwner}
-                                </div>
-                            ))}
-
-                        {amICauseOwner && (
-                            <div className="cause-owner-only">
-                                {" "}
-                                <button
-                                    onClick={() => {
-                                        if (showEditModal) {
-                                            toggleEditModal(false)
-                                        } else {
-                                            toggleEditModal(true)
-                                        }
-                                    }}
-                                >
-                                    EDIT
-                                    {showEditModal ? (
-                                        <RiArrowDownSLine />
-                                    ) : (
-                                        <RiArrowDropRightLine />
-                                    )}
-                                </button>
-                            </div>
-                        )}
-                        {amICauseOwner && showEditModal && !isLocked && (
-                            <div className="edit-area">
-                                <div className="edit-modal" ref={editModal}>
-                                    <input
-                                        type="text"
-                                        value={newName}
-                                        placeholder="Cause Owner Name"
-                                        onChange={(e) => {
-                                            setNewName(e.target.value)
-                                        }}
-                                    ></input>
-                                    <textarea
-                                        value={newDescription}
-                                        onChange={(e) => {
-                                            setNewDescription(e.target.value)
-                                        }}
-                                        placeholder="Cause Description"
-                                        required
-                                    >
-                                        {description}
-                                    </textarea>
-                                    <label for="cause-image">
-                                        Upload picture for cause{"  "}
-                                        <RiUpload2Fill />
-                                    </label>
-                                    <input
-                                        type="file"
-                                        accept="image/png, image/gif, image/jpeg"
-                                        onChange={(e) => {
-                                            setFileImg(e.target.files[0])
-                                        }}
-                                        id="cause-image"
-                                        hidden
-                                    ></input>
-                                    {!fileImg && <p>No file chosen</p>}
-                                    <button
-                                        onClick={async (e) => {
-                                            e.preventDefault()
-                                            await handleSubmit()
-                                        }}
-                                        disabled={
-                                            setURIIsFetching || setURIIsLoading || isUploading
-                                        }
-                                    >
-                                        SUBMIT EDIT
-                                    </button>
-                                </div>
-                                <div className="cause-owner-only">
-                                    {" "}
-                                    <button
-                                        onClick={() => {
-                                            if (changeOwnershipModal) {
-                                                toggleChangeOwnershipModal(false)
-                                            } else {
-                                                toggleChangeOwnershipModal(true)
-                                            }
-                                        }}
-                                    >
-                                        CHANGE OWNERSHIP{"  "}
-                                        {changeOwnershipModal ? (
-                                            <RiArrowDownSLine />
-                                        ) : (
-                                            <RiArrowDropRightLine />
-                                        )}
-                                    </button>
-                                </div>
-
-                                {changeOwnershipModal && (
-                                    <div className="cause-owner-only">
-                                        <input
-                                            type="text"
-                                            onChange={(e) => {
-                                                setNewOwner(e.target.value)
-                                            }}
-                                            placeholder="New Owner"
-                                        ></input>
-                                        <button
-                                            onClick={handleChangeOwner}
-                                            disabled={
-                                                changeOwnershipIsFetching ||
-                                                changeOwnershipIsLoading
-                                            }
-                                        >
-                                            CHANGE OWNER
-                                        </button>
-                                    </div>
-                                )}
-                                {isOpenToDonations ? (
-                                    <div className="cause-owner-only">
-                                        {" "}
-                                        <button
-                                            onClick={handleOpenToDonations}
-                                            disabled={
-                                                isWithdrawn ||
-                                                isLocked ||
-                                                switchIsOpenToDonationsIsFetching ||
-                                                switchIsOpenToDonationsIsLoading
-                                            }
-                                        >
-                                            CLOSE TO DONATIONS
-                                        </button>
-                                        <GiPadlock size="1.5em" />
-                                    </div>
-                                ) : (
-                                    <div className="cause-owner-only">
-                                        {" "}
-                                        <button
-                                            disabled={
-                                                isWithdrawn ||
-                                                isLocked ||
-                                                switchIsOpenToDonationsIsFetching ||
-                                                switchIsOpenToDonationsIsLoading
-                                            }
-                                            onClick={handleOpenToDonations}
-                                        >
-                                            OPEN TO DONATIONS
-                                        </button>
-                                        <GiPadlockOpen size="1.5em" />
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                        {amICauseOwner && (
-                            <div className="cause-owner-only">
-                                {" "}
-                                <button onClick={handleWithdraw} disabled={isWithdrawn || isLocked}>
-                                    WITHDRAW
-                                </button>
-                            </div>
-                        )}
-
-                        {amICrowdFunderOwner && !isLocked && (
-                            <button onClick={handleLock} disabled={lockIsFetching || lockIsLoading}>
-                                LOCK CAUSE
-                            </button>
-                        )}
-                        {amICrowdFunderOwner && isLocked && (
-                            <button
-                                onClick={handleUnlock}
-                                disabled={unlockIsFetching || unlockIsLoading}
-                            >
-                                UNLOCK CAUSE
-                            </button>
-                        )}
-                        {isWithdrawn && (
-                            <div className="red-info">
-                                This Cause has been withdrawn from, hence donations can no longer be
-                                made.{" "}
-                            </div>
-                        )}
-                        {isLocked && (
-                            <div className="red-info">
-                                This cause is currently locked by the site admin. You cannot make a
-                                donation or withdrawal at the moment.
-                            </div>
-                        )}
-                    </div>
-                    <div
-                        className="donor-list-and-share"
-                        style={
-                            !causeName?.length
-                                ? { position: "relative", left: "100%" }
-                                : { position: "relative", left: "0" }
-                        }
-                    >
-                        {!amICauseOwner && (
-                            <div className="your-donation">
-                                You've donated {convertweiToEth(myDonations)}
-                                <FaEthereum /> to this cause
-                            </div>
-                        )}
-                        <div className="num-donations">
-                            {numDonations} donation{numDonations != "1" && "s"}
-                            {"  "}
-                            {numRefunds} refund{numRefunds != "1" && "s"}
-                        </div>
-                        <div className="donor-list">
-                            <div className="read-more-button">
-                                {listTopIndex != 0 && (
-                                    <RiArrowUpSLine
-                                        className="read-more-button-circle"
-                                        onClick={() => {
-                                            setListTopIndex((oldValue) => {
-                                                if (oldValue != 0) {
-                                                    return oldValue - 1
-                                                }
-                                            })
-                                            setListBottomIndex((oldValue) => {
-                                                if (oldValue != 5) {
-                                                    return oldValue - 1
-                                                }
-                                            })
-                                        }}
-                                        size="1.5em"
-                                    />
-                                )}
-                            </div>
-                            {donationList
-                                ?.slice(listTopIndex, listBottomIndex)
-                                ?.map((donation, index) => {
-                                    if (parseFloat(donation.amount) > 0) {
-                                        return (
-                                            <div key={index} className="donation">
-                                                <a
-                                                    href={
-                                                        "https://etherscan.io/address/" +
-                                                        `${donation.donor}`
-                                                    }
-                                                    target="_blank"
-                                                >
-                                                    {" "}
-                                                    <FaEthereum color="#02ba23" />
-                                                    <div>
-                                                        {account.toLowerCase() !=
-                                                        donation.donor.toLowerCase()
-                                                            ? donation.donor
-                                                            : "You"}{" "}
-                                                        donated {donation.amount}ETH
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        )
-                                    } else {
-                                        return (
-                                            <div key={index} className="donation refund">
-                                                <a
-                                                    href={
-                                                        "https://etherscan.io/address/" +
-                                                        `${donation.donor}`
-                                                    }
-                                                    target="_blank"
-                                                >
-                                                    {" "}
-                                                    <FaEthereum color="#02ba23" />
-                                                    <div>
-                                                        {account.toLowerCase() !=
-                                                        donation.donor.toLowerCase()
-                                                            ? donation.donor
-                                                            : "You"}{" "}
-                                                        got a refund of {donation.amount}
-                                                        ETH
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        )
-                                    }
-                                })}
-                            {numDonations > 5 && listBottomIndex != donationList.length - 1 && (
-                                <a className="read-more-button">
-                                    <RiArrowDownSLine
-                                        className="read-more-button-circle"
-                                        onClick={() => {
-                                            setListTopIndex((oldValue) => {
-                                                return oldValue + 1
-                                            })
-                                            setListBottomIndex((oldValue) => {
-                                                return oldValue + 1
-                                            })
-                                        }}
-                                        size="1.5em"
-                                    />
-                                </a>
-                            )}
-                        </div>
-                        <div
-                            className="share-module"
-                            onMouseEnter={() => {
-                                toggleShowShareModal(true)
-                            }}
-                            onClick={() => {
-                                if (!showShareModal) {
-                                    toggleShowShareModal(true)
-                                }
-                            }}
-                        >
-                            {showShareModal ? (
-                                <>
-                                    {" "}
-                                    <a
-                                        className="share-icon"
-                                        href={`https://twitter.com/intent/tweet?text=Donate%20to%20${name?.replace(
-                                            / /g,
-                                            "%20"
-                                        )}'s%20campaign%20"${causeName?.replace(
-                                            / /g,
-                                            "%20"
-                                        )}"%20${shareURL}`}
-                                        target="_blank"
-                                    >
-                                        <IoLogoTwitter
-                                            color="#02ba23"
-                                            size={iconSize.twitter}
-                                            onMouseEnter={(e) => {
-                                                setIconSize({ ...iconSize, twitter: "3em" })
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                setIconSize({ ...iconSize, twitter: "2em" })
-                                            }}
-                                        />
-                                    </a>
-                                    <a
-                                        className="share-icon"
-                                        href={`https://www.facebook.com/sharer/sharer.php?u=${shareURL}`}
-                                        target="_blank"
-                                        rel="noopener"
-                                    >
-                                        <IoLogoFacebook
-                                            color="#02ba23"
-                                            size={iconSize.faceBook}
-                                            onMouseEnter={(e) => {
-                                                setIconSize({ ...iconSize, faceBook: "3em" })
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                setIconSize({ ...iconSize, faceBook: "2em" })
-                                            }}
-                                        />
-                                    </a>
-                                    <a
-                                        className="share-icon"
-                                        href={`mailto:sample@gmail.com?subject=Donate%20to%20${name?.replace(
-                                            / /g,
-                                            "%20"
-                                        )}'s%20campaign%20"${causeName?.replace(
-                                            / /g,
-                                            "%20"
-                                        )}"%20${shareURL}`}
-                                        target="_blank"
-                                    >
-                                        <SiGmail
-                                            color="#02ba23"
-                                            size={iconSize.email}
-                                            onMouseEnter={(e) => {
-                                                setIconSize({ ...iconSize, email: "3em" })
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                setIconSize({ ...iconSize, email: "2em" })
-                                            }}
-                                        />
-                                    </a>
-                                    <a className="share-icon">
-                                        <RiQrCodeLine
-                                            color="#02ba23"
-                                            size={iconSize.instagram}
-                                            onMouseEnter={(e) => {
-                                                setIconSize({ ...iconSize, instagram: "3em" })
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                setIconSize({ ...iconSize, instagram: "2em" })
-                                            }}
-                                        />
-                                    </a>
-                                    <a className="share-icon">
+                                    CAUSE ADDRESS: {causeAddress}
+                                    {"  "}
+                                    <span className="copy-icon">
                                         <RiFileCopyLine
-                                            color="#02ba23"
-                                            size={iconSize.copyToClip}
                                             onClick={() => {
-                                                navigator.clipboard.writeText(shareURL)
+                                                navigator.clipboard.writeText(causeAddress)
                                                 dispatch({
                                                     title: "Copied!",
-                                                    message: "Campaign link copied to clipboard",
+                                                    message: "Cause Address Copied To Clipboard",
                                                     icon: "bell",
                                                     position: "topR",
                                                     type: "success",
                                                 })
                                             }}
-                                            onMouseEnter={(e) => {
-                                                setIconSize({ ...iconSize, copyToClip: "3em" })
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                setIconSize({ ...iconSize, copyToClip: "2em" })
+                                        />
+                                    </span>
+                                </div>
+                                <div
+                                    className="cause-owner"
+                                    title="The ethereum address of the owner of the cause. You can send ethereum directly to them through this route(Non-refundable)"
+                                >
+                                    OWNED BY: {causeOwner}
+                                    {"  "}
+                                    <span className="copy-icon">
+                                        <RiFileCopyLine
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(causeOwner)
+                                                dispatch({
+                                                    title: "Copied!",
+                                                    message:
+                                                        "Cause Owner Address Copied To Clipboard",
+                                                    icon: "bell",
+                                                    position: "topR",
+                                                    type: "success",
+                                                })
                                             }}
                                         />
-                                    </a>
-                                </>
-                            ) : (
-                                <>
-                                    <span id="share-text">
-                                        SHARE {"  "}
-                                        <FaShareSquare color="#02ba23" />
                                     </span>
-                                </>
-                            )}
+                                </div>
+                                <div className="progress" style={{ fontWeight: "bolder" }}>
+                                    {convertweiToEth(causeBalance)} out of {convertweiToEth(goal)}{" "}
+                                    ($
+                                    {parseFloat(convertweiToEth(causeBalance) * ethPrice)?.toFixed(
+                                        2
+                                    )}
+                                    /$
+                                    {parseFloat(convertweiToEth(goal) * ethPrice)?.toFixed(2)})
+                                    <FaEthereum color="#298e46" />
+                                    <ProgressBar
+                                        bgcolor={"#02ba23"}
+                                        completed={
+                                            (convertweiToEth(causeBalance) /
+                                                convertweiToEth(goal)) *
+                                                100 <
+                                            100
+                                                ? (
+                                                      (convertweiToEth(causeBalance) /
+                                                          convertweiToEth(goal)) *
+                                                      100
+                                                  ).toFixed(2)
+                                                : 100
+                                        }
+                                    />
+                                </div>
+
+                                {!amICauseOwner && !isWithdrawn && !isGoalReached && (
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <div className="input-bar">
+                                            <input
+                                                type="number"
+                                                value={donationAmount}
+                                                placeholder="(ETH)"
+                                                onChange={(e) => {
+                                                    setDonationAmount(e.target.value)
+                                                    if (parseFloat(e.target.value) < 0) {
+                                                        setDonationAmount("0")
+                                                        setDollarEquivalent("0")
+                                                    }
+                                                    if (e.target.value != "") {
+                                                        setDollarEquivalent(
+                                                            (parseFloat(e.target.value) * ethPrice)
+                                                                ?.toFixed(2)
+                                                                ?.toString()
+                                                        )
+                                                    } else {
+                                                        setDollarEquivalent("")
+                                                    }
+                                                }}
+                                            ></input>
+                                            <span>
+                                                <FaEthereum />
+                                            </span>
+                                        </div>
+                                        <div style={{ fontWeight: "bolder" }}>OR</div>
+                                        <div className="input-bar">
+                                            <input
+                                                type="number"
+                                                value={dollarEquivalent}
+                                                placeholder="(USD)"
+                                                onChange={(e) => {
+                                                    setDollarEquivalent(e.target.value)
+                                                    if (parseFloat(e.target.value) < 0) {
+                                                        setDollarEquivalent("0")
+                                                        setDonationAmount("0")
+                                                    }
+                                                    if (
+                                                        e.target.value != "" &&
+                                                        parseFloat(e.target.value) >= 0
+                                                    ) {
+                                                        setDonationAmount(
+                                                            (parseFloat(e.target.value) / ethPrice)
+                                                                ?.toFixed(8)
+                                                                ?.toString()
+                                                        )
+                                                    } else {
+                                                        setDonationAmount("")
+                                                    }
+                                                }}
+                                            ></input>
+                                            <div
+                                                style={{ fontWeight: "bolder", fontSize: "1.5em" }}
+                                            >
+                                                $
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={handleDonate}
+                                            disabled={
+                                                isWithdrawn ||
+                                                !isOpenToDonations ||
+                                                isLocked ||
+                                                isGoalReached ||
+                                                donateIsFetching ||
+                                                donateIsLoading ||
+                                                !donationAmount ||
+                                                !isWeb3Enabled
+                                            }
+                                        >
+                                            DONATE
+                                        </button>
+                                        {!isOpenToDonations && (
+                                            <div>This cause is currently closed to donations</div>
+                                        )}
+                                    </div>
+                                )}
+                                {!amICauseOwner && myDonations != "0" && (
+                                    <div>
+                                        <button
+                                            onClick={handleRefund}
+                                            disabled={
+                                                myDonations == "0" ||
+                                                refundIsFetching ||
+                                                refundIsLoading
+                                            }
+                                            className="demand-refund-button"
+                                        >
+                                            DEMAND REFUND
+                                        </button>
+                                    </div>
+                                )}
+
+                                {isWithdrawn &&
+                                    (amICauseOwner ? (
+                                        <div className="withdrawal-info">
+                                            You have withdrawn the donations to this cause to your
+                                            wallet with address
+                                            {causeOwner}
+                                        </div>
+                                    ) : (
+                                        <div className="withdrawal-info">
+                                            The owner of this cause has withdrawn the donations to
+                                            his wallet {causeOwner}
+                                        </div>
+                                    ))}
+
+                                {amICauseOwner && (
+                                    <div className="cause-owner-only">
+                                        {" "}
+                                        <button
+                                            onClick={() => {
+                                                if (showEditModal) {
+                                                    toggleEditModal(false)
+                                                } else {
+                                                    toggleEditModal(true)
+                                                }
+                                            }}
+                                        >
+                                            EDIT
+                                            {showEditModal ? (
+                                                <RiArrowDownSLine />
+                                            ) : (
+                                                <RiArrowDropRightLine />
+                                            )}
+                                        </button>
+                                    </div>
+                                )}
+                                {amICauseOwner && showEditModal && !isLocked && (
+                                    <div className="edit-area">
+                                        <div className="edit-modal" ref={editModal}>
+                                            <input
+                                                type="text"
+                                                value={newName}
+                                                placeholder="Cause Owner Name"
+                                                onChange={(e) => {
+                                                    setNewName(e.target.value)
+                                                }}
+                                            ></input>
+                                            <textarea
+                                                value={newDescription}
+                                                onChange={(e) => {
+                                                    setNewDescription(e.target.value)
+                                                }}
+                                                placeholder="Cause Description"
+                                                required
+                                            >
+                                                {description}
+                                            </textarea>
+                                            <label for="cause-image">
+                                                Upload picture for cause{"  "}
+                                                <RiUpload2Fill />
+                                            </label>
+                                            <input
+                                                type="file"
+                                                accept="image/png, image/gif, image/jpeg"
+                                                onChange={(e) => {
+                                                    setFileImg(e.target.files[0])
+                                                }}
+                                                id="cause-image"
+                                                hidden
+                                            ></input>
+                                            {!fileImg && <p>No file chosen</p>}
+                                            <button
+                                                onClick={async (e) => {
+                                                    e.preventDefault()
+                                                    await handleSubmit()
+                                                }}
+                                                disabled={
+                                                    setURIIsFetching ||
+                                                    setURIIsLoading ||
+                                                    isUploading
+                                                }
+                                            >
+                                                SUBMIT EDIT
+                                            </button>
+                                        </div>
+                                        <div className="cause-owner-only">
+                                            {" "}
+                                            <button
+                                                onClick={() => {
+                                                    if (changeOwnershipModal) {
+                                                        toggleChangeOwnershipModal(false)
+                                                    } else {
+                                                        toggleChangeOwnershipModal(true)
+                                                    }
+                                                }}
+                                            >
+                                                CHANGE OWNERSHIP{"  "}
+                                                {changeOwnershipModal ? (
+                                                    <RiArrowDownSLine />
+                                                ) : (
+                                                    <RiArrowDropRightLine />
+                                                )}
+                                            </button>
+                                        </div>
+
+                                        {changeOwnershipModal && (
+                                            <div className="cause-owner-only">
+                                                <input
+                                                    type="text"
+                                                    onChange={(e) => {
+                                                        setNewOwner(e.target.value)
+                                                    }}
+                                                    placeholder="New Owner"
+                                                ></input>
+                                                <button
+                                                    onClick={handleChangeOwner}
+                                                    disabled={
+                                                        changeOwnershipIsFetching ||
+                                                        changeOwnershipIsLoading
+                                                    }
+                                                >
+                                                    CHANGE OWNER
+                                                </button>
+                                            </div>
+                                        )}
+                                        {isOpenToDonations ? (
+                                            <div className="cause-owner-only">
+                                                {" "}
+                                                <button
+                                                    onClick={handleOpenToDonations}
+                                                    disabled={
+                                                        isWithdrawn ||
+                                                        isLocked ||
+                                                        switchIsOpenToDonationsIsFetching ||
+                                                        switchIsOpenToDonationsIsLoading
+                                                    }
+                                                >
+                                                    CLOSE TO DONATIONS
+                                                </button>
+                                                <GiPadlock size="1.5em" />
+                                            </div>
+                                        ) : (
+                                            <div className="cause-owner-only">
+                                                {" "}
+                                                <button
+                                                    disabled={
+                                                        isWithdrawn ||
+                                                        isLocked ||
+                                                        switchIsOpenToDonationsIsFetching ||
+                                                        switchIsOpenToDonationsIsLoading
+                                                    }
+                                                    onClick={handleOpenToDonations}
+                                                >
+                                                    OPEN TO DONATIONS
+                                                </button>
+                                                <GiPadlockOpen size="1.5em" />
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                                {amICauseOwner && (
+                                    <div className="cause-owner-only">
+                                        {" "}
+                                        <button
+                                            onClick={handleWithdraw}
+                                            disabled={isWithdrawn || isLocked}
+                                        >
+                                            WITHDRAW
+                                        </button>
+                                    </div>
+                                )}
+
+                                {amICrowdFunderOwner && !isLocked && (
+                                    <button
+                                        onClick={handleLock}
+                                        disabled={lockIsFetching || lockIsLoading}
+                                    >
+                                        LOCK CAUSE
+                                    </button>
+                                )}
+                                {amICrowdFunderOwner && isLocked && (
+                                    <button
+                                        onClick={handleUnlock}
+                                        disabled={unlockIsFetching || unlockIsLoading}
+                                    >
+                                        UNLOCK CAUSE
+                                    </button>
+                                )}
+                                {isWithdrawn && (
+                                    <div className="red-info">
+                                        This Cause has been withdrawn from, hence donations can no
+                                        longer be made.{" "}
+                                    </div>
+                                )}
+                                {isLocked && (
+                                    <div className="red-info">
+                                        This cause is currently locked by the site admin. You cannot
+                                        make a donation or withdrawal at the moment.
+                                    </div>
+                                )}
+                            </div>
+                            <div
+                                className="donor-list-and-share"
+                                style={
+                                    !causeName?.length
+                                        ? { position: "relative", left: "100%" }
+                                        : { position: "relative", left: "0" }
+                                }
+                            >
+                                {!amICauseOwner && (
+                                    <div className="your-donation">
+                                        You've donated {convertweiToEth(myDonations)}
+                                        <FaEthereum /> to this cause
+                                    </div>
+                                )}
+                                <div className="num-donations">
+                                    {numDonations} donation{numDonations != "1" && "s"}
+                                    {"  "}
+                                    {numRefunds} refund{numRefunds != "1" && "s"}
+                                </div>
+                                <div className="donor-list">
+                                    <div className="read-more-button">
+                                        {listTopIndex != 0 && (
+                                            <RiArrowUpSLine
+                                                className="read-more-button-circle"
+                                                onClick={() => {
+                                                    setListTopIndex((oldValue) => {
+                                                        if (oldValue != 0) {
+                                                            return oldValue - 1
+                                                        }
+                                                    })
+                                                    setListBottomIndex((oldValue) => {
+                                                        if (oldValue != 5) {
+                                                            return oldValue - 1
+                                                        }
+                                                    })
+                                                }}
+                                                size="1.5em"
+                                            />
+                                        )}
+                                    </div>
+                                    {donationList
+                                        ?.slice(listTopIndex, listBottomIndex)
+                                        ?.map((donation, index) => {
+                                            if (parseFloat(donation.amount) > 0) {
+                                                return (
+                                                    <div key={index} className="donation">
+                                                        <a
+                                                            href={
+                                                                "https://etherscan.io/address/" +
+                                                                `${donation.donor}`
+                                                            }
+                                                            target="_blank"
+                                                        >
+                                                            {" "}
+                                                            <FaEthereum color="#02ba23" />
+                                                            <div>
+                                                                {account.toLowerCase() !=
+                                                                donation.donor.toLowerCase()
+                                                                    ? donation.donor
+                                                                    : "You"}{" "}
+                                                                donated {donation.amount}ETH
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                )
+                                            } else {
+                                                return (
+                                                    <div key={index} className="donation refund">
+                                                        <a
+                                                            href={
+                                                                "https://etherscan.io/address/" +
+                                                                `${donation.donor}`
+                                                            }
+                                                            target="_blank"
+                                                        >
+                                                            {" "}
+                                                            <FaEthereum color="#02ba23" />
+                                                            <div>
+                                                                {account.toLowerCase() !=
+                                                                donation.donor.toLowerCase()
+                                                                    ? donation.donor
+                                                                    : "You"}{" "}
+                                                                got a refund of {donation.amount}
+                                                                ETH
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                )
+                                            }
+                                        })}
+                                    {numDonations > 5 &&
+                                        listBottomIndex != donationList.length - 1 && (
+                                            <a className="read-more-button">
+                                                <RiArrowDownSLine
+                                                    className="read-more-button-circle"
+                                                    onClick={() => {
+                                                        setListTopIndex((oldValue) => {
+                                                            return oldValue + 1
+                                                        })
+                                                        setListBottomIndex((oldValue) => {
+                                                            return oldValue + 1
+                                                        })
+                                                    }}
+                                                    size="1.5em"
+                                                />
+                                            </a>
+                                        )}
+                                </div>
+                                <div
+                                    className="share-module"
+                                    onMouseEnter={() => {
+                                        toggleShowShareModal(true)
+                                    }}
+                                    onClick={() => {
+                                        if (!showShareModal) {
+                                            toggleShowShareModal(true)
+                                        }
+                                    }}
+                                >
+                                    {showShareModal ? (
+                                        <>
+                                            {" "}
+                                            <a
+                                                className="share-icon"
+                                                href={`https://twitter.com/intent/tweet?text=Donate%20to%20${name?.replace(
+                                                    / /g,
+                                                    "%20"
+                                                )}'s%20campaign%20"${causeName?.replace(
+                                                    / /g,
+                                                    "%20"
+                                                )}"%20${shareURL}`}
+                                                target="_blank"
+                                            >
+                                                <IoLogoTwitter
+                                                    color="#02ba23"
+                                                    size={iconSize.twitter}
+                                                    onMouseEnter={(e) => {
+                                                        setIconSize({ ...iconSize, twitter: "3em" })
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        setIconSize({ ...iconSize, twitter: "2em" })
+                                                    }}
+                                                />
+                                            </a>
+                                            <a
+                                                className="share-icon"
+                                                href={`https://www.facebook.com/sharer/sharer.php?u=${shareURL}`}
+                                                target="_blank"
+                                                rel="noopener"
+                                            >
+                                                <IoLogoFacebook
+                                                    color="#02ba23"
+                                                    size={iconSize.faceBook}
+                                                    onMouseEnter={(e) => {
+                                                        setIconSize({
+                                                            ...iconSize,
+                                                            faceBook: "3em",
+                                                        })
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        setIconSize({
+                                                            ...iconSize,
+                                                            faceBook: "2em",
+                                                        })
+                                                    }}
+                                                />
+                                            </a>
+                                            <a
+                                                className="share-icon"
+                                                href={`mailto:sample@gmail.com?subject=Donate%20to%20${name?.replace(
+                                                    / /g,
+                                                    "%20"
+                                                )}'s%20campaign%20"${causeName?.replace(
+                                                    / /g,
+                                                    "%20"
+                                                )}"%20${shareURL}`}
+                                                target="_blank"
+                                            >
+                                                <SiGmail
+                                                    color="#02ba23"
+                                                    size={iconSize.email}
+                                                    onMouseEnter={(e) => {
+                                                        setIconSize({ ...iconSize, email: "3em" })
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        setIconSize({ ...iconSize, email: "2em" })
+                                                    }}
+                                                />
+                                            </a>
+                                            <a className="share-icon">
+                                                <RiQrCodeLine
+                                                    color="#02ba23"
+                                                    size={iconSize.instagram}
+                                                    onMouseEnter={(e) => {
+                                                        setIconSize({
+                                                            ...iconSize,
+                                                            instagram: "3em",
+                                                        })
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        setIconSize({
+                                                            ...iconSize,
+                                                            instagram: "2em",
+                                                        })
+                                                    }}
+                                                />
+                                            </a>
+                                            <a className="share-icon">
+                                                <RiFileCopyLine
+                                                    color="#02ba23"
+                                                    size={iconSize.copyToClip}
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(shareURL)
+                                                        dispatch({
+                                                            title: "Copied!",
+                                                            message:
+                                                                "Campaign link copied to clipboard",
+                                                            icon: "bell",
+                                                            position: "topR",
+                                                            type: "success",
+                                                        })
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        setIconSize({
+                                                            ...iconSize,
+                                                            copyToClip: "3em",
+                                                        })
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        setIconSize({
+                                                            ...iconSize,
+                                                            copyToClip: "2em",
+                                                        })
+                                                    }}
+                                                />
+                                            </a>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span id="share-text">
+                                                SHARE {"  "}
+                                                <FaShareSquare color="#02ba23" />
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </>
+            ) : (
+                <>
+                    <UnsupportedChain />
+                </>
+            )}
         </div>
     )
 }
