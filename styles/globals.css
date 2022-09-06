@@ -265,6 +265,11 @@ img {
     border-radius: 6px;
     text-align: center;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: 200ms ease-in-out;
+}
+
+.cause-owner:hover {
+    background-color: rgb(57, 136, 71);
 }
 
 .cause-description {
@@ -421,6 +426,7 @@ button:active {
 }
 .demand-refund-button {
     background: #e62143;
+    color: white;
     font-size: 1.15em;
     transition: all 0.2s ease-in-out;
     text-decoration-skip-ink: auto;
@@ -437,6 +443,7 @@ button:active {
 
 .demand-refund-button:hover {
     border-bottom-style: none;
+    background: #e62143;
     border-color: #dadada;
 }
 .demand-refund-button:disabled {

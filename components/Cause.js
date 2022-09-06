@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { useMoralis, useWeb3Contract } from "react-moralis"
+import QRCode from "qrcode"
 import { useRouter } from "next/router"
 import { causeABI, crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { useNotification } from "web3uikit"
@@ -74,6 +75,7 @@ const Cause = ({ id }) => {
     const [listBottomIndex, setListBottomIndex] = useState(5)
     const [ethPrice, setEthPrice] = useState(0)
     const [dollarEquivalent, setDollarEquivalent] = useState("")
+    const [qrCode, setQRCode] = useState("")
 
     //WEB3 VIEW FUNCTIONS
     const { runContractFunction: getCauseById } = useWeb3Contract({
@@ -294,6 +296,7 @@ const Cause = ({ id }) => {
         setNumDonations(numDonationsFromCall?.toString())
         setNumRefunds(numRefundsFromCall?.toString())
         setDonationList(newDonationList?.reverse())
+        generateQRCode()
     }
 
     const updateMetadata = async () => {
@@ -552,6 +555,14 @@ const Cause = ({ id }) => {
         const res = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=ETHBUSD")
         setEthPrice(parseFloat(res.data.price))
     }
+    const generateQRCode = () => {
+        QRCode.toDataURL(shareURL, (err, qrUrl) => {
+            if (err) {
+                return console.error(err)
+            }
+            setQRCode(qrUrl)
+        })
+    }
     //USEEFFECTS
 
     useEffect(() => {
@@ -734,6 +745,16 @@ const Cause = ({ id }) => {
                                 <div
                                     className="cause-owner"
                                     title="The ethereum contract address of the cause You can donate to this cause by transferring ethereum to this address.(You can demand a refund later)"
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(causeAddress)
+                                        dispatch({
+                                            title: "Copied!",
+                                            message: "Cause Address Copied To Clipboard",
+                                            icon: "bell",
+                                            position: "topR",
+                                            type: "success",
+                                        })
+                                    }}
                                 >
                                     CAUSE ADDRESS: {causeAddress}
                                     {"  "}
@@ -755,6 +776,16 @@ const Cause = ({ id }) => {
                                 <div
                                     className="cause-owner"
                                     title="The ethereum address of the owner of the cause. You can send ethereum directly to them through this route(Non-refundable)"
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(causeOwner)
+                                        dispatch({
+                                            title: "Copied!",
+                                            message: "Cause Owner Address Copied To Clipboard",
+                                            icon: "bell",
+                                            position: "topR",
+                                            type: "success",
+                                        })
+                                    }}
                                 >
                                     OWNED BY: {causeOwner}
                                     {"  "}
@@ -1296,7 +1327,11 @@ const Cause = ({ id }) => {
                                                     }}
                                                 />
                                             </a>
-                                            <a className="share-icon">
+                                            <a
+                                                className="share-icon"
+                                                href={qrCode}
+                                                download={`${id}-${causeName}.png`}
+                                            >
                                                 <RiQrCodeLine
                                                     color="#02ba23"
                                                     size={iconSize.instagram}
