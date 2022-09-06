@@ -531,6 +531,10 @@ button:disabled {
     border-width: thin;
     height: 2em;
     background-color: #dae2f0;
+    cursor: pointer;
+}
+.cause-table-row:hover {
+    background-color: #79a7f0;
 }
 .cause-table-item {
     text-align: center;

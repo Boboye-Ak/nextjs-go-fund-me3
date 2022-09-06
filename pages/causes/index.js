@@ -103,28 +103,33 @@ const Causes = () => {
                             </div>
                             {causes.map((cause) => {
                                 return (
-                                    <div key={cause.causeId} className="cause-table-row">
-                                        <div className="cause-table-item">{cause.causeName}</div>
-                                        <div className="cause-table-id-item">
-                                            <a
-                                                href={siteURL + "/causes/" + cause.causeId}
-                                                target="_blank"
-                                            >
-                                                {cause.causeId}
-                                            </a>
+                                    <a href={siteURL + "/causes/" + cause.causeId}>
+                                        {" "}
+                                        <div key={cause.causeId} className="cause-table-row">
+                                            <div className="cause-table-item">
+                                                {cause.causeName}
+                                            </div>
+                                            <div className="cause-table-id-item">
+                                                <a
+                                                    href={siteURL + "/causes/" + cause.causeId}
+                                                    target="_blank"
+                                                >
+                                                    {cause.causeId}
+                                                </a>
+                                            </div>
+                                            <div className="cause-table-item cause-table-address-item address-column">
+                                                <a
+                                                    href={
+                                                        "https://etherscan.io/address/" +
+                                                        cause.causeAddress
+                                                    }
+                                                    target="_blank"
+                                                >
+                                                    {cause.causeAddress}
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div className="cause-table-item cause-table-address-item address-column">
-                                            <a
-                                                href={
-                                                    "https://etherscan.io/address/" +
-                                                    cause.causeAddress
-                                                }
-                                                target="_blank"
-                                            >
-                                                {cause.causeAddress}
-                                            </a>
-                                        </div>
-                                    </div>
+                                    </a>
                                 )
                             })}
                         </div>

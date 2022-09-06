@@ -1,10 +1,11 @@
 import { AiFillInfoCircle } from "react-icons/ai"
+import { ConnectButton } from "web3uikit"
 const UnsupportedChain = () => {
     return (
         <div className="container-404">
             <div className="text-404">
-                <h1>UNSUPPORTED CHAIN</h1>
-                <p>WE DO NOT CURRENTLY HAVE A CONTRACT ON THIS CHAIN. PLEASE SWITCH TO RINKEBY</p>
+                <h1>UNSUPPORTED CHAIN/NO WALLET</h1>
+                <p>PLEASE SWITCH TO RINKEBY NETWORK AND CONNECT YOUR WALLET</p>
                 <a href="/about">
                     {" "}
                     <button>

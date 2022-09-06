@@ -549,7 +549,7 @@ const Cause = ({ id }) => {
     }
 
     const getEthPrice = async () => {
-        const res = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDC")
+        const res = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=ETHBUSD")
         setEthPrice(parseFloat(res.data.price))
     }
     //USEEFFECTS
@@ -1113,7 +1113,11 @@ const Cause = ({ id }) => {
                             >
                                 {!amICauseOwner && (
                                     <div className="your-donation">
-                                        You've donated {convertweiToEth(myDonations)}
+                                        You've donated {convertweiToEth(myDonations)} ($
+                                        {(parseFloat(convertweiToEth(myDonations)) * ethPrice)
+                                            ?.toFixed(2)
+                                            ?.toString()}
+                                        )
                                         <FaEthereum /> to this cause
                                     </div>
                                 )}

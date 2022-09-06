@@ -81,7 +81,7 @@ const CreateCause = () => {
         })
     }
     const getEthPrice = async () => {
-        const res = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDC")
+        const res = await axios.get("https://api.binance.com/api/v3/ticker/price?symbol=ETHBUSD")
         setEthPrice(parseFloat(res.data.price))
     }
 
