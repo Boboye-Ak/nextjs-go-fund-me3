@@ -265,7 +265,7 @@ img {
     border-radius: 6px;
     text-align: center;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-    transition: 200ms ease-in-out;
+    transition: 100ms ease-in-out;
 }
 
 .cause-owner:hover {
@@ -572,6 +572,11 @@ button:disabled {
 .for-mobile {
     display: none;
 }
+.sponsor-donate-module {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     .cause {
@@ -663,6 +668,15 @@ button:disabled {
         width: 60px;
         height: 50px;
         background-color: #298e46;
+    }
+    .input-bar {
+        font-size: small;
+        width: 100px;
+        height: 50px;
+    }
+    .sponsor-donate-module {
+        font-size: small;
+        width: 100%;
     }
 }
 

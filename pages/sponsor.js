@@ -43,8 +43,6 @@ const Sponsor = () => {
                     position: "topR",
                     icon: "bell",
                 })
-                setDonationAmount("")
-                setDollarEquivalent("")
             },
             onError: () => {
                 dispatch({
@@ -87,7 +85,7 @@ const Sponsor = () => {
                             justifyContent: "center",
                         }}
                     >
-                        <div style={{ width: "50%", display: "flex", alignItems: "center" }}>
+                        <div className="sponsor-donate-module">
                             {" "}
                             <div className="input-bar">
                                 <input
