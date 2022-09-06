@@ -55,7 +55,7 @@ export default function Header({ amICauseOwner, amICrowdFunderOwner }) {
                             link: doIHaveACause ? `/causes/${myCauseId}` : "/createcause",
                         },
                         { name: "ABOUT SITE", link: "/about" },
-                        { name: "SPONSOR SITE", link: "" },
+                        { name: "SPONSOR SITE", link: "/sponsor" },
                     ]}
                 />
             </div>
