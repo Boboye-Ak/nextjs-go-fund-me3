@@ -1,9 +1,9 @@
 import { RiSearch2Line } from "react-icons/ri"
-import { crowdFunderAddresses, crowdFunderABI } from "../constants"
+import { crowdFunderAddresses, crowdFunderABI, causeABI } from "../constants"
 import { useNotification } from "web3uikit"
 import { useWeb3Contract, useMoralis } from "react-moralis"
 import { ethers } from "ethers"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const BigSearchModule = () => {
     const { chainId: chainIdHex, isWeb3Enabled, account } = useMoralis()
@@ -13,6 +13,8 @@ const BigSearchModule = () => {
     const dispatch = useNotification()
     const [searchText, setSearchText] = useState("")
     const [causeId, setCauseId] = useState("0")
+    const [causeAddress, setCauseAddress] = useState("")
+    const [causeName, setCauseName] = useState("")
     const [searched, setSearched] = useState(false)
 
     const {
@@ -37,6 +39,20 @@ const BigSearchModule = () => {
         contractAddress: crowdFunderAddress,
         functionName: "getCauseById",
         params: { causeId: searchText },
+    })
+
+    const { runContractFunction: getCauseById2 } = useWeb3Contract({
+        abi: crowdFunderABI,
+        contractAddress: crowdFunderAddress,
+        functionName: "getCauseById",
+        params: { causeId: causeId },
+    })
+
+    const { runContractFunction: getCauseName } = useWeb3Contract({
+        abi: causeABI,
+        contractAddress: causeAddress,
+        functionName: "getCauseName",
+        params: {},
     })
 
     const searchByAddress = async () => {
@@ -93,6 +109,22 @@ const BigSearchModule = () => {
         }
     }
 
+    useEffect(() => {
+        if (causeId && causeId != "0") {
+            getCauseById2().then((res) => {
+                setCauseAddress(res?.toString())
+            })
+        }
+    }, [causeId])
+
+    useEffect(() => {
+        if (causeAddress) {
+            getCauseName().then((res) => {
+                setCauseName(res?.toString())
+            })
+        }
+    }, [causeAddress])
+
     return (
         <div className="big-search-module">
             <div className="big-search-bar">
@@ -117,7 +149,10 @@ const BigSearchModule = () => {
             {searched &&
                 (causeId != "0" ? (
                     <a href={`/causes/${causeId}`} target="_blank">
-                        <div className="big-search-result">Cause #{causeId}</div>
+                        <div className="big-search-result">
+                            <div>Cause #{causeId}</div>
+                            <div>{causeName}</div>
+                        </div>
                     </a>
                 ) : (
                     <div className="big-search-result">No result was found for this search</div>

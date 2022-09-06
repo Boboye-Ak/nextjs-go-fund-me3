@@ -653,6 +653,7 @@ const Cause = ({ id }) => {
     }, [])
 
     //Return Value
+
     return (
         <div className="cause">
             <Header
@@ -797,6 +798,10 @@ const Cause = ({ id }) => {
                                         placeholder="(ETH)"
                                         onChange={(e) => {
                                             setDonationAmount(e.target.value)
+                                            if (parseFloat(e.target.value) < 0) {
+                                                setDonationAmount("0")
+                                                setDollarEquivalent("0")
+                                            }
                                             if (e.target.value != "") {
                                                 setDollarEquivalent(
                                                     (parseFloat(e.target.value) * ethPrice)
@@ -820,10 +825,17 @@ const Cause = ({ id }) => {
                                         placeholder="(USD)"
                                         onChange={(e) => {
                                             setDollarEquivalent(e.target.value)
-                                            if (e.target.value != "") {
+                                            if (parseFloat(e.target.value) < 0) {
+                                                setDollarEquivalent("0")
+                                                setDonationAmount("0")
+                                            }
+                                            if (
+                                                e.target.value != "" &&
+                                                parseFloat(e.target.value) >= 0
+                                            ) {
                                                 setDonationAmount(
                                                     (parseFloat(e.target.value) / ethPrice)
-                                                        ?.toFixed(6)
+                                                        ?.toFixed(8)
                                                         ?.toString()
                                                 )
                                             } else {
@@ -842,7 +854,8 @@ const Cause = ({ id }) => {
                                         isGoalReached ||
                                         donateIsFetching ||
                                         donateIsLoading ||
-                                        !donationAmount
+                                        !donationAmount ||
+                                        !isWeb3Enabled
                                     }
                                 >
                                     DONATE
