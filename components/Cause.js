@@ -335,6 +335,7 @@ const Cause = ({ id }) => {
                 setIsAwaitingConfirmation(true)
                 await tx.wait(1)
                 setIsAwaitingConfirmation(false)
+                setIsAwaitingConfirmation(null)
                 await updateUI()
                 setDonationAmount("")
                 setDollarEquivalent("")
@@ -361,6 +362,7 @@ const Cause = ({ id }) => {
                 setIsAwaitingConfirmation(true)
                 await tx.wait(1)
                 setIsAwaitingConfirmation(false)
+                setIsAwaitingConfirmation(null)
                 dispatch({
                     title: "Withdrawal Successful",
                     position: "topR",
@@ -435,6 +437,7 @@ const Cause = ({ id }) => {
                 setIsAwaitingConfirmation(true)
                 await tx.wait(1)
                 setIsAwaitingConfirmation(false)
+                setIsAwaitingConfirmation(null)
                 await updateUI()
                 dispatch({
                     title: "Refund given",
@@ -462,6 +465,7 @@ const Cause = ({ id }) => {
                 setIsAwaitingConfirmation(true)
                 await tx.wait(1)
                 setIsAwaitingConfirmation(false)
+                setIsAwaitingConfirmation(null)
                 await updateUI()
                 dispatch({
                     title: "Cause locked",
@@ -489,6 +493,7 @@ const Cause = ({ id }) => {
                 setIsAwaitingConfirmation(true)
                 await tx.wait(1)
                 setIsAwaitingConfirmation(false)
+                setIsAwaitingConfirmation(null)
                 await updateUI()
                 dispatch({
                     title: "Cause Unlocked",
@@ -517,12 +522,14 @@ const Cause = ({ id }) => {
                 setIsAwaitingConfirmation(true)
                 await tx.wait(1)
                 setIsAwaitingConfirmation(false)
+                setIsAwaitingConfirmation(null)
 
                 await handover({
                     onSuccess: async (tx) => {
                         setIsAwaitingConfirmation(true)
                         await tx.wait(1)
                         setIsAwaitingConfirmation(false)
+                        setIsAwaitingConfirmation(null)
                         dispatch({
                             title: "Ownership changed successfully",
                             message: `The new owner of this cause is ${newOwner}`,
@@ -562,6 +569,7 @@ const Cause = ({ id }) => {
                 setIsAwaitingConfirmation(true)
                 await tx.wait(1)
                 setIsAwaitingConfirmation(false)
+                setIsAwaitingConfirmation(null)
                 await updateUI()
             },
             onError: async () => {
@@ -657,6 +665,7 @@ const Cause = ({ id }) => {
                         setIsAwaitingConfirmation(true)
                         await tx.wait(1)
                         setIsAwaitingConfirmation(false)
+                        setIsAwaitingConfirmation(null)
                         dispatch({
                             title: "Edit successful",
                             message: "You have successfully edited cause data",
@@ -1205,17 +1214,17 @@ const Cause = ({ id }) => {
                                 style={
                                     !causeName?.length
                                         ? { position: "relative", left: "100%" }
-                                        : { position: "relative", left: "0" }
+                                        : { position: "sticky", top: "0", left: "0" }
                                 }
                             >
                                 {!amICauseOwner && (
                                     <div className="your-donation">
-                                        You've donated {convertweiToEth(myDonations)} ($
+                                        You've donated {convertweiToEth(myDonations)}
+                                        <FaEthereum /> ($
                                         {(parseFloat(convertweiToEth(myDonations)) * ethPrice)
                                             ?.toFixed(2)
                                             ?.toString()}
-                                        )
-                                        <FaEthereum /> to this cause
+                                        ) to this cause
                                     </div>
                                 )}
                                 <div className="num-donations">

@@ -201,7 +201,7 @@ textarea {
     padding: 1em;
     margin: 1em;
     width: 35%;
-    height: 800px;
+    height: 700px;
     transition: left 1s linear;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
@@ -566,8 +566,14 @@ button:disabled {
     justify-content: center;
 }
 .about-container {
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.about-paragraph {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-size: 1.15em;
+    text-align: left;
 }
 .for-mobile {
     display: none;
@@ -577,6 +583,7 @@ button:disabled {
     display: flex;
     align-items: center;
 }
+
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     .cause {

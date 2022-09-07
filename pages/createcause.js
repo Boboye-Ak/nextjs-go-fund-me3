@@ -124,7 +124,7 @@ const CreateCause = () => {
                 <input
                     type="text"
                     value={causeName}
-                    placeholder="Cause Name"
+                    placeholder="Cause Name(eg Sam needs a new phone)"
                     onChange={(e) => {
                         setCauseName(e.target.value)
                     }}
