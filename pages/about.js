@@ -153,7 +153,7 @@ const About = () => {
                             About The Developer
                         </div>
                         <div className="cause-img">
-                            <img src="/crowdfunder-tentative-logo.png" />
+                            <img src="/about images/developer-image.jpeg" />
                         </div>
                     </div>
                     <div
