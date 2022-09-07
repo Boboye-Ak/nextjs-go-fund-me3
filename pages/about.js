@@ -2,8 +2,6 @@ import Header from "../components/Header"
 import { supportedChains } from "../constants"
 
 const About = () => {
-    const aboutText =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque accumsan non nisi eu vulputate. Nulla faucibus massa sit amet turpis ultrices, eget rutrum mi sagittis. Vestibulum quis lorem eu dui euismod gravida. Ut sollicitudin tellus diam, quis ullamcorper risus vehicula eget. Fusce varius nisl orci. Sed vitae est at tortor tincidunt pharetra. Cras placerat erat ut commodo eleifend. Aliquam feugiat ex nec metus ultricies volutpat. Maecenas vel dictum tortor. Vestibulum vitae hendrerit arcu. Maecenas sed accumsan ipsum. Ut vel facilisis velit. Sed id facilisis quam, vitae consequat tellus. Curabitur id ornare lorem, ultrices egestas dui. Proin fringilla elit sit amet suscipit imperdiet. Aliquam ut rutrum massa, ac condimentum massa. Aliquam sollicitudin magna in erat dapibus, sit amet facilisis tellus varius. Aenean fermentum, metus in ultrices lacinia, tortor eros pulvinar sem, et pellentesque nunc velit eget est. Nulla tincidunt, orci ac ornare volutpat, dolor nulla pharetra dolor, sit amet mattis leo risus non arcu. Curabitur fermentum dolor convallis, gravida elit vitae, pulvinar arcu. Nunc mattis blandit nisi sit amet accumsan. Phasellus risus neque, bibendum sit amet euismod non, facilisis a lectus. Integer fermentum massa sit amet leo blandit hendrerit. Sed porttitor elit non luctus volutpat.Duis tincidunt, erat nec ullamcorper dapibus, enim dolor convallis sapien, a ultricies metus sem vitae eros. Praesent pulvinar odio eget sapien bibendum fermentum. Pellentesque convallis rhoncus justo, hendrerit placerat urna luctus in. Ut id magna viverra, sagittis quam id, condimentum ex. Sed non arcu in ante pellentesque auctor id sit amet risus. Sed imperdiet eget purus viverra ornare. Aenean eget tempus tortor. Aliquam at arcu vel leo tincidunt molestie ornare ut massa. Suspendisse posuere neque odio, et rutrum dui condimentum vel.Donec volutpat non massa et commodo. Quisque id convallis velit. Ut quis faucibus massa. Proin efficitur pharetra erat. Nunc at neque cursus, semper libero sit amet, finibus massa. Suspendisse dapibus ligula ligula, in sagittis sapien blandit in. Nullam tincidunt eros sed tristique tristique. Cras convallis in lacus at iaculis. Curabitur accumsan, erat ut convallis porttitor, nisl enim accumsan ante, vel malesuada ligula nunc et odio. Praesent tempus sodales sodales. Maecenas bibendum risus eu arcu accumsan, a gravida lectus tempus. Donec facilisis risus justo, quis varius enim congue sit amet.In mollis eros nulla, et gravida urna elementum ac. Fusce purus lorem, tempus eget velit nec, aliquet vestibulum justo. Aliquam erat volutpat. Nunc non nunc porta, tristique nisl ac, convallis nulla. Proin dapibus purus id pellentesque facilisis. Nulla sed sodales tellus. Sed dolor eros, varius a fermentum ac, sagittis at purus. Mauris eget pretium magna. Nunc est tellus, tempor facilisis erat et, rutrum efficitur nulla. Cras egestas viverra facilisis. Integer a aliquam mauris. Maecenas non condimentum massa, at commodo dui. Praesent bibendum vestibulum erat"
     return (
         <div className="cause">
             <Header />
@@ -49,7 +47,7 @@ const About = () => {
                             })}
                             ).
                         </div>
-                        <h2>What is a Cause?</h2>
+                        <h2 id="what-is-a-cause">What is a Cause?</h2>
                         <div className="about-paragraph">
                             A Cause is a unit of the site that allows a user receive donations and
                             other users to make donations to them. Each cause is a product of a{" "}
@@ -73,6 +71,14 @@ const About = () => {
                                 alt="A typical cause page"
                             />
                         </div>
+                        <h2 id="searches">Searches</h2>
+                        <div className="about-paragraph">
+                            As stated above, the search bars in the home page and the causes can
+                            find a cause based on the ID(Numerical Integer such as "1"), cause
+                            contract address(hexadecimal beginning with 0x) and cause owner wallet
+                            address(hexadecimal beginning with 0x). Attempts to search based on the
+                            Cause name or keywords will produce no results.
+                        </div>
                         <div className="cause-img">
                             <img
                                 src="about images/search-page.png"
@@ -87,11 +93,111 @@ const About = () => {
                                 alt="Causes Page"
                             />
                         </div>
+                        <h2 id="donations">Donations</h2>
+                        <div className="about-paragraph">
+                            Donations are made in ETH (the native token of the Ethereum network).
+                            Donations to a cause are stored in the contract of the cause and can
+                            only be withdrawn by the owner of the cause. Donations are automatically
+                            disabled when the goal of the cause is reached or exceeded.
+                        </div>
+                        <h2 id="withdrawal">Withdrawal</h2>
+                        <div className="about-paragraph">
+                            The owner of a cause can withdraw donations made to his cause at any
+                            time irrespective of how much has been donated at the time of
+                            withdrawal. 3% of donated funds return to the CrowdFunder contract for
+                            the maintenance of the site. Donations can no longer be made after
+                            withdrawal.
+                        </div>
+                        <h2 id="refunds">Refunds</h2>
+                        <div className="about-paragraph">
+                            Donors to a cause can ask for refunds and get them immediately by
+                            clicking the "Demand Refund" button in a cause page. You can still make
+                            a donation after getting a refund but you cannot get a refund after the
+                            owner of the cause has withdrawn donations.
+                        </div>
+                        <h2 id="closing">Closing/Opening to Donations</h2>
+                        <div className="about-paragraph">
+                            The Cause Owner can choose to close his cause to donations. Donors will
+                            be unable to make contributions while it is in that state. This is
+                            different from locking/unlocking of causes.
+                        </div>
+                        <h2 id="locking">Locking/Unlocking of causes</h2>
+                        <div className="about-paragraph">
+                            The site admin can choose to lock/unlock a cause if reports of
+                            fraudulence are made. While in this state, donations cannot be made to
+                            such a cause and the cause owner will be unable to withdraw the funds in
+                            the cause. Donors who already made donations will be able to get
+                            refunds. PS: The site admin cannot withdraw the funds in any of the
+                            causes. Only the cause owners and donors are able to withdraw money or
+                            get refunds respectively from the cause. This is different from
+                            Closing/Opening causes to donation
+                        </div>
+                        <h2 id="sponsor">Sponsoring the Site</h2>
+                        <div className="about-paragraph">
+                            You can show contribute to the maintenance of the site or show
+                            appreciation to the developer(Just one for now) by making a donation via
+                            the{" "}
+                            <a
+                                href="/sponsor"
+                                style={{ color: "blue", textDecoration: "underline" }}
+                                target="_blank"
+                            >
+                                sponsor page.
+                            </a>{" "}
+                        </div>
+                        <div
+                            className="cause-name cause-owner-actual-name"
+                            style={{ justifyContent: "center", fontSize: "2.5em" }}
+                            id="about-the-developer"
+                        >
+                            About The Developer
+                        </div>
+                        <div className="cause-img">
+                            <img src="/crowdfunder-tentative-logo.png" />
+                        </div>
                     </div>
                     <div
                         className="donor-list-and-share"
                         style={{ position: "sticky", top: "0", height: "500px" }}
-                    ></div>
+                    >
+                        <div>
+                            <div>
+                                <a href="#about-the-site">About The Site </a>
+                            </div>
+                            <div>
+                                <a href="#what-is-crowdfund3r">+ What is CrowdFund3r</a>
+                            </div>
+                            <div>
+                                <a href="#what-is-a-cause">+ What is a Cause</a>
+                            </div>
+                            <div>
+                                <a href="#searches">+ Searches</a>
+                            </div>
+                            <div>
+                                <a href="#donations">+ Donations</a>
+                            </div>
+                            <div>
+                                <a href="#withdrawal">+ Withdrawal</a>
+                            </div>
+                            <div>
+                                <a href="#refunds">+ Refunds</a>
+                            </div>
+                            <div>
+                                <a href="#closing">+ Closing</a>
+                            </div>
+                            <div>
+                                <a href="#locking">+ Locking</a>
+                            </div>
+                            <div>
+                                <a href="#sponsor">+ Sponsor</a>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <a href="#about-the-developer">About The Developer</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1405,7 +1405,7 @@ const Cause = ({ id }) => {
                                             <a
                                                 className="share-icon"
                                                 href={qrCode}
-                                                download={`${id}-${causeName}.png`}
+                                                download={`${id}-${causeName}-QRCode.png`}
                                             >
                                                 <RiQrCodeLine
                                                     color="#02ba23"
