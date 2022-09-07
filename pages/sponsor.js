@@ -19,6 +19,7 @@ const Sponsor = () => {
     const [dollarEquivalent, setDollarEquivalent] = useState("")
     const [donationAmountW, setDonationAmountW] = useState("0")
     const [ethPrice, setEthPrice] = useState(0)
+    const [isAwaitingConfirmation, setIsAwaitingConfirmation] = useState(null)
 
     const {
         runContractFunction: sponsorSite,
@@ -35,7 +36,9 @@ const Sponsor = () => {
     const handleDonate = async () => {
         await sponsorSite({
             onSuccess: async (tx) => {
+                setIsAwaitingConfirmation(true)
                 await tx.wait(1)
+                setIsAwaitingConfirmation(false)
                 dispatch({
                     type: "success",
                     title: "Sponsorship successful",
@@ -70,6 +73,28 @@ const Sponsor = () => {
             setDonationAmountW(convertEthToWei(donationAmount))
         }
     }, [donationAmount])
+    useEffect(() => {
+        if (isAwaitingConfirmation != null) {
+            if (isAwaitingConfirmation === true) {
+                dispatch({
+                    title: "Awaiting block confirmation",
+                    message: "Please wait for 1 block to be confirmed",
+                    type: "info",
+                    icon: "bell",
+                    position: "topR",
+                })
+            }
+            if (isAwaitingConfirmation === false) {
+                dispatch({
+                    title: "Block Confirmed",
+                    message: "Your transaction was completed and confirmed",
+                    type: "info",
+                    icon: "bell",
+                    position: "topR",
+                })
+            }
+        }
+    }, [isAwaitingConfirmation])
     return (
         <div>
             <Header />

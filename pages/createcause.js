@@ -19,9 +19,9 @@ const CreateCause = () => {
     const [causeName, setCauseName] = useState("")
     const [goalEth, setGoalEth] = useState("")
     const [goalDoll, setGoalDoll] = useState("")
-    const [hasCause, setHasCause] = useState(null)
     const [ethPrice, setEthPrice] = useState(0)
     const [message, setMessage] = useState("")
+    const [isAwaitingConfirmation, setIsAwaitingConfirmation] = useState(null)
 
     //WEB3 VIEW FUNCTIONS
     const { runContractFunction: getMyCauseId } = useWeb3Contract({
@@ -49,7 +49,9 @@ const CreateCause = () => {
         e.preventDefault()
         createCause({
             onSuccess: async (tx) => {
+                setIsAwaitingConfirmation(true)
                 await tx.wait(1)
+                setIsAwaitingConfirmation(false)
                 dispatch({
                     title: "New Cause Created",
                     message:
@@ -58,7 +60,6 @@ const CreateCause = () => {
                     type: "success",
                     icon: "bell",
                 })
-                setMessage("Please wait to be directed to your cause page...")
                 await updateUI()
             },
             onError: async () => {
@@ -94,6 +95,28 @@ const CreateCause = () => {
             updateUI()
         }
     }, [isWeb3Enabled])
+    useEffect(() => {
+        if (isAwaitingConfirmation != null) {
+            if (isAwaitingConfirmation === true) {
+                dispatch({
+                    title: "Awaiting block confirmation",
+                    message: "Please wait for 1 block to be confirmed",
+                    type: "info",
+                    icon: "bell",
+                    position: "topR",
+                })
+            }
+            if (isAwaitingConfirmation === false) {
+                dispatch({
+                    title: "Block Confirmed",
+                    message: "Your transaction was completed and confirmed",
+                    type: "info",
+                    icon: "bell",
+                    position: "topR",
+                })
+            }
+        }
+    }, [isAwaitingConfirmation])
     return (
         <div>
             <Header amICauseOwner={false} amICrowdFunderOwner={false} />
@@ -163,7 +186,9 @@ const CreateCause = () => {
 
                 <button
                     onClick={handleCreate}
-                    disabled={createCauseIsFetching || createCauseIsLoading}
+                    disabled={
+                        createCauseIsFetching || createCauseIsLoading || isAwaitingConfirmation
+                    }
                 >
                     CREATE CAUSE
                 </button>

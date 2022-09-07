@@ -83,6 +83,7 @@ const Cause = ({ id }) => {
     const [ethPrice, setEthPrice] = useState(0)
     const [dollarEquivalent, setDollarEquivalent] = useState("")
     const [qrCode, setQRCode] = useState("")
+    const [isAwaitingConfirmation, setIsAwaitingConfirmation] = useState(null)
 
     //WEB3 VIEW FUNCTIONS
     const { runContractFunction: getCauseById } = useWeb3Contract({
@@ -331,9 +332,12 @@ const Cause = ({ id }) => {
     const handleDonate = async () => {
         donate({
             onSuccess: async (tx) => {
+                setIsAwaitingConfirmation(true)
                 await tx.wait(1)
+                setIsAwaitingConfirmation(false)
                 await updateUI()
                 setDonationAmount("")
+                setDollarEquivalent("")
                 dispatch({
                     title: "Donation Successful",
                     position: "topR",
@@ -354,7 +358,9 @@ const Cause = ({ id }) => {
     const handleWithdraw = async () => {
         withdraw({
             onSuccess: async (tx) => {
+                setIsAwaitingConfirmation(true)
                 await tx.wait(1)
+                setIsAwaitingConfirmation(false)
                 dispatch({
                     title: "Withdrawal Successful",
                     position: "topR",
@@ -426,7 +432,9 @@ const Cause = ({ id }) => {
     const handleRefund = async () => {
         demandRefund({
             onSuccess: async (tx) => {
+                setIsAwaitingConfirmation(true)
                 await tx.wait(1)
+                setIsAwaitingConfirmation(false)
                 await updateUI()
                 dispatch({
                     title: "Refund given",
@@ -451,7 +459,9 @@ const Cause = ({ id }) => {
     const handleLock = async () => {
         await lock({
             onSuccess: async (tx) => {
+                setIsAwaitingConfirmation(true)
                 await tx.wait(1)
+                setIsAwaitingConfirmation(false)
                 await updateUI()
                 dispatch({
                     title: "Cause locked",
@@ -476,7 +486,9 @@ const Cause = ({ id }) => {
     const handleUnlock = async () => {
         await unlock({
             onSuccess: async (tx) => {
+                setIsAwaitingConfirmation(true)
                 await tx.wait(1)
+                setIsAwaitingConfirmation(false)
                 await updateUI()
                 dispatch({
                     title: "Cause Unlocked",
@@ -502,11 +514,15 @@ const Cause = ({ id }) => {
     const handleChangeOwner = async () => {
         changeOwnership({
             onSuccess: async (tx) => {
+                setIsAwaitingConfirmation(true)
                 await tx.wait(1)
+                setIsAwaitingConfirmation(false)
 
                 await handover({
                     onSuccess: async (tx) => {
+                        setIsAwaitingConfirmation(true)
                         await tx.wait(1)
+                        setIsAwaitingConfirmation(false)
                         dispatch({
                             title: "Ownership changed successfully",
                             message: `The new owner of this cause is ${newOwner}`,
@@ -543,7 +559,9 @@ const Cause = ({ id }) => {
     const handleOpenToDonations = async () => {
         switchIsOpenToDonations({
             onSuccess: async (tx) => {
+                setIsAwaitingConfirmation(true)
                 await tx.wait(1)
+                setIsAwaitingConfirmation(false)
                 await updateUI()
             },
             onError: async () => {
@@ -636,7 +654,9 @@ const Cause = ({ id }) => {
             if (isUploading) {
                 setCauseURI({
                     onSuccess: async (tx) => {
+                        setIsAwaitingConfirmation(true)
                         await tx.wait(1)
+                        setIsAwaitingConfirmation(false)
                         dispatch({
                             title: "Edit successful",
                             message: "You have successfully edited cause data",
@@ -670,6 +690,29 @@ const Cause = ({ id }) => {
     useEffect(() => {
         getEthPrice()
     }, [])
+
+    useEffect(() => {
+        if (isAwaitingConfirmation != null) {
+            if (isAwaitingConfirmation === true) {
+                dispatch({
+                    title: "Awaiting block confirmation",
+                    message: "Please wait for 1 block to be confirmed",
+                    type: "info",
+                    icon: "bell",
+                    position: "topR",
+                })
+            }
+            if (isAwaitingConfirmation === false) {
+                dispatch({
+                    title: "Block Confirmed",
+                    message: "Your transaction was completed and confirmed",
+                    type: "info",
+                    icon: "bell",
+                    position: "topR",
+                })
+            }
+        }
+    }, [isAwaitingConfirmation])
 
     //Return Value
 
@@ -915,7 +958,8 @@ const Cause = ({ id }) => {
                                                 donateIsFetching ||
                                                 donateIsLoading ||
                                                 !donationAmount ||
-                                                !isWeb3Enabled
+                                                !isWeb3Enabled ||
+                                                isAwaitingConfirmation
                                             }
                                         >
                                             DONATE
@@ -932,7 +976,8 @@ const Cause = ({ id }) => {
                                             disabled={
                                                 myDonations == "0" ||
                                                 refundIsFetching ||
-                                                refundIsLoading
+                                                refundIsLoading ||
+                                                isAwaitingConfirmation
                                             }
                                             className="demand-refund-button"
                                         >
@@ -1019,7 +1064,8 @@ const Cause = ({ id }) => {
                                                 disabled={
                                                     setURIIsFetching ||
                                                     setURIIsLoading ||
-                                                    isUploading
+                                                    isUploading ||
+                                                    isAwaitingConfirmation
                                                 }
                                             >
                                                 SUBMIT EDIT
@@ -1058,7 +1104,8 @@ const Cause = ({ id }) => {
                                                     onClick={handleChangeOwner}
                                                     disabled={
                                                         changeOwnershipIsFetching ||
-                                                        changeOwnershipIsLoading
+                                                        changeOwnershipIsLoading ||
+                                                        isAwaitingConfirmation
                                                     }
                                                 >
                                                     CHANGE OWNER
@@ -1074,7 +1121,8 @@ const Cause = ({ id }) => {
                                                         isWithdrawn ||
                                                         isLocked ||
                                                         switchIsOpenToDonationsIsFetching ||
-                                                        switchIsOpenToDonationsIsLoading
+                                                        switchIsOpenToDonationsIsLoading ||
+                                                        isAwaitingConfirmation
                                                     }
                                                 >
                                                     CLOSE TO DONATIONS
@@ -1089,7 +1137,8 @@ const Cause = ({ id }) => {
                                                         isWithdrawn ||
                                                         isLocked ||
                                                         switchIsOpenToDonationsIsFetching ||
-                                                        switchIsOpenToDonationsIsLoading
+                                                        switchIsOpenToDonationsIsLoading ||
+                                                        isAwaitingConfirmation
                                                     }
                                                     onClick={handleOpenToDonations}
                                                 >
@@ -1105,7 +1154,9 @@ const Cause = ({ id }) => {
                                         {" "}
                                         <button
                                             onClick={handleWithdraw}
-                                            disabled={isWithdrawn || isLocked}
+                                            disabled={
+                                                isWithdrawn || isLocked || isAwaitingConfirmation
+                                            }
                                         >
                                             WITHDRAW
                                         </button>
@@ -1115,7 +1166,11 @@ const Cause = ({ id }) => {
                                 {amICrowdFunderOwner && !isLocked && (
                                     <button
                                         onClick={handleLock}
-                                        disabled={lockIsFetching || lockIsLoading}
+                                        disabled={
+                                            lockIsFetching ||
+                                            lockIsLoading ||
+                                            isAwaitingConfirmation
+                                        }
                                     >
                                         LOCK CAUSE
                                     </button>
@@ -1123,7 +1178,11 @@ const Cause = ({ id }) => {
                                 {amICrowdFunderOwner && isLocked && (
                                     <button
                                         onClick={handleUnlock}
-                                        disabled={unlockIsFetching || unlockIsLoading}
+                                        disabled={
+                                            unlockIsFetching ||
+                                            unlockIsLoading ||
+                                            isAwaitingConfirmation
+                                        }
                                     >
                                         UNLOCK CAUSE
                                     </button>
