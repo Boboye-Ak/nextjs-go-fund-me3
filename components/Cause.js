@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useMoralis, useWeb3Contract } from "react-moralis"
 import QRCode from "qrcode"
 import { useRouter } from "next/router"
-import { causeABI, crowdFunderABI, crowdFunderAddresses } from "../constants"
+import { causeABI, chains, crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { useNotification } from "web3uikit"
 import axios from "axios"
 import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
@@ -30,6 +30,13 @@ const Cause = ({ id }) => {
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
+
+    let activeChain = chains.filter((chain) => {
+        if (chain.chainId == chainId) {
+            return chain
+        }
+    })
+    activeChain = activeChain[0]
     const dispatch = useNotification()
     const router = useRouter()
     const editModal = useRef(null)
@@ -1186,8 +1193,8 @@ const Cause = ({ id }) => {
                                                     <div key={index} className="donation">
                                                         <a
                                                             href={
-                                                                "https://etherscan.io/address/" +
-                                                                `${donation.donor}`
+                                                                activeChain.etherscan +
+                                                                `/address/${donation.donor}`
                                                             }
                                                             target="_blank"
                                                         >
