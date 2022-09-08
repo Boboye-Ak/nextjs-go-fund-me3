@@ -583,6 +583,27 @@ button:disabled {
     display: flex;
     align-items: center;
 }
+.stack {
+    text-align: center;
+    padding: 1em;
+}
+
+.stack code {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background-color: rgb(50, 50, 50);
+    font-size: 1.5em;
+}
+
+.stack code a {
+    color: rgb(256, 256, 256);
+    transition: font-size 100ms ease-in-out;
+}
+
+.stack code:hover {
+    background-color: rgb(200, 50, 50);
+    font-size: 2em;
+}
 
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
