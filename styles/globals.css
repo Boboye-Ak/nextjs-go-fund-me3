@@ -605,6 +605,31 @@ button:disabled {
     font-size: 2em;
 }
 
+.navbar-header1 {
+    border-top: solid;
+    border-bottom: solid;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-size: 1.15em;
+}
+.navbar-header2 {
+    border-top: solid;
+    border-bottom: solid;
+    border-width: thin;
+    border-color: #dadada;
+    margin-left: 2em;
+    font-size: 1em;
+}
+.navbar-header1:hover {
+    background-color: #dadada;
+}
+.navbar-header2:hover {
+    background-color: #dadada;
+}
+#about-cause-body {
+    width: "75%";
+}
+
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     .cause {

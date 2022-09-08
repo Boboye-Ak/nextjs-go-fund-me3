@@ -7,7 +7,7 @@ const About = () => {
             <Header />
             <div className="container">
                 <div className="body-and-donors">
-                    <div className="cause-body" style={{ width: "75%" }}>
+                    <div className="cause-body" id="about-cause-body">
                         <div style={{ marginTop: "1em" }}>
                             <div
                                 className="cause-name cause-owner-actual-name"
@@ -19,7 +19,9 @@ const About = () => {
                             <div className="cause-img">
                                 <img src="/crowdfunder-tentative-logo.png" />
                             </div>
-                            <h2 id="what-is-crowdfund3r">What is CrowdFund3r?</h2>
+                            <h2 id="what-is-crowdfund3r" style={{ textAlign: "center" }}>
+                                What is CrowdFund3r?
+                            </h2>
                             <div className="about-paragraph">
                                 CrowdFund3r is a web3 crowdfunding site built upon the ethereum
                                 blockchain. It allows people in need of money to leverage web3
@@ -47,7 +49,9 @@ const About = () => {
                                 })}
                                 ).
                             </div>
-                            <h2 id="what-is-a-cause">What is a Cause?</h2>
+                            <h2 id="what-is-a-cause" style={{ textAlign: "center" }}>
+                                What is a Cause?
+                            </h2>
                             <div className="about-paragraph">
                                 A Cause is a unit of the site that allows a user receive donations
                                 and other users to make donations to them. Each cause is a product
@@ -65,14 +69,16 @@ const About = () => {
                                 to create it in either the search page or the search bar of the
                                 "causes" page(can be reached via dropdown menu at the top left).
                             </div>
-                            <div className="cause-img">
+                            <div className="cause-img for-pc">
                                 <img
                                     src="about images/cause-page.png"
                                     style={{ width: "100%" }}
                                     alt="A typical cause page"
                                 />
                             </div>
-                            <h2 id="searches">Searches</h2>
+                            <h2 id="searches" style={{ textAlign: "center" }}>
+                                Searches
+                            </h2>
                             <div className="about-paragraph">
                                 As stated above, the search bars in the home page and the causes can
                                 find a cause based on the ID(Numerical Integer such as "1"), cause
@@ -80,21 +86,23 @@ const About = () => {
                                 wallet address(hexadecimal beginning with 0x). Attempts to search
                                 based on the Cause name or keywords will produce no results.
                             </div>
-                            <div className="cause-img">
+                            <div className="cause-img for-pc">
                                 <img
                                     src="about images/search-page.png"
                                     style={{ width: "100%" }}
                                     alt="Search Page"
                                 />
                             </div>
-                            <div className="cause-img">
+                            <div className="cause-img for-pc">
                                 <img
                                     src="about images/causes-page.png"
                                     style={{ width: "100%" }}
                                     alt="Causes Page"
                                 />
                             </div>
-                            <h2 id="donations">Donations</h2>
+                            <h2 id="donations" style={{ textAlign: "center" }}>
+                                Donations
+                            </h2>
                             <div className="about-paragraph">
                                 Donations are made in ETH (the native token of the Ethereum
                                 network). Donations to a cause are stored in the contract of the
@@ -102,7 +110,9 @@ const About = () => {
                                 are automatically disabled when the goal of the cause is reached or
                                 exceeded.
                             </div>
-                            <h2 id="withdrawal">Withdrawal</h2>
+                            <h2 id="withdrawal" style={{ textAlign: "center" }}>
+                                Withdrawal
+                            </h2>
                             <div className="about-paragraph">
                                 The owner of a cause can withdraw donations made to his cause at any
                                 time irrespective of how much has been donated at the time of
@@ -110,20 +120,26 @@ const About = () => {
                                 for the maintenance of the site. Donations can no longer be made
                                 after withdrawal.
                             </div>
-                            <h2 id="refunds">Refunds</h2>
+                            <h2 id="refunds" style={{ textAlign: "center" }}>
+                                Refunds
+                            </h2>
                             <div className="about-paragraph">
                                 Donors to a cause can ask for refunds and get them immediately by
                                 clicking the "Demand Refund" button in a cause page. You can still
                                 make a donation after getting a refund but you cannot get a refund
                                 after the owner of the cause has withdrawn donations.
                             </div>
-                            <h2 id="closing">Closing/Opening to Donations</h2>
+                            <h2 id="closing" style={{ textAlign: "center" }}>
+                                Closing/Opening to Donations
+                            </h2>
                             <div className="about-paragraph">
                                 The Cause Owner can choose to close his cause to donations. Donors
                                 will be unable to make contributions while it is in that state. This
                                 is different from locking/unlocking of causes.
                             </div>
-                            <h2 id="locking">Locking/Unlocking of causes</h2>
+                            <h2 id="locking" style={{ textAlign: "center" }}>
+                                Locking/Unlocking of causes
+                            </h2>
                             <div className="about-paragraph">
                                 The site admin can choose to lock/unlock a cause if reports of
                                 fraudulence are made. While in this state, donations cannot be made
@@ -134,7 +150,9 @@ const About = () => {
                                 money or get refunds respectively from the cause. This is different
                                 from Closing/Opening causes to donation
                             </div>
-                            <h2 id="sponsor">Sponsoring the Site</h2>
+                            <h2 id="sponsor" style={{ textAlign: "center" }}>
+                                Sponsoring the Site
+                            </h2>
                             <div className="about-paragraph">
                                 You can show contribute to the maintenance of the site or show
                                 appreciation to the developer(Just one for now) by making a donation
@@ -175,7 +193,9 @@ const About = () => {
                                 quality of life of people of which this project is one.
                             </div>
                         </div>
-                        <h2 id="stack">Stack</h2>
+                        <h2 id="stack" style={{ textAlign: "center" }}>
+                            Stack
+                        </h2>
                         <div class="stack">
                             <code>
                                 <a href="https://en.wikipedia.org/wiki/HTML" target="_blank">
@@ -199,6 +219,24 @@ const About = () => {
                                 <a target="_blank" href="https://reactjs.org/">
                                     ReactJS/NextJS
                                 </a>{" "}
+                                <br />
+                            </code>
+                            <code>
+                                <a href="https://docs.soliditylang.org/en/v0.8.16/" target="_blank">
+                                    Solidity
+                                </a>{" "}
+                                <br />
+                            </code>
+                            <code>
+                                <a href="https://hardhat.org/" target="_blank">
+                                    Hardhat
+                                </a>{" "}
+                                <br />
+                            </code>
+                            <code>
+                                <a href="https://www.python.org/" target="_blank">
+                                    Python(Brownie)
+                                </a>
                                 <br />
                             </code>
                             <code>
@@ -231,29 +269,11 @@ const About = () => {
                                 </a>{" "}
                                 <br />
                             </code>
-                            <code>
-                                <a href="https://docs.soliditylang.org/en/v0.8.16/" target="_blank">
-                                    Solidity
-                                </a>{" "}
-                                <br />
-                            </code>
-                            <code>
-                                <a href="https://hardhat.org/" target="_blank">
-                                    Hardhat
-                                </a>{" "}
-                                <br />
-                            </code>
-                            <code>
-                                <a href="https://www.python.org/" target="_blank">
-                                    Python(Brownie)
-                                </a>
-                                <br />
-                            </code>
                         </div>
                     </div>
                     <div
                         className="donor-list-and-share navbar"
-                        style={{ position: "sticky", top: "0", height: "500px" }}
+                        style={{ position: "sticky", top: "0", height: "400px" }}
                     >
                         <div>
                             <div className="navbar-header1">
