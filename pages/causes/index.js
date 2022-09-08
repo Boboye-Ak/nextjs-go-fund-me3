@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useMoralis, useWeb3Contract } from "react-moralis"
-import { crowdFunderAddresses, crowdFunderABI, causeABI } from "../../constants"
+import { crowdFunderAddresses, crowdFunderABI, causeABI, chains } from "../../constants"
 import { useNotification } from "web3uikit"
 import Header from "../../components/Header"
 import { RiArrowDownSLine } from "react-icons/ri"
@@ -14,6 +14,13 @@ const Causes = () => {
     const chainId = parseInt(chainIdHex)
     const crowdFunderAddress =
         chainId in crowdFunderAddresses ? crowdFunderAddresses[chainId][0] : null
+
+    let activeChain = chains.filter((chain) => {
+        if (chain.chainId == chainId) {
+            return chain
+        }
+    })
+    activeChain = activeChain[0]
     const dispatch = useNotification()
     const [causes, setCauses] = useState([])
     const [numCauses, setNumCauses] = useState(0)
@@ -120,8 +127,8 @@ const Causes = () => {
                                             <div className="cause-table-item cause-table-address-item address-column">
                                                 <a
                                                     href={
-                                                        "https://etherscan.io/address/" +
-                                                        cause.causeAddress
+                                                        activeChain.etherscan +
+                                                        `/address/${cause.causeAddress}`
                                                     }
                                                     target="_blank"
                                                 >
