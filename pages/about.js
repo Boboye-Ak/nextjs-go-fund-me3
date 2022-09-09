@@ -108,7 +108,13 @@ const About = () => {
                                 network). Donations to a cause are stored in the contract of the
                                 cause and can only be withdrawn by the owner of the cause. Donations
                                 are automatically disabled when the goal of the cause is reached or
-                                exceeded.
+                                exceeded. You can make donations to a cause by using the donation
+                                module in the cause page or by directly transferring ethereum to the
+                                cause contract. DO NOT SEND ERC20 TOKENS, NFTs OR NON-ETHEREUM
+                                TOKENS TO THE CAUSE ADDRESS. THEY WILL BE LOST. YOU CAN SEND NFTs
+                                AND NON-ETHEREUM TOKENS ON THE ETHEREUM NETWORK TO THE CAUSE OWNER
+                                ADDRESS. BOTH THE CAUSE ADDRESS AND CAUSE OWNER ADDRESS ARE ON THE
+                                CAUSE PAGE.
                             </div>
                             <h2 id="withdrawal" style={{ textAlign: "center" }}>
                                 Withdrawal
@@ -164,6 +170,15 @@ const About = () => {
                                 >
                                     sponsor page.
                                 </a>{" "}
+                            </div>
+                            <h2 id="sharing" style={{ textAlign: "center" }}>
+                                Sharing
+                            </h2>
+                            <div className="about-paragraph">
+                                You can share the link using the share modal on the right side bar
+                                of the cause page. The modal provides the options of sharing via a
+                                tweet, a facebook post, Email, downloading a QR code that links to
+                                the cause or copying the link to clipboard.
                             </div>
                         </div>{" "}
                         <div style={{ marginTop: "4em" }}>
@@ -270,10 +285,34 @@ const About = () => {
                                 <br />
                             </code>
                         </div>
+                        <div style={{ margin: "1em" }} id="resume">
+                            <a
+                                download="Boboye-Resume.pdf"
+                                href="https://drive.google.com/file/d/1SbxYoIAmrY3PjslKM_nXqzPFTh-5phEl/view?usp=sharing"
+                            >
+                                <button>VIEW RESUME</button>
+                            </a>
+                        </div>
+                        <h2 id="other-work" style={{ textAlign: "center" }}>
+                            Other Work from The Developer
+                        </h2>
+                        <div className="about-paragraph">
+                            I make it a point of duty to educate people on what I and many others
+                            believe is the future of the internet. Find attached a link to a lecture
+                            I gave to a group of friends about the fundamentals of Web3.
+                        </div>
+                        <div style={{ margin: "1em" }}>
+                            <a
+                                href="https://drive.google.com/file/d/1e2tk3vZLDX2ZChh-kz6Z-doKsHdA1fWQ/view?usp=sharing"
+                                target="_blank"
+                            >
+                                <button>VIEW LESSON</button>
+                            </a>
+                        </div>
                     </div>
                     <div
                         className="donor-list-and-share navbar"
-                        style={{ position: "sticky", top: "0", height: "400px" }}
+                        style={{ position: "sticky", top: "0", height: "500px" }}
                     >
                         <div>
                             <div className="navbar-header1">
@@ -306,6 +345,9 @@ const About = () => {
                             <div className="navbar-header2">
                                 <a href="#sponsor">+ Sponsor</a>
                             </div>
+                            <div className="navbar-header2">
+                                <a href="#sharing">+ Sharing</a>
+                            </div>
                         </div>
                         <div>
                             <div className="navbar-header1">
@@ -316,6 +358,12 @@ const About = () => {
                             </div>
                             <div className="navbar-header2">
                                 <a href="#stack">+ Stack</a>
+                            </div>
+                            <div className="navbar-header2">
+                                <a href="#resume">+ Resume</a>
+                            </div>
+                            <div className="navbar-header2">
+                                <a href="#other-work">+ Other work from the developer</a>
                             </div>
                         </div>
                     </div>

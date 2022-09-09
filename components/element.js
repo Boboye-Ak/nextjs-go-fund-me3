@@ -1,11 +1,11 @@
 import Link from "next/link"
 const Element = ({ title, link, style }) => {
     return (
-        <Link href={link}>
+        <a href={link}>
             <div className="menu-dropdown-item" style={style}>
                 {title}
             </div>
-        </Link>
+        </a>
     )
 }
 

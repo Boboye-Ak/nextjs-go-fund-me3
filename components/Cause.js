@@ -621,7 +621,7 @@ const Cause = ({ id }) => {
     }, [isWeb3Enabled])
 
     useEffect(() => {
-        if (isWeb3Enabled && causeAddress) {
+        if (isWeb3Enabled && causeAddress&& id!="") {
             getCauseOwner()
                 .then((res) => {
                     setCauseOwner(res?.toString())
@@ -630,7 +630,7 @@ const Cause = ({ id }) => {
                     updateUI()
                 })
         }
-    }, [isWeb3Enabled, causeAddress])
+    }, [isWeb3Enabled, causeAddress, id])
 
     useEffect(() => {
         if (isWeb3Enabled && causeOwner) {
@@ -890,95 +890,105 @@ const Cause = ({ id }) => {
                                     />
                                 </div>
 
-                                {!amICauseOwner && !isWithdrawn && !isGoalReached && (
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <div className="input-bar">
-                                            <input
-                                                type="number"
-                                                value={donationAmount}
-                                                placeholder="(ETH)"
-                                                onChange={(e) => {
-                                                    setDonationAmount(e.target.value)
-                                                    if (parseFloat(e.target.value) < 0) {
-                                                        setDonationAmount("0")
-                                                        setDollarEquivalent("0")
-                                                    }
-                                                    if (e.target.value != "") {
-                                                        setDollarEquivalent(
-                                                            (parseFloat(e.target.value) * ethPrice)
-                                                                ?.toFixed(2)
-                                                                ?.toString()
-                                                        )
-                                                    } else {
-                                                        setDollarEquivalent("")
-                                                    }
-                                                }}
-                                            ></input>
-                                            <span>
-                                                <FaEthereum />
-                                            </span>
-                                        </div>
-                                        <div style={{ fontWeight: "bolder" }}>OR</div>
-                                        <div className="input-bar">
-                                            <input
-                                                type="number"
-                                                value={dollarEquivalent}
-                                                placeholder="(USD)"
-                                                onChange={(e) => {
-                                                    setDollarEquivalent(e.target.value)
-                                                    if (parseFloat(e.target.value) < 0) {
-                                                        setDollarEquivalent("0")
-                                                        setDonationAmount("0")
-                                                    }
-                                                    if (
-                                                        e.target.value != "" &&
-                                                        parseFloat(e.target.value) >= 0
-                                                    ) {
-                                                        setDonationAmount(
-                                                            (parseFloat(e.target.value) / ethPrice)
-                                                                ?.toFixed(8)
-                                                                ?.toString()
-                                                        )
-                                                    } else {
-                                                        setDonationAmount("")
-                                                    }
-                                                }}
-                                            ></input>
-                                            <div
-                                                style={{ fontWeight: "bolder", fontSize: "1.5em" }}
-                                            >
-                                                $
-                                            </div>
-                                        </div>
-                                        <button
-                                            onClick={handleDonate}
-                                            disabled={
-                                                isWithdrawn ||
-                                                !isOpenToDonations ||
-                                                isLocked ||
-                                                isGoalReached ||
-                                                donateIsFetching ||
-                                                donateIsLoading ||
-                                                !donationAmount ||
-                                                !isWeb3Enabled ||
-                                                isAwaitingConfirmation
-                                            }
+                                {!amICauseOwner &&
+                                    !isWithdrawn &&
+                                    !isGoalReached &&
+                                    isOpenToDonations &&
+                                    !isLocked && (
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                            }}
                                         >
-                                            DONATE
-                                        </button>
-                                        {!isOpenToDonations && (
-                                            <div>This cause is currently closed to donations</div>
-                                        )}
-                                    </div>
-                                )}
-                                {!amICauseOwner && myDonations != "0" && (
+                                            <div className="input-bar">
+                                                <input
+                                                    type="number"
+                                                    value={donationAmount}
+                                                    placeholder="(ETH)"
+                                                    onChange={(e) => {
+                                                        setDonationAmount(e.target.value)
+                                                        if (parseFloat(e.target.value) < 0) {
+                                                            setDonationAmount("0")
+                                                            setDollarEquivalent("0")
+                                                        }
+                                                        if (e.target.value != "") {
+                                                            setDollarEquivalent(
+                                                                (
+                                                                    parseFloat(e.target.value) *
+                                                                    ethPrice
+                                                                )
+                                                                    ?.toFixed(2)
+                                                                    ?.toString()
+                                                            )
+                                                        } else {
+                                                            setDollarEquivalent("")
+                                                        }
+                                                    }}
+                                                ></input>
+                                                <span>
+                                                    <FaEthereum />
+                                                </span>
+                                            </div>
+                                            <div style={{ fontWeight: "bolder" }}>OR</div>
+                                            <div className="input-bar">
+                                                <input
+                                                    type="number"
+                                                    value={dollarEquivalent}
+                                                    placeholder="(USD)"
+                                                    onChange={(e) => {
+                                                        setDollarEquivalent(e.target.value)
+                                                        if (parseFloat(e.target.value) < 0) {
+                                                            setDollarEquivalent("0")
+                                                            setDonationAmount("0")
+                                                        }
+                                                        if (
+                                                            e.target.value != "" &&
+                                                            parseFloat(e.target.value) >= 0
+                                                        ) {
+                                                            setDonationAmount(
+                                                                (
+                                                                    parseFloat(e.target.value) /
+                                                                    ethPrice
+                                                                )
+                                                                    ?.toFixed(8)
+                                                                    ?.toString()
+                                                            )
+                                                        } else {
+                                                            setDonationAmount("")
+                                                        }
+                                                    }}
+                                                ></input>
+                                                <div
+                                                    style={{
+                                                        fontWeight: "bolder",
+                                                        fontSize: "1.5em",
+                                                    }}
+                                                >
+                                                    $
+                                                </div>
+                                            </div>
+                                            <button
+                                                onClick={handleDonate}
+                                                disabled={
+                                                    isWithdrawn ||
+                                                    !isOpenToDonations ||
+                                                    isLocked ||
+                                                    isGoalReached ||
+                                                    donateIsFetching ||
+                                                    donateIsLoading ||
+                                                    !donationAmount ||
+                                                    !isWeb3Enabled ||
+                                                    isAwaitingConfirmation
+                                                }
+                                            >
+                                                DONATE
+                                            </button>
+                                        </div>
+                                    )}
+                                {!amICauseOwner && myDonations != "0" && !isWithdrawn && (
                                     <div>
                                         <button
                                             onClick={handleRefund}
@@ -1164,7 +1174,11 @@ const Cause = ({ id }) => {
                                         <button
                                             onClick={handleWithdraw}
                                             disabled={
-                                                isWithdrawn || isLocked || isAwaitingConfirmation
+                                                isWithdrawn ||
+                                                withdrawIsFetching ||
+                                                withdrawIsLoading ||
+                                                isLocked ||
+                                                isAwaitingConfirmation
                                             }
                                         >
                                             WITHDRAW
@@ -1199,13 +1213,21 @@ const Cause = ({ id }) => {
                                 {isWithdrawn && (
                                     <div className="red-info">
                                         This Cause has been withdrawn from, hence donations can no
-                                        longer be made.{" "}
+                                        longer be made and refunds can no longer be demanded.{" "}
                                     </div>
                                 )}
                                 {isLocked && (
                                     <div className="red-info">
                                         This cause is currently locked by the site admin. You cannot
                                         make a donation or withdrawal at the moment.
+                                    </div>
+                                )}
+                                {!isOpenToDonations && (
+                                    <div>
+                                        This cause is currently closed to donations by{" "}
+                                        {amICauseOwner
+                                            ? "you, the cause owner."
+                                            : "the cause owner"}
                                     </div>
                                 )}
                             </div>
