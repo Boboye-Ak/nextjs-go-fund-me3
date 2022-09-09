@@ -7,5 +7,5 @@ const pinataHeaders = {
     pinata_api_key: env.PINATA_API_KEY,
     pinata_secret_api_key: env.PINATA_API_SECRET,
 }
-const siteURL = "http://localhost:3000"
+const siteURL = "https://crowdfund3r-6lfj0k8ik-boboye-ak.vercel.app/"
 module.exports = { env, pinataHeaders, siteURL }
