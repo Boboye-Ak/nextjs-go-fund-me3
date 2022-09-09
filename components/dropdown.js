@@ -38,7 +38,8 @@ const Dropdown = ({ title, items }) => {
                     return (
                         <Element
                             title={item.name}
-                            link={item.link} key={index}
+                            link={item.link}
+                            key={index}
                             style={{
                                 opacity: display ? 1 : 0,
                                 transition: `all 200ms linear ${

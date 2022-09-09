@@ -12,4 +12,11 @@ const supportedChains = chains.filter((chain) => {
     }
 })
 const nullAddress = "0x0000000000000000000000000000000000000000"
-module.exports = { crowdFunderABI, causeABI, crowdFunderAddresses, nullAddress, chains, supportedChains }
+module.exports = {
+    crowdFunderABI,
+    causeABI,
+    crowdFunderAddresses,
+    nullAddress,
+    chains,
+    supportedChains,
+}
