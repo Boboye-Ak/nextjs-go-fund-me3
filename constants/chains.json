@@ -1,6 +1,8 @@
-{"chains":[
-    { "chainId":"1","name": "Ethereum Mainnet", "etherscan": "https://etherscan.io" },
-     { "chainId":"4","name": "Rinkeby", "etherscan": "https://rinkeby.etherscan.io" },
-    { "chainId":"420","name": "Goerli", "etherscan": "https://goerli.etherscan.io" },
-    { "chainId":"11155111","name": "Sepolia", "etherscan": "https://sepolia.etherscan.io" }]
+{
+    "chains": [
+        { "chainId": "1", "name": "Ethereum Mainnet", "etherscan": "https://etherscan.io" },
+        { "chainId": "4", "name": "Rinkeby", "etherscan": "https://rinkeby.etherscan.io" },
+        { "chainId": "5", "name": "Goerli", "etherscan": "https://goerli.etherscan.io" },
+        { "chainId": "11155111", "name": "Sepolia", "etherscan": "https://sepolia.etherscan.io" }
+    ]
 }

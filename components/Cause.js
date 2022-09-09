@@ -621,7 +621,7 @@ const Cause = ({ id }) => {
     }, [isWeb3Enabled])
 
     useEffect(() => {
-        if (isWeb3Enabled && causeAddress&& id!="") {
+        if (isWeb3Enabled && causeAddress) {
             getCauseOwner()
                 .then((res) => {
                     setCauseOwner(res?.toString())
@@ -630,7 +630,7 @@ const Cause = ({ id }) => {
                     updateUI()
                 })
         }
-    }, [isWeb3Enabled, causeAddress, id])
+    }, [isWeb3Enabled, causeAddress])
 
     useEffect(() => {
         if (isWeb3Enabled && causeOwner) {
@@ -739,11 +739,7 @@ const Cause = ({ id }) => {
                         <div className="body-and-donors">
                             <div
                                 className="cause-body"
-                                style={
-                                    !causeName?.length
-                                        ? { position: "relative", right: "100%" }
-                                        : { position: "relative", right: "0" }
-                                }
+                                style={!causeName?.length ? { opacity: "0" } : { opacity: "1" }}
                             >
                                 <div className="cause-name">
                                     <div>{causeName?.toUpperCase()}</div>
@@ -1061,7 +1057,7 @@ const Cause = ({ id }) => {
                                             >
                                                 {description}
                                             </textarea>
-                                            <label for="cause-image">
+                                            <label htmlFor="cause-image">
                                                 Upload picture for cause{"  "}
                                                 <RiUpload2Fill />
                                             </label>
@@ -1235,8 +1231,8 @@ const Cause = ({ id }) => {
                                 className="donor-list-and-share"
                                 style={
                                     !causeName?.length
-                                        ? { position: "relative", left: "100%" }
-                                        : { position: "sticky", top: "0", left: "0" }
+                                        ? { opacity: "0" }
+                                        : { position: "sticky", top: "0", opacity:"1" }
                                 }
                             >
                                 {!amICauseOwner && (

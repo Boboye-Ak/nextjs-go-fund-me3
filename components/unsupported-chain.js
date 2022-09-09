@@ -11,10 +11,10 @@ const UnsupportedChain = () => {
                     Supported Networks:{" "}
                     {supportedChains.map((chain, index) => {
                         return (
-                            <>
+                            <span key={index}>
                                 {index != 0 && ","}
                                 {chain.name}
-                            </>
+                            </span>
                         )
                     })}
                 </div>

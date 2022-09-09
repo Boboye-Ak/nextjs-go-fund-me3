@@ -77,7 +77,6 @@ const Causes = () => {
     }, [isWeb3Enabled])
     useEffect(() => {
         if (topIndex != null) {
-            console.log(`topIndex is ${topIndex}`)
             setBottomIndex((oldValue) => {
                 if (topIndex - perPage < 0) {
                     return 0
@@ -89,7 +88,6 @@ const Causes = () => {
     }, [topIndex])
     useEffect(() => {
         if (bottomIndex != null) {
-            console.log(`bottom index is ${bottomIndex}`)
             createCauseArray()
         }
     }, [bottomIndex])
@@ -108,9 +106,21 @@ const Causes = () => {
                                 <div className="cause-table-item">Cause ID</div>
                                 <div className="cause-table-item address-column">Cause Address</div>
                             </div>
-                            {causes.map((cause) => {
+                            {causes.map((cause, index) => {
                                 return (
-                                    <a href={siteURL + "/causes/" + cause.causeId}>
+                                    <div
+                                        key={cause.causeId}
+                                        onClick={(e) => {
+                                            navigator.clipboard.writeText(cause.causeAddress)
+                                            dispatch({
+                                                title: "Copied!",
+                                                message: `Cause Address for cause #${cause.causeId} copied to clipboard`,
+                                                icon: "bell",
+                                                position: "topR",
+                                                type: "success",
+                                            })
+                                        }}
+                                    >
                                         {" "}
                                         <div key={cause.causeId} className="cause-table-row">
                                             <div className="cause-table-item">
@@ -136,7 +146,7 @@ const Causes = () => {
                                                 </a>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
                                 )
                             })}
                         </div>
