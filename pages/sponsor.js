@@ -125,6 +125,7 @@ const Sponsor = () => {
                             <a
                                 href={`${activeChain.etherscan}/address/${crowdFunderAddress}`}
                                 target="_blank"
+                                rel="noreferrer"
                             >
                                 {crowdFunderAddress}
                             </a>

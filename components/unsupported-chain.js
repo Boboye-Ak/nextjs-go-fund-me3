@@ -1,6 +1,7 @@
 import { AiFillInfoCircle } from "react-icons/ai"
 import { ConnectButton } from "web3uikit"
 import { chains, crowdFunderAddresses, supportedChains } from "../constants"
+import Link from "next/link"
 const UnsupportedChain = () => {
     return (
         <div className="container-404">
@@ -18,13 +19,13 @@ const UnsupportedChain = () => {
                         )
                     })}
                 </div>
-                <a href="/about">
+                <Link href="/about">
                     {" "}
                     <button>
                         GO TO ABOUT PAGE{"  "}
                         <AiFillInfoCircle />
                     </button>
-                </a>
+                </Link>
             </div>
 
             <img src="/unsupported chain/unsupported-chain-img.jpeg"></img>

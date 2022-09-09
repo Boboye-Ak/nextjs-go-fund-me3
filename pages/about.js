@@ -17,7 +17,7 @@ const About = () => {
                                 About The Site
                             </div>
                             <div className="cause-img">
-                                <img src="/crowdfunder-tentative-logo.png" />
+                                <img src="/crowdfunder-tentative-logo.png" alt="" />
                             </div>
                             <h2 id="what-is-crowdfund3r" style={{ textAlign: "center" }}>
                                 What is CrowdFund3r?
@@ -34,6 +34,7 @@ const About = () => {
                                     href="https://github.com/Boboye-Ak/hardhat-go-fund-me-3/blob/main/contracts/CrowdFunder.sol"
                                     style={{ color: "blue", textDecoration: "underline" }}
                                     target="_blank"
+                                    rel="noreferrer"
                                 >
                                     CrowdFunder contract.
                                 </a>{" "}
@@ -60,14 +61,15 @@ const About = () => {
                                     href="https://github.com/Boboye-Ak/hardhat-go-fund-me-3/blob/main/contracts/Cause.sol"
                                     style={{ color: "blue", textDecoration: "underline" }}
                                     target="_blank"
+                                    rel="noreferrer"
                                 >
                                     Cause contract.
                                 </a>{" "}
                                 Every cause has a unique numerical ID as well as a hexadecimal
-                                (starts with "0x") address. You can search for a cause using either
+                                (starts with &quot;0x&quot;) address. You can search for a cause using either
                                 its ID, contract address or the address of the ethereum wallet used
                                 to create it in either the search page or the search bar of the
-                                "causes" page(can be reached via dropdown menu at the top left).
+                                &quot;causes&quot; page(can be reached via dropdown menu at the top left).
                             </div>
                             <div className="cause-img for-pc">
                                 <img
@@ -81,7 +83,7 @@ const About = () => {
                             </h2>
                             <div className="about-paragraph">
                                 As stated above, the search bars in the home page and the causes can
-                                find a cause based on the ID(Numerical Integer such as "1"), cause
+                                find a cause based on the ID(Numerical Integer such as &quot;1&quot;), cause
                                 contract address(hexadecimal beginning with 0x) and cause owner
                                 wallet address(hexadecimal beginning with 0x). Attempts to search
                                 based on the Cause name or keywords will produce no results.
@@ -131,7 +133,7 @@ const About = () => {
                             </h2>
                             <div className="about-paragraph">
                                 Donors to a cause can ask for refunds and get them immediately by
-                                clicking the "Demand Refund" button in a cause page. You can still
+                                clicking the &quot;Demand Refund&quot; button in a cause page. You can still
                                 make a donation after getting a refund but you cannot get a refund
                                 after the owner of the cause has withdrawn donations.
                             </div>
@@ -167,6 +169,7 @@ const About = () => {
                                     href="/sponsor"
                                     style={{ color: "blue", textDecoration: "underline" }}
                                     target="_blank"
+                                    rel="noreferrer"
                                 >
                                     sponsor page.
                                 </a>{" "}
@@ -193,6 +196,7 @@ const About = () => {
                                 <img
                                     src="/about images/developer-image.jpeg"
                                     style={{ width: "60%" }}
+                                    alt=""
                                 />
                             </div>
                             <div className="about-paragraph">
@@ -211,75 +215,95 @@ const About = () => {
                         <h2 id="stack" style={{ textAlign: "center" }}>
                             Stack
                         </h2>
-                        <div class="stack">
+                        <div className="stack">
                             <code>
-                                <a href="https://en.wikipedia.org/wiki/HTML" target="_blank">
+                                <a
+                                    href="https://en.wikipedia.org/wiki/HTML"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     HTML
                                 </a>
                                 <br />
                             </code>
                             <code>
-                                <a href="https://en.wikipedia.org/wiki/CSS" target="_blank">
+                                <a
+                                    href="https://en.wikipedia.org/wiki/CSS"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     CSS
                                 </a>
                                 <br />
                             </code>
                             <code>
-                                <a href="https://en.wikipedia.org/wiki/JavaScript" target="_blank">
+                                <a
+                                    href="https://en.wikipedia.org/wiki/JavaScript"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     Javascript
                                 </a>{" "}
                                 <br />
                             </code>
                             <code>
-                                <a target="_blank" href="https://reactjs.org/">
+                                <a target="_blank" href="https://reactjs.org/" rel="noreferrer">
                                     ReactJS/NextJS
                                 </a>{" "}
                                 <br />
                             </code>
                             <code>
-                                <a href="https://docs.soliditylang.org/en/v0.8.16/" target="_blank">
+                                <a
+                                    href="https://docs.soliditylang.org/en/v0.8.16/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     Solidity
                                 </a>{" "}
                                 <br />
                             </code>
                             <code>
-                                <a href="https://hardhat.org/" target="_blank">
+                                <a href="https://hardhat.org/" target="_blank" rel="noreferrer">
                                     Hardhat
                                 </a>{" "}
                                 <br />
                             </code>
                             <code>
-                                <a href="https://www.python.org/" target="_blank">
+                                <a href="https://www.python.org/" target="_blank" rel="noreferrer">
                                     Python(Brownie)
                                 </a>
                                 <br />
                             </code>
                             <code>
-                                <a href="https://expressjs.com/" target="_blank">
+                                <a href="https://expressjs.com/" target="_blank" rel="noreferrer">
                                     ExpressJS
                                 </a>{" "}
                                 <br />
                             </code>
                             <code>
-                                <a href="https://www.mongodb.com/" target="_blank">
+                                <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer">
                                     MongoDB
                                 </a>{" "}
                                 <br />
                             </code>
                             <code>
-                                <a href="https://www.postgresql.org/" target="_blank">
+                                <a
+                                    href="https://www.postgresql.org/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     PostgreSQL
                                 </a>{" "}
                                 <br />
                             </code>
                             <code>
-                                <a href="https://sequelize.org/" target="_blank">
+                                <a href="https://sequelize.org/" target="_blank" rel="noreferrer">
                                     Sequelize
                                 </a>{" "}
                                 <br />
                             </code>
                             <code>
-                                <a href="https://pptr.dev/" target="_blank">
+                                <a href="https://pptr.dev/" target="_blank" rel="noreferrer">
                                     Puppeteer
                                 </a>{" "}
                                 <br />
@@ -305,6 +329,7 @@ const About = () => {
                             <a
                                 href="https://drive.google.com/file/d/1e2tk3vZLDX2ZChh-kz6Z-doKsHdA1fWQ/view?usp=sharing"
                                 target="_blank"
+                                rel="noreferrer"
                             >
                                 <button>VIEW LESSON</button>
                             </a>

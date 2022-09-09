@@ -130,6 +130,7 @@ const Causes = () => {
                                                 <a
                                                     href={siteURL + "/causes/" + cause.causeId}
                                                     target="_blank"
+                                                    rel="noreferrer"
                                                 >
                                                     {cause.causeId}
                                                 </a>
@@ -141,6 +142,7 @@ const Causes = () => {
                                                         `/address/${cause.causeAddress}`
                                                     }
                                                     target="_blank"
+                                                    rel="noreferrer"
                                                 >
                                                     {cause.causeAddress}
                                                 </a>

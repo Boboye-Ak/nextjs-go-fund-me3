@@ -1232,12 +1232,12 @@ const Cause = ({ id }) => {
                                 style={
                                     !causeName?.length
                                         ? { opacity: "0" }
-                                        : { position: "sticky", top: "0", opacity:"1" }
+                                        : { position: "sticky", top: "0", opacity: "1" }
                                 }
                             >
                                 {!amICauseOwner && (
                                     <div className="your-donation">
-                                        You've donated {convertweiToEth(myDonations)}
+                                        You&apos;ve donated {convertweiToEth(myDonations)}
                                         <FaEthereum /> ($
                                         {(parseFloat(convertweiToEth(myDonations)) * ethPrice)
                                             ?.toFixed(2)
@@ -1283,6 +1283,7 @@ const Cause = ({ id }) => {
                                                                 `/address/${donation.donor}`
                                                             }
                                                             target="_blank"
+                                                            rel="noreferrer"
                                                         >
                                                             {" "}
                                                             <FaEthereum color="#02ba23" />
@@ -1305,6 +1306,7 @@ const Cause = ({ id }) => {
                                                                 `${donation.donor}`
                                                             }
                                                             target="_blank"
+                                                            rel="noreferrer"
                                                         >
                                                             {" "}
                                                             <FaEthereum color="#02ba23" />
@@ -1363,6 +1365,7 @@ const Cause = ({ id }) => {
                                                     "%20"
                                                 )}"%20${shareURL}`}
                                                 target="_blank"
+                                                rel="noreferrer"
                                             >
                                                 <IoLogoTwitter
                                                     color="#02ba23"
@@ -1379,7 +1382,7 @@ const Cause = ({ id }) => {
                                                 className="share-icon"
                                                 href={`https://www.facebook.com/sharer/sharer.php?u=${shareURL}`}
                                                 target="_blank"
-                                                rel="noopener"
+                                                rel="noreferrer"
                                             >
                                                 <IoLogoFacebook
                                                     color="#02ba23"
@@ -1408,6 +1411,7 @@ const Cause = ({ id }) => {
                                                     "%20"
                                                 )}"%20${shareURL}`}
                                                 target="_blank"
+                                                rel="noreferrer"
                                             >
                                                 <SiGmail
                                                     color="#02ba23"

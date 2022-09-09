@@ -128,7 +128,7 @@ const CreateCause = () => {
                     onChange={(e) => {
                         setCauseName(e.target.value)
                     }}
-                    maxlength="30"
+                    maxLength="30"
                 ></input>
                 <div
                     style={{

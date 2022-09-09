@@ -148,7 +148,7 @@ const BigSearchModule = () => {
             </div>
             {searched &&
                 (causeId != "0" ? (
-                    <a href={`/causes/${causeId}`} target="_blank">
+                    <a href={`/causes/${causeId}`} target="_blank" rel="noreferrer">
                         <div className="big-search-result">
                             <div>Cause #{causeId}</div>
                             <div>{causeName}</div>
