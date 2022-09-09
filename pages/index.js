@@ -81,7 +81,7 @@ export default function Home() {
     return (
         <div>
             <Head>
-                <title>Go Fund Me 3</title>
+                <title>CrowdFund3r</title>
                 <meta name="description" content="A Web3 CrowdFunding Website" />
                 <link rel="icon" href="/crowdfunder-tentative-logo.ico" />
             </Head>
