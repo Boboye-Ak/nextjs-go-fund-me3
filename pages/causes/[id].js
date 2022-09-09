@@ -6,9 +6,7 @@ import { useMoralis } from "react-moralis"
 const CausePage = () => {
     const router = useRouter()
     const { isWeb3Enabled } = useMoralis()
-    const id = router.query.id
-
-
+    const id = router.query.id ? router.query.id : null
 
     return (
         <div>

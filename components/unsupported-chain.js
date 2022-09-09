@@ -20,7 +20,6 @@ const UnsupportedChain = () => {
                     })}
                 </div>
                 <Link href="/about">
-                    {" "}
                     <button>
                         GO TO ABOUT PAGE{"  "}
                         <AiFillInfoCircle />

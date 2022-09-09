@@ -21,7 +21,6 @@ const Four0FourComponent = () => {
                     <h1>&#60;404/&#62;</h1>
                     <p>The resource you are looking for does not exist or could not be found.</p>
                     <Link href="/">
-                        {" "}
                         <button>
                             RETURN TO HOME{"  "}
                             <AiFillHome />
