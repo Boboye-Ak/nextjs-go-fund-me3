@@ -94,7 +94,7 @@ const CreateCause = () => {
         if (isWeb3Enabled) {
             updateUI()
         }
-    }, [isWeb3Enabled])
+    }, [isWeb3Enabled, chainIdHex, account])
     useEffect(() => {
         if (isAwaitingConfirmation != null) {
             if (isAwaitingConfirmation === true) {

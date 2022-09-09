@@ -76,7 +76,7 @@ export default function Home() {
                 setAmICrowdFunderOwner(false)
             }
         }
-    }, [isWeb3Enabled, crowdFunderOwner, account])
+    }, [isWeb3Enabled, crowdFunderOwner, account, chainIdHex])
 
     return (
         <div>

@@ -74,7 +74,7 @@ const Causes = () => {
                 setTopIndex(newTopIndex)
             })
         }
-    }, [isWeb3Enabled])
+    }, [isWeb3Enabled, chainIdHex])
     useEffect(() => {
         if (topIndex != null) {
             setBottomIndex((oldValue) => {
