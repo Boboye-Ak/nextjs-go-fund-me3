@@ -203,7 +203,7 @@ textarea {
     margin: 1em;
     width: 35%;
     height: 700px;
-    transition: opacity 200ms ease-in-out;
+    transition: opacity 400ms ease-in-out;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 .donor-list {
@@ -680,7 +680,7 @@ button:disabled {
         border-left: hidden;
         border-right: hidden;
         box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0);
-        transition: opacity 200ms ease-in-out;
+        transition: opacity 400ms ease-in-out;
     }
     .cause-id {
         display: none;

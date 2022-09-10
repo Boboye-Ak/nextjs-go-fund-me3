@@ -7,6 +7,7 @@ import { RiArrowDownSLine } from "react-icons/ri"
 import { siteURL } from "../../nextjs.helper.config"
 import BigSearchModule from "../../components/big-search-module"
 import UnsupportedChain from "../../components/unsupported-chain"
+import Link from "next/link"
 
 const Causes = () => {
     const perPage = 10
@@ -108,46 +109,26 @@ const Causes = () => {
                             </div>
                             {causes.map((cause, index) => {
                                 return (
-                                    <div
-                                        key={cause.causeId}
-                                        onClick={(e) => {
-                                            navigator.clipboard.writeText(cause.causeAddress)
-                                            dispatch({
-                                                title: "Copied!",
-                                                message: `Cause Address for cause #${cause.causeId} copied to clipboard`,
-                                                icon: "bell",
-                                                position: "topR",
-                                                type: "success",
-                                            })
-                                        }}
-                                    >
-                                        {" "}
-                                        <div key={cause.causeId} className="cause-table-row">
-                                            <div className="cause-table-item">
-                                                {cause.causeName}
-                                            </div>
-                                            <div className="cause-table-id-item">
-                                                <a
-                                                    href={siteURL + "/causes/" + cause.causeId}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    {cause.causeId}
-                                                </a>
-                                            </div>
-                                            <div className="cause-table-item cause-table-address-item address-column">
-                                                <a
-                                                    href={
-                                                        activeChain.etherscan +
-                                                        `/address/${cause.causeAddress}`
-                                                    }
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
+                                    <div key={cause.causeId}>
+                                        <Link href={`/causes/${cause.causeId}`}>
+                                            <div key={cause.causeId} className="cause-table-row">
+                                                <div className="cause-table-item">
+                                                    {cause.causeName}
+                                                </div>
+                                                <div className="cause-table-id-item">
+                                                    <a
+                                                        href={siteURL + "/causes/" + cause.causeId}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >
+                                                        {cause.causeId}
+                                                    </a>
+                                                </div>
+                                                <div className="cause-table-item cause-table-address-item address-column">
                                                     {cause.causeAddress}
-                                                </a>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </div>
                                 )
                             })}
