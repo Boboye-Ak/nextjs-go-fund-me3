@@ -679,14 +679,6 @@ button:disabled {
         width: 90vw;
     }
 
-    .donation {
-        background-color: rgb(74, 233, 103);
-        color: white;
-    }
-    .refund {
-        background-color: #f35c68;
-        color: white;
-    }
     .header-image {
         display: none;
     }
@@ -763,7 +755,7 @@ button:disabled {
     .sponsor-text {
         width: 90%;
     }
-    .about-paragraph{
+    .about-paragraph {
         font-size: small;
     }
 }

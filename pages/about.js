@@ -215,7 +215,7 @@ const About = () => {
                             </div>
                         </div>
                         <h2 id="stack" style={{ textAlign: "center" }}>
-                            Developer's Stack
+                            Developer&apos;s Stack
                         </h2>
                         <div className="stack">
                             <code>
