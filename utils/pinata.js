@@ -6,6 +6,7 @@ const sendFileToIPFS = async (fileImg) => {
         try {
             const formData = new FormData()
             formData.append("file", fileImg)
+            console.log(fileImg)
 
             const resFile = await axios({
                 method: "post",

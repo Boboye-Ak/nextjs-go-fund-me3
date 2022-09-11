@@ -6,6 +6,7 @@ import { causeABI, chains, crowdFunderABI, crowdFunderAddresses } from "../const
 import { useNotification } from "web3uikit"
 import axios from "axios"
 import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
+import { sendFileToNFTStorage, toImgObject } from "../utils/nft.storage"
 import { convertweiToEth, convertEthToWei, convertweiToEthNum } from "../utils/converter"
 import { siteURL } from "../nextjs.helper.config"
 import Header from "./Header"
@@ -309,20 +310,10 @@ const Cause = ({ id }) => {
 
     const updateMetadata = async () => {
         try {
-            const res = await axios.get(uriString)
-            if (!res.data.description || !res.data.img || (!res.data.name && amICauseOwner)) {
-                toggleEditModal(true)
-                editModal.current.scrollIntoView()
-                dispatch({
-                    title: "Edit Cause",
-                    message: "Please complete the information about your cause",
-                    type: "warning",
-                    icon: "bell",
-                    position: "topR",
-                })
-            }
+            const res = await axios.get(uriString.replace("ipfs://", "https://ipfs.io/ipfs/"))
+            console.log(res.data)
             setDescription(res.data.description)
-            setImgUri(res.data.img)
+            setImgUri(res.data.image.replace("ipfs://", "https://ipfs.io/ipfs/"))
             setName(res.data.name)
         } catch (error) {
             console.log(error)
@@ -383,51 +374,21 @@ const Cause = ({ id }) => {
     }
 
     const handleSubmit = async () => {
+        let newURI
         try {
+            let fileImg2
             setIsUploading(true)
-            let imgLink, nameToSet, descriptionToSet
-            if (fileImg) {
-                imgLink = await sendFileToIPFS(fileImg)
-            } else {
-                imgLink = imgUri
+            if (!fileImg) {
+                fileImg2 = await toImgObject(imgUri)
             }
-            if (newName) {
-                nameToSet = newName
-            } else {
-                nameToSet = name
-            }
-            if (newDescription) {
-                descriptionToSet = newDescription
-            } else {
-                descriptionToSet = description
-            }
-            const causeMetadata = {
-                causeId: id,
-                name: nameToSet,
-                description: newDescription,
-                img: imgLink,
-            }
-            uploadJSONToIPFS(causeMetadata)
-                .then((res) => {
-                    setUriString(res)
-                    setNewDescription("")
-                    setNewName("")
-                })
-
-                .catch((error) => {
-                    console.log(error)
-                    setIsUploading(false)
-                })
-        } catch (error) {
-            console.log(error)
-            dispatch({
-                title: "Error updating cause info",
-                message: "We encountered an error while updating information about your cause",
-                position: "topR",
-                type: "error",
-                icon: "bell",
+            newURI = await sendFileToNFTStorage({
+                name: newName || name,
+                fileImg: fileImg || fileImg2,
+                description: newDescription || description,
             })
-            setIsUploading(false)
+            setUriString(newURI)
+        } catch (e) {
+            console.log(e)
         }
     }
 
