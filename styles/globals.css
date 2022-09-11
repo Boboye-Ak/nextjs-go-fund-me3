@@ -663,6 +663,21 @@ button:disabled {
     .donor-list {
         height: auto;
     }
+    .cause-owner {
+        font-size: small;
+        width: 90vw;
+    }
+    .cause-img{
+        height: 200px;
+    }
+    .cause-description {
+        font-size: small;
+        width: 90vw;
+    }
+    .progress {
+        font-size: small;
+        width: 90vw;
+    }
 
     .donation {
         background-color: rgb(74, 233, 103);

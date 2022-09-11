@@ -376,14 +376,19 @@ const Cause = ({ id }) => {
     const handleSubmit = async () => {
         let newURI
         try {
-            let fileImg2
+            let fileImg2, fileImg3
             setIsUploading(true)
             if (!fileImg) {
                 fileImg2 = await toImgObject(imgUri)
             }
+            if (!imgUri) {
+                fileImg3 = await toImgObject(
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                )
+            }
             newURI = await sendFileToNFTStorage({
                 name: newName || name,
-                fileImg: fileImg || fileImg2,
+                fileImg: fileImg ? fileImg : imgUri ? fileImg2 : fileImg3,
                 description: newDescription || description,
             })
             setUriString(newURI)
@@ -927,6 +932,15 @@ const Cause = ({ id }) => {
                                                     $
                                                 </div>
                                             </div>
+                                        </div>
+                                    )}
+                                {!amICauseOwner &&
+                                    !isWithdrawn &&
+                                    !isGoalReached &&
+                                    isOpenToDonations &&
+                                    !isLocked && (
+                                        <div>
+                                            {" "}
                                             <button
                                                 onClick={handleDonate}
                                                 disabled={
