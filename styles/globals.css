@@ -667,7 +667,7 @@ button:disabled {
         font-size: small;
         width: 90vw;
     }
-    .cause-img{
+    .cause-img {
         height: 200px;
     }
     .cause-description {
@@ -762,6 +762,9 @@ button:disabled {
     }
     .sponsor-text {
         width: 90%;
+    }
+    .about-paragraph{
+        font-size: small;
     }
 }
 

@@ -66,10 +66,11 @@ const About = () => {
                                     Cause contract.
                                 </a>{" "}
                                 Every cause has a unique numerical ID as well as a hexadecimal
-                                (starts with &quot;0x&quot;) address. You can search for a cause using either
-                                its ID, contract address or the address of the ethereum wallet used
-                                to create it in either the search page or the search bar of the
-                                &quot;causes&quot; page(can be reached via dropdown menu at the top left).
+                                (starts with &quot;0x&quot;) address. You can search for a cause
+                                using either its ID, contract address or the address of the ethereum
+                                wallet used to create it in either the search page or the search bar
+                                of the &quot;causes&quot; page(can be reached via dropdown menu at
+                                the top left).
                             </div>
                             <div className="cause-img for-pc">
                                 <img
@@ -83,10 +84,11 @@ const About = () => {
                             </h2>
                             <div className="about-paragraph">
                                 As stated above, the search bars in the home page and the causes can
-                                find a cause based on the ID(Numerical Integer such as &quot;1&quot;), cause
-                                contract address(hexadecimal beginning with 0x) and cause owner
-                                wallet address(hexadecimal beginning with 0x). Attempts to search
-                                based on the Cause name or keywords will produce no results.
+                                find a cause based on the ID(Numerical Integer such as
+                                &quot;1&quot;), cause contract address(hexadecimal beginning with
+                                0x) and cause owner wallet address(hexadecimal beginning with 0x).
+                                Attempts to search based on the Cause name or keywords will produce
+                                no results.
                             </div>
                             <div className="cause-img for-pc">
                                 <img
@@ -133,9 +135,9 @@ const About = () => {
                             </h2>
                             <div className="about-paragraph">
                                 Donors to a cause can ask for refunds and get them immediately by
-                                clicking the &quot;Demand Refund&quot; button in a cause page. You can still
-                                make a donation after getting a refund but you cannot get a refund
-                                after the owner of the cause has withdrawn donations.
+                                clicking the &quot;Demand Refund&quot; button in a cause page. You
+                                can still make a donation after getting a refund but you cannot get
+                                a refund after the owner of the cause has withdrawn donations.
                             </div>
                             <h2 id="closing" style={{ textAlign: "center" }}>
                                 Closing/Opening to Donations
@@ -213,7 +215,7 @@ const About = () => {
                             </div>
                         </div>
                         <h2 id="stack" style={{ textAlign: "center" }}>
-                            Stack
+                            Developer's Stack
                         </h2>
                         <div className="stack">
                             <code>

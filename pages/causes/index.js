@@ -121,7 +121,7 @@ const Causes = () => {
                                                         target="_blank"
                                                         rel="noreferrer"
                                                     >
-                                                        {cause.causeId}
+                                                        #{cause.causeId}
                                                     </a>
                                                 </div>
                                                 <div className="cause-table-item cause-table-address-item address-column">

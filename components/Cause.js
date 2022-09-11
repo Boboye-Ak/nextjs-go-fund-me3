@@ -311,7 +311,6 @@ const Cause = ({ id }) => {
     const updateMetadata = async () => {
         try {
             const res = await axios.get(uriString.replace("ipfs://", "https://ipfs.io/ipfs/"))
-            console.log(res.data)
             setDescription(res.data.description)
             setImgUri(res.data.image.replace("ipfs://", "https://ipfs.io/ipfs/"))
             setName(res.data.name)
@@ -730,9 +729,10 @@ const Cause = ({ id }) => {
                                     className={`cause-description ${
                                         !showFullDescription && "fade"
                                     }`}
+                                    style={{ width: "100%" }}
                                 >
                                     {!showFullDescription ? (
-                                        <>
+                                        <p style={{ width: "100%", textAlign: "left" }}>
                                             {description.slice(0, 560)}
                                             {description && description.length > 560 && (
                                                 <div className="read-more-button">
@@ -745,11 +745,14 @@ const Cause = ({ id }) => {
                                                     />
                                                 </div>
                                             )}
-                                        </>
+                                        </p>
                                     ) : (
-                                        <div>
-                                            {" "}
-                                            {description}
+                                        <div style={{ width: "100%" }}>
+                                            <p style={{ width: "100%", textAlign: "left" }}>
+                                                {" "}
+                                                {description}
+                                            </p>
+
                                             <a className="read-more-button">
                                                 <RiArrowDropUpLine
                                                     className="read-more-button-circle"
@@ -863,6 +866,7 @@ const Cause = ({ id }) => {
                                                 flexDirection: "row",
                                                 justifyContent: "center",
                                                 alignItems: "center",
+                                                width: "100%",
                                             }}
                                         >
                                             <div className="input-bar">
@@ -1017,7 +1021,7 @@ const Cause = ({ id }) => {
                                             <input
                                                 type="text"
                                                 value={newName}
-                                                placeholder="Cause Owner Name"
+                                                placeholder="Cause Owner Name(eg John Doe)"
                                                 onChange={(e) => {
                                                     setNewName(e.target.value)
                                                 }}
@@ -1159,6 +1163,7 @@ const Cause = ({ id }) => {
 
                                 {amICrowdFunderOwner && !isLocked && (
                                     <button
+                                        style={{ marginTop: "1em" }}
                                         onClick={handleLock}
                                         disabled={
                                             lockIsFetching ||
@@ -1171,6 +1176,7 @@ const Cause = ({ id }) => {
                                 )}
                                 {amICrowdFunderOwner && isLocked && (
                                     <button
+                                        style={{ marginTop: "1em" }}
                                         onClick={handleUnlock}
                                         disabled={
                                             unlockIsFetching ||
