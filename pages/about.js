@@ -271,6 +271,12 @@ const About = () => {
                                 <br />
                             </code>
                             <code>
+                                <a href="https://mochajs.org/" target="_blank" rel="noreferrer">
+                                    Mocha
+                                </a>{" "}
+                                <br />
+                            </code>
+                            <code>
                                 <a href="https://www.python.org/" target="_blank" rel="noreferrer">
                                     Python(Brownie)
                                 </a>

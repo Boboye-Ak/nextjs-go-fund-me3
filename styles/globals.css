@@ -3,6 +3,8 @@ body {
     text-align: justify;
 
     font-family: CircularXXWeb, Trebuchet, Helvetica, Arial, sans-serif;
+    background-color: #323333;
+    color: #dadada;
 }
 
 a {
@@ -32,11 +34,14 @@ input[type="text"] {
 .big-search-bar {
     border: solid;
     border-color: rgb(115, 115, 115);
+    background-color: white;
+    font-size: bold;
     width: 40vw;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     border-radius: 2em;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 #big-search-bar-input {
@@ -66,12 +71,14 @@ input[type="text"] {
 .input-bar {
     margin: 1em;
     border: solid;
+    background-color: white;
     border-color: rgb(115, 115, 115);
     width: 35%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     border-radius: 2em;
+    font-size: large;
 }
 
 .input-bar > input {
@@ -114,7 +121,7 @@ textarea {
     padding-bottom: 0.5em;
     padding-top: 0.5em;
     border-bottom: solid;
-    border-width: meduim;
+    border-width: thin;
     border-color: rgb(115, 115, 115);
     height: 75px;
     transition: right 1s linear;
@@ -262,6 +269,7 @@ img {
     cursor: pointer;
     margin: 0.25em;
     background-color: rgb(166, 255, 182);
+    color: black;
     padding: 1em;
     border-radius: 6px;
     text-align: center;
@@ -512,8 +520,6 @@ button:disabled {
 
 .causes-table {
     width: 100%;
-    border: solid;
-    border-width: thin;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
@@ -528,6 +534,7 @@ button:disabled {
     color: #dadada;
     height: 2em;
     font-size: 1.15em;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .cause-table-row {
@@ -535,11 +542,12 @@ button:disabled {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border: solid;
-    border-width: thin;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
     height: 2em;
     background-color: #dae2f0;
     cursor: pointer;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 .cause-table-row:hover {
     background-color: #79a7f0;
@@ -686,7 +694,7 @@ button:disabled {
         width: 100%;
         border-left: hidden;
         border-right: hidden;
-        box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0);
+        box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
         transition: opacity 400ms ease-in-out;
     }
     .cause-id {

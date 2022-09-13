@@ -107,31 +107,49 @@ const Causes = () => {
                                 <div className="cause-table-item">Cause ID</div>
                                 <div className="cause-table-item address-column">Cause Address</div>
                             </div>
-                            {causes.map((cause, index) => {
-                                return (
-                                    <div key={cause.causeId}>
-                                        <Link href={`/causes/${cause.causeId}`}>
-                                            <div key={cause.causeId} className="cause-table-row">
-                                                <div className="cause-table-item">
-                                                    {cause.causeName}
-                                                </div>
-                                                <div className="cause-table-id-item">
-                                                    <a
-                                                        href={siteURL + "/causes/" + cause.causeId}
-                                                        target="_blank"
-                                                        rel="noreferrer"
+                            <div>
+                                {causes.map((cause, index) => {
+                                    return (
+                                        <div key={cause.causeId}>
+                                            <Link href={`/causes/${cause.causeId}`}>
+                                                <div
+                                                    key={cause.causeId}
+                                                    className="cause-table-row"
+                                                >
+                                                    <div
+                                                        className="cause-table-item"
+                                                        style={{ color: "black" }}
                                                     >
-                                                        #{cause.causeId}
-                                                    </a>
+                                                        {cause.causeName}
+                                                    </div>
+                                                    <div className="cause-table-id-item">
+                                                        <a
+                                                            href={
+                                                                siteURL + "/causes/" + cause.causeId
+                                                            }
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                        >
+                                                            #{cause.causeId}
+                                                        </a>
+                                                    </div>
+                                                    <div className="cause-table-item cause-table-address-item address-column">
+                                                        <a
+                                                            href={
+                                                                activeChain.etherscan + "/address/" + cause.causeAddress
+                                                            }
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                        >
+                                                            {cause.causeAddress}
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                                <div className="cause-table-item cause-table-address-item address-column">
-                                                    {cause.causeAddress}
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                )
-                            })}
+                                            </Link>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
                         {bottomIndex > 0 && (
                             <div
