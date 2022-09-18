@@ -642,9 +642,11 @@ button:disabled {
 }
 .navbar-header1:hover {
     background-color: #dadada;
+    color: black;
 }
 .navbar-header2:hover {
     background-color: #dadada;
+    color: black;
 }
 #about-cause-body {
     width: "75%";

@@ -136,7 +136,9 @@ const Causes = () => {
                                                     <div className="cause-table-item cause-table-address-item address-column">
                                                         <a
                                                             href={
-                                                                activeChain.etherscan + "/address/" + cause.causeAddress
+                                                                activeChain.etherscan +
+                                                                "/address/" +
+                                                                cause.causeAddress
                                                             }
                                                             target="_blank"
                                                             rel="noreferrer"

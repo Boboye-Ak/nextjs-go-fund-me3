@@ -144,6 +144,7 @@ const BigSearchModule = () => {
                         await search()
                     }}
                     style={{ cursor: "pointer" }}
+                    color="black"
                 />
             </div>
             {searched &&

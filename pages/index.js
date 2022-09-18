@@ -92,6 +92,9 @@ export default function Home() {
                     <div className="big-search">
                         <BigSearchModule />
                     </div>
+                    <div style={{ textAlign: "center", textDecoration: "underline" }}>
+                        <Link href="/causes">All Causes</Link>
+                    </div>
                 </>
             ) : (
                 <>

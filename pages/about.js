@@ -342,6 +342,15 @@ const About = () => {
                                 <button>VIEW LESSON</button>
                             </a>
                         </div>
+                        <div className="about-paragraph">
+                            I wrote NFT raffle scripts using NodeJS using Thentic API for NFT
+                            commerce.
+                        </div>
+                        <div style={{ margin: "1em" }}>
+                            <a href="https://github.com/Boboye-Ak/thentic-nft-raffle" target="_blank" rel="noreferrer">
+                                <button>SEE ON GITHUB</button>
+                            </a>
+                        </div>
                     </div>
                     <div
                         className="donor-list-and-share navbar"
