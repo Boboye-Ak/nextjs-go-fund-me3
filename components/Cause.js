@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { useMoralis, useWeb3Contract } from "react-moralis"
+import { AiOutlineEdit } from "react-icons/ai"
 import QRCode from "qrcode"
 import { useRouter } from "next/router"
 import { causeABI, chains, crowdFunderABI, crowdFunderAddresses } from "../constants"
 import { useNotification } from "web3uikit"
 import axios from "axios"
-import { sendFileToIPFS, uploadJSONToIPFS } from "../utils/pinata"
 import { sendFileToNFTStorage, toImgObject } from "../utils/nft.storage"
 import { convertweiToEth, convertEthToWei, convertweiToEthNum } from "../utils/converter"
 import { siteURL } from "../nextjs.helper.config"
@@ -995,9 +995,10 @@ const Cause = ({ id }) => {
                                     ))}
 
                                 {amICauseOwner && (
-                                    <div className="cause-owner-only">
+                                    <div className="cause-owner-only" description="EDIT CAUSE">
                                         {" "}
                                         <button
+                                            style={{ borderRadius: "2em" }}
                                             onClick={() => {
                                                 if (showEditModal) {
                                                     toggleEditModal(false)
@@ -1006,11 +1007,11 @@ const Cause = ({ id }) => {
                                                 }
                                             }}
                                         >
-                                            EDIT
+                                            <AiOutlineEdit size="1.5em" />
                                             {showEditModal ? (
-                                                <RiArrowDownSLine />
+                                                <RiArrowDownSLine size="1.5em" />
                                             ) : (
-                                                <RiArrowDropRightLine />
+                                                <RiArrowDropRightLine size="1.5em" />
                                             )}
                                         </button>
                                     </div>
@@ -1036,7 +1037,7 @@ const Cause = ({ id }) => {
                                             >
                                                 {description}
                                             </textarea>
-                                            <label htmlFor="cause-image">
+                                            <label htmlFor="cause-image" style={{ color: "black" }}>
                                                 Upload picture for cause{"  "}
                                                 <RiUpload2Fill />
                                             </label>
