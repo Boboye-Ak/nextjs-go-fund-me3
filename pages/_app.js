@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps }) {
         <div>
             <Head>
                 <title>CrowdFund3r</title>
-                <meta name="description" content="A Web3 CrowdFunding Website" />
+                <meta name="description" content="A Web3 CrowdFunding Website for the ethereum blockchain" />
                 <link rel="icon" href="/crowdfunder-tentative-logo.ico" />
             </Head>
             <MoralisProvider initializeOnMount={false}>
