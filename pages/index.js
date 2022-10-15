@@ -1,4 +1,4 @@
-import Head from "next/head"
+
 import Image from "next/image"
 import styles from "../styles/Home.module.css"
 import Header from "../components/Header"
@@ -80,11 +80,7 @@ export default function Home() {
 
     return (
         <div>
-            <Head>
-                <title>CrowdFund3r</title>
-                <meta name="description" content="A Web3 CrowdFunding Website" />
-                <link rel="icon" href="/crowdfunder-tentative-logo.ico" />
-            </Head>
+
             <Header amICauseOwner={false} amICrowdFunderOwner={amICrowdFunderOwner} />
             {crowdFunderAddress ? (
                 <>

@@ -347,7 +347,11 @@ const About = () => {
                             commerce.
                         </div>
                         <div style={{ margin: "1em" }}>
-                            <a href="https://github.com/Boboye-Ak/thentic-nft-raffle" target="_blank" rel="noreferrer">
+                            <a
+                                href="https://github.com/Boboye-Ak/thentic-nft-raffle"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 <button>SEE ON GITHUB</button>
                             </a>
                         </div>

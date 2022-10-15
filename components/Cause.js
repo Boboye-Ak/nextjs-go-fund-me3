@@ -995,7 +995,7 @@ const Cause = ({ id }) => {
                                     ))}
 
                                 {amICauseOwner && (
-                                    <div className="cause-owner-only" >
+                                    <div className="cause-owner-only">
                                         {" "}
                                         <button
                                             style={{ borderRadius: "2em" }}

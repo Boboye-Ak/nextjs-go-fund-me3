@@ -32,7 +32,11 @@ const Dropdown = ({ title, items }) => {
                 onMouseLeave={() => {
                     setDisplay(false)
                 }}
-                style={!display ? { width: "0", height: "0" } : { width: "auto", height: "auto" }}
+                style={
+                    !display
+                        ? { width: "0", height: "0", fontSize: "0" }
+                        : { width: "auto", height: "auto" }
+                }
             >
                 {items?.map((item, index) => {
                     return (
