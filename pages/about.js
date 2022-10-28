@@ -328,32 +328,74 @@ const About = () => {
                         <h2 id="other-work" style={{ textAlign: "center" }}>
                             Other Work from The Developer
                         </h2>
-                        <div className="about-paragraph">
-                            I make it a point of duty to educate people on what I and many others
-                            believe is the future of the internet. Find attached a link to a lecture
-                            I gave to a group of friends about the fundamentals of Web3.
+                        <div className="about-paragraph project">
+                            <h3>Web3 Education</h3>I make it a point of duty to educate people on
+                            what I and many others believe is the future of the internet. Find
+                            attached a link to a lecture I gave to a group of friends about the
+                            fundamentals of Web3. I am also a member of a DAO called Web3
+                            Aficionados where web3 developers are trained. I aid in tutoring
+                            aspiring web3 developers.
+                            <div style={{ margin: "1em", textAlign: "center" }}>
+                                <a
+                                    href="https://drive.google.com/file/d/1e2tk3vZLDX2ZChh-kz6Z-doKsHdA1fWQ/view?usp=sharing"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    <button>VIEW LESSON</button>
+                                </a>
+                            </div>
                         </div>
-                        <div style={{ margin: "1em" }}>
+                        <div className="about-paragraph project">
+                            <h3>Timed Safelock Dapp</h3>
+                            Created a Timed safelock dapp that allows users deploy Safelock
+                            contracts (
                             <a
-                                href="https://drive.google.com/file/d/1e2tk3vZLDX2ZChh-kz6Z-doKsHdA1fWQ/view?usp=sharing"
+                                href="https://github.com/Boboye-Ak/hardhat-timed-safelock/blob/main/contracts/Safelock.sol"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <button>VIEW LESSON</button>
+                                safelock.sol
                             </a>
-                        </div>
-                        <div className="about-paragraph">
-                            I wrote NFT raffle scripts using NodeJS using Thentic API for NFT
-                            commerce.
-                        </div>
-                        <div style={{ margin: "1em" }}>
+                            ) and use the contracts to safelock native blockchain currency for
+                            themselves or others to withdraw after a preset time has elapsed.
+                            <br />
+                            <br />
                             <a
-                                href="https://github.com/Boboye-Ak/thentic-nft-raffle"
+                                href="https://polygon-timed-safelock.netlify.app/"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <button>SEE ON GITHUB</button>
+                                Link to live App
                             </a>
+                            <br />
+                            <a
+                                href="https://github.com/Boboye-Ak/nextjs-timed-safelock"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Link to Frontend Github
+                            </a><br />
+                            <a
+                                href="https://github.com/Boboye-Ak/hardhat-timed-safelock"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Link to Hardhat Github
+                            </a>
+                            <br />
+                        </div>
+                        <div className="about-paragraph project">
+                            <h3>NFT Raffle Using Thentic API</h3>I wrote NFT raffle scripts using
+                            NodeJS using Thentic API for NFT commerce.
+                            <div style={{ margin: "1em", textAlign: "center" }}>
+                                <a
+                                    href="https://github.com/Boboye-Ak/thentic-nft-raffle"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    <button>SEE ON GITHUB</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div

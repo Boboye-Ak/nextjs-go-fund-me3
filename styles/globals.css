@@ -394,7 +394,6 @@ img {
     width: 100%;
 }
 
-
 button {
     cursor: pointer;
     background-color: #2ea44f;
@@ -585,6 +584,17 @@ button:disabled {
     font-size: 1.15em;
     text-align: left;
 }
+.about-paragraph a {
+    color: blue;
+    text-decoration: underline;
+}
+.about-paragraph h3{
+    text-align: center;
+}
+.about-paragraph.project {
+    border-bottom: solid;
+    border-width: thin;
+}
 .for-mobile {
     display: none;
 }
@@ -768,15 +778,5 @@ button:disabled {
     }
     .about-paragraph {
         font-size: small;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    html {
-        color-scheme: dark;
-    }
-    body {
-        color: white;
-        background: black;
     }
 }
